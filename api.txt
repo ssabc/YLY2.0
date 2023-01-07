@@ -1,0 +1,260 @@
+{
+        'DevOnlineCount': {
+            'Total': 100,
+            'ShouldBeOpened': 100,
+            'Closed': 0
+        }
+        # 记录仪累计开机时间
+        'DevOnlineTime': [
+            {
+                'Date': '2022-11-26',
+                'OnlineTime': 100
+            },
+            {
+                'Date': '2022-11-27',
+                'OnlineTime': 50
+            },
+            {
+                'Date': '2022-11-28',
+                'OnlineTime': 25
+            },
+            {
+                'Date': '2022-11-29',
+                'OnlineTime': 20
+            }
+        ]
+        # 记录仪今日开机数量 分不同养老院统计
+        'DevTodayOnlineCount': [
+            {
+                'Yard': '养老院1',
+                'Carer': {
+                    'ShouldBeOpened': 0,
+                    'Closed': 0
+                },
+                'Foreman': {
+                    'Name': '值班长1',
+                    'isOpened': True
+                }
+            }
+        ]
+        # 护工帮 列表 养老院/护工/告警描述
+        'CarerWarning': [
+            {
+                'Yard': '养老院1',
+                'Carer': {
+                    'Name': '',
+                    'Code': '',
+                },
+                'Warning': '发起SOS告警',
+                'Video': {
+                    'RealTime': '',
+                    'History': '',
+                }
+            }
+        ]
+        # 护工帮处理 已处理/未处理 数量统计
+        'CarerWarningCount': {
+            'Total': 0,
+            'Unhandled': 0,
+            'Handled': 0
+        }
+        # 今日在岗值班长情况
+        'Foreman': [
+            {
+                'Name': '值班长1',
+                'Code': '',
+                'Yard': '养老院1',
+                'Video': {
+                    'RealTime': '',
+                    'History': '',
+                }
+            }
+        ]
+        # 今日在岗护理员情况
+        'Carer': [
+            {
+                'Name': '护理员1',
+                'Code': '',
+                'Yard': '养老院1',
+                'Video': {
+                    'RealTime': '',
+                    'History': '',
+                }
+            }
+        ]
+    }
+
+'DevOnlineTime': {
+            'Date': '2022-11-29',
+            'OnlineTime': 100
+        }
+
+# 记录仪累计开机时间
+        'DevOnlineTime': {
+            'Date': '2022-11-29',
+            'OnlineTime': 100,
+            'Unit': '小时'
+        }
+# 记录仪今日开机数量 分不同养老院统计
+        'DevTodayOnlineCount': [
+            {
+                'Yard': '养老院1',
+                'Carer': {
+                    'ShouldBeOpened': 0,
+                    'Closed': 0
+                },
+                'Foreman': {
+                    'Name': '值班长1',
+                    'isOpened': True
+                }
+            }
+        ]
+
+
+# 护工帮 列表 养老院/护工/告警描述
+        'CarerWarning': [
+            {
+                'Yard': '养老院1',
+                'Carer': {
+                    'Name': '',
+                    'Code': '',
+                },
+                'Warning': '发起SOS告警',
+                'Video': {
+                    'RealTime': '',
+                    'History': '',
+                }
+            }
+        ]
+# 护工帮处理 已处理/未处理 数量统计
+        'CarerWarningCount': {
+            'Total': 0,
+            'Unhandled': 0,
+            'Handled': 0
+        }
+# 今日在岗值班长情况
+        'Foreman': [
+            {
+                'Name': '值班长1',
+                'Code': '',
+                'Yard': '养老院1',
+                'Video': {
+                    'RealTime': '',
+                    'History': '',
+                }
+            }
+        ]
+
+# 访客统计情况
+            yield 'VisitorCount', {
+                'Reserved': 0,  # 预约
+                'Visited': 0  # 到访
+            }
+# 养老院分布图
+            yield 'YardDistMap', [
+                {
+                    'Name': '',
+                    'Address': '',
+                    'Telephone': '',
+                    'CarerCount': 0,
+                    'BedCount': 0,
+                    'GPS': {
+                        'x': 0,
+                        'y': 0
+                    }
+                }
+            ]
+    # 养老院分布图
+            yield 'YardDistMap', [
+                {
+                    'Name': '',
+                    'Address': '',
+                    'Telephone': '',
+                    'CarerCount': 0,
+                    'BedCount': 0,
+                    'GPS': {
+                        'x': 0,
+                        'y': 0
+                    },
+                    'InUsed': True
+                }
+            ]
+
+    'Foreman', [
+                {
+                    'Name': '值班长1',
+                    'Code': '',
+                    'Yard': '养老院1',
+                    'Video': {
+                        'RealTime': '',
+                        'History': '',
+                    }
+                }
+            ]
+# 今日在岗护理员情况
+            yield 'Carer', [
+                {
+                    'Name': '护理员1',
+                    'Code': '',
+                    'Yard': '养老院1',
+                    'Video': {
+                        'RealTime': '',
+                        'History': '',
+                    }
+                }
+            ]
+get /account/login/captcha
+{
+                'success': True,
+                'message': '',
+                'code': '1234',
+                'captcha': 图片的base64编码
+            }
+post /account/login
+username=district&password=6b77ef4b602800a89d88e6e3f93a322c
+{
+            'success': True,
+            'message': '',
+            'data': {
+                'token': 'token',
+                'account': {
+                    'username': 'district',
+                    'password': '',
+                    'type': 'district',  district/courtyard
+                    'token': ''.join(random.sample(string.ascii_letters + string.digits, 42))
+                }
+            }
+        }
+
+get /manage/realtime/communication
+{
+            'code': 1000,
+            'message': '',
+            'data': {
+                'url': ''
+            }
+        }
+
+历史记录
+post /manage/file/history
+name=&date-range=&time-range=
+如果是区账号 需要有必须字段yard-id
+name date-range time-range都为可选字段
+post /manage/file/history 
+加一个可选参数is-eye
+{
+                        'code': 1000,
+                        'message': '',
+                        'data': [
+                            {
+                                'Index': 1,
+                                'FileName': '测试视频.mp4',
+                                'SubmitTime': '2022-11-29 00:00:00',
+                                'Duration': '00:01:12',
+                                'Type': '文件类型1',
+                                'Staff': '人员1',
+                                'Video': '视频链接'
+                            }
+                        ]
+                    }
+
