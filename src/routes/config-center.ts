@@ -1,8 +1,8 @@
 /*
  * @Author: szhao
  * @Date: 2022-12-02 16:12:30
- * @LastEditTime: 2023-01-07 16:02:34
- * @LastEditors: szhao
+ * @LastEditTime: 2023-01-08 19:29:33
+ * @LastEditors: sZhao
  * @Description:
  */
 import type { RouteItem } from 'RouterModule';
@@ -29,13 +29,13 @@ export const r: RouteItem[] = [
             {
                 name: 'CareHomeManagementDetail',
                 path: 'detail',
-                meta: { title: '养老院信息详情' },
+                meta: { title: '养老院信息详情', hidden: true },
                 component: lazyImportPagesRootVueFile('config-center/detail'),
             },
             {
                 name: 'CareHomeManagementAdd',
                 path: 'add',
-                meta: { title: '养老院信息新增' },
+                meta: { title: '养老院信息新增', hidden: true },
                 component: lazyImportPagesRootVueFile('config-center/detail'),
             },
             {
@@ -47,7 +47,7 @@ export const r: RouteItem[] = [
             {
                 name: 'AccountManagementDetail',
                 path: 'account-management/detail',
-                meta: { title: '账户信息详情' },
+                meta: { title: '账户信息详情', hidden: true },
                 component: lazyImportPagesRootVueFile(
                     'config-center/account-management/detail'
                 ),
@@ -55,7 +55,7 @@ export const r: RouteItem[] = [
             {
                 name: 'AccountManagementAdd',
                 path: 'account-management/add',
-                meta: { title: '账户信息新增' },
+                meta: { title: '账户信息新增', hidden: true },
                 component: lazyImportPagesRootVueFile(
                     'config-center/account-management/detail'
                 ),
@@ -69,7 +69,7 @@ export const r: RouteItem[] = [
             {
                 name: 'UserManagementDetail',
                 path: 'user-management/detail',
-                meta: { title: '用户信息详情' },
+                meta: { title: '用户信息详情', hidden: true },
                 component: lazyImportPagesRootVueFile(
                     'config-center/user-management/detail'
                 ),
@@ -77,7 +77,7 @@ export const r: RouteItem[] = [
             {
                 name: 'UserManagementAdd',
                 path: 'user-management/add',
-                meta: { title: '用户信息新增' },
+                meta: { title: '用户信息新增', hidden: true },
                 component: lazyImportPagesRootVueFile(
                     'config-center/user-management/detail'
                 ),

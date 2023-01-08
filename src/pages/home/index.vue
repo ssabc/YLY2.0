@@ -10,43 +10,77 @@
             />
         </div>
         <div class="content">
-            <div class="row">
+            <div class="row r1">
                 <div class="column">
-                    <div class="box cells flex">
-                        设备情况
-                        <div
-                            v-for="item in data.list"
-                            :key="item.name"
-                            class="cell"
-                        >
-                            <div class="label">{{ item.name }}</div>
-                            <div class="value">
-                                {{ item.value }} {{ item.unit }}
-                            </div>
-                        </div>
+                    <div class="box">
+                        <div class="title">设备情况</div>
+                        <Device></Device>
                     </div>
                     <div class="box">
-                        记录时长分类统计
-                        <div id="ylyChart1" class="chart1"></div>
+                        <div class="title">记录时长分类统计</div>
+                        <Chart1 :yly-flag="true"></Chart1>
                     </div>
                 </div>
                 <div class="column home-img-wrap">
-                    <div class="info">总时长 今日新增时长 总访客人数</div>
+                    <div class="cells">
+                        <div class="cell">
+                            <div class="label">总时长:</div>
+                            <div class="value">
+                                2550
+                                <span class="unit">分钟</span>
+                            </div>
+                        </div>
+                        <div class="cell">
+                            <div class="label">今日新增时长:</div>
+                            <div class="value">
+                                50
+                                <span class="unit">分钟</span>
+                            </div>
+                        </div>
+                        <div class="cell">
+                            <div class="label">总访客人数:</div>
+                            <div class="value">
+                                120
+                                <span class="unit">人次</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="column">
-                    <div class="box">访客情况监测（本周）</div>
-                    <div class="box">服务记录排名（本月）</div>
+                    <div class="box">
+                        <div class="title">访客情况监测（本周）</div>
+                        <div class="visit-num">
+                            访问人次： <span class="value">{{ 65 }}</span>
+                        </div>
+                        <Chart2 :yly-flag="true"></Chart2>
+                    </div>
+                    <div class="box">
+                        <div class="title">服务记录排名（本月）</div>
+                        <Chart3></Chart3>
+                    </div>
                 </div>
             </div>
-            <div class="row">
+            <div class="row r2">
                 <div class="column" style="flex: 1.3">
-                    <div class="box">记录总时长统计</div>
+                    <div class="box">
+                        <div class="title">记录总时长统计</div>
+                        <Chart4></Chart4>
+                    </div>
                 </div>
                 <div class="column">
-                    <div class="box">护工帮</div>
+                    <div class="box">
+                        <div class="title bell-wrap flex">
+                            护工帮
+                            <BellOutlined style="color: #16d4e3" />
+                        </div>
+                        <Chart5></Chart5>
+                    </div>
                 </div>
                 <div class="column">
-                    <div class="box">设备状态（今日）</div>
+                    <div class="box">
+                        <div class="title">设备状态（今日）</div>
+                        <Chart6></Chart6>
+                    </div>
                 </div>
             </div>
         </div>
@@ -57,6 +91,14 @@
 import { useStore } from 'vuex';
 import { reactive, computed, onMounted } from 'vue';
 import * as echarts from 'echarts';
+import Device from './components/device.vue';
+import Chart1 from './components/chart1.vue';
+import Chart2 from './components/chart2.vue';
+import Chart3 from './components/chart3.vue';
+import Chart4 from './components/chart4.vue';
+import Chart5 from './components/chart5.vue';
+import Chart6 from './components/chart6.vue';
+import { BellOutlined } from '@ant-design/icons-vue';
 
 const $store = useStore(),
     ylyList = computed(() => {
@@ -66,33 +108,6 @@ const $store = useStore(),
     isAdmin = computed(() => $store.getters['common/isAdmin']),
     deptId = computed(() => $store.getters['common/deptId']),
     data = reactive<any>({
-        list: [
-            {
-                name: '设备总数',
-                value: '100',
-                unit: '台',
-            },
-            {
-                name: '今日应在线',
-                value: '80',
-                unit: '台',
-            },
-            {
-                name: '今日实际在线',
-                value: '67',
-                unit: '台',
-            },
-            {
-                name: '设备故障',
-                value: '0',
-                unit: '',
-            },
-            {
-                name: '累计访客',
-                value: '26',
-                unit: '',
-            },
-        ],
         yly: '',
     });
 
@@ -182,7 +197,81 @@ const renderChart1 = (data: any) => {
 <style lang="less" scoped>
 .home-wrap {
     background-color: rgba(25, 39, 76, 1);
-    min-height: 100vh;
+    .content {
+        padding: 20px 15px;
+        overflow: auto;
+        .row {
+            min-width: 1680px;
+            display: flex;
+            &.r2 .box {
+                height: 100%;
+            }
+            .column {
+                flex: 1;
+                margin-right: 15px;
+                &:last-child {
+                    margin-right: 0;
+                }
+            }
+            .box {
+                background-color: rgba(12, 34, 55, 0.6980392156862745);
+                border: 1px solid rgba(121, 121, 121, 1);
+                box-sizing: border-box;
+                border-radius: 10px;
+                padding: 10px 15px;
+                color: #fff;
+                margin-bottom: 15px;
+                .title {
+                    font-size: 18px;
+                    padding: 0 0 10px;
+                    height: 40px;
+                }
+            }
+            .home-img-wrap {
+                margin-bottom: 15px;
+                // flex: 1.2;
+                position: relative;
+                background-image: url('@/assets/pictures/home-img.png');
+                background-size: 100% 100%;
+                &::before {
+                    content: '';
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    height: 100%;
+                    width: 100%;
+                    background-color: rgba(255, 255, 255, 0.3);
+                    background-image: url('@/assets/pictures/home-img-masker.svg');
+                    background-size: 100% 100%;
+                }
+                .cells {
+                    padding: 0 40px;
+                    position: absolute;
+                    height: 100%;
+                    width: 100%;
+                    z-index: 9;
+                    color: #fff;
+                    font-size: 18px;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                    .cell {
+                        margin-bottom: 40px;
+                        &:last-child {
+                            margin-bottom: 0;
+                        }
+                        .value {
+                            font-size: 40px;
+                            color: #16d4e3;
+                            .unit {
+                                font-size: 14px;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
 .charts {
     padding: 10px 0;
@@ -192,80 +281,9 @@ const renderChart1 = (data: any) => {
     height: 200px;
     margin-top: 20px;
 }
-.content {
-    padding: 20px 15px;
-}
-.row {
-    display: flex;
-    .column {
-        flex: 1;
-        margin-right: 15px;
-        &:last-child {
-            margin-right: 0;
-        }
-    }
-    .box {
-        background-color: rgba(12, 34, 55, 0.6980392156862745);
-        border: 1px solid rgba(121, 121, 121, 1);
-        box-sizing: border-box;
-        border-radius: 10px;
-        padding: 10px 15px;
-        color: #fff;
-        margin-bottom: 15px;
-    }
-    .home-img-wrap {
-        margin-bottom: 15px;
-        flex: 1.2;
-        position: relative;
-        background-image: url('@/assets/pictures/home-img.png');
-        background-size: 100% 100%;
-        &::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            height: 100%;
-            width: 100%;
-            background-color: rgba(255, 255, 255, 0.3);
-            background-image: url('@/assets/pictures/home-img-masker.svg');
-            background-size: 100% 100%;
-        }
-        .info {
-            position: absolute;
-            height: 100%;
-            width: 100%;
-            z-index: 9;
-        }
-    }
-}
-.cells {
-    width: 100%;
-    justify-content: space-between;
-    .cell {
-        background-color: rgb(192, 170, 128);
-        flex: 1;
-        height: 80px;
-        margin-right: 10px;
-        &:last-child {
-            margin-right: 0;
-        }
-        color: #fff;
-        position: relative;
-        .label {
-            position: absolute;
-            top: 16px;
-            left: 10px;
-        }
 
-        .value {
-            width: 50%;
-            height: 50%;
-            right: 0;
-            bottom: 0;
-            position: absolute;
-            font-size: 18px;
-        }
-    }
+.bell-wrap {
+    align-items: center;
 }
 .label-div {
     height: 50px;
@@ -274,5 +292,14 @@ const renderChart1 = (data: any) => {
     align-items: center;
     color: #fff;
     padding: 0 15px;
+}
+.visit-num {
+    display: flex;
+    align-items: center;
+    color: #56d9ff;
+    .value {
+        font-size: 20px;
+        font-weight: bold;
+    }
 }
 </style>
