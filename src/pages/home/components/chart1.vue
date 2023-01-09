@@ -21,7 +21,7 @@ watchEffect(() => {
 function initFn() {
     const { data1 } = getData(isAdmin.value, $props.ylyFlag);
     nextTick(() => {
-        renderChart1(data1);
+        renderChart1();
     });
 }
 
@@ -113,71 +113,195 @@ function getData(isAdmin: boolean, deptId: number) {
         ],
     };
 }
-const renderChart1 = (data: any) => {
-    const option = {
-        title: {
-            text: '最近7日访客累计',
-            left: 'center',
-        },
-        legend: {
-            top: 'bottom',
-        },
-        grid: {
-            containLabel: true,
-            left: 20,
-            right: 20,
-            bottom: 40,
-            top: 40,
-        },
-        tooltip: {
-            trigger: 'axis',
-            backgroundColor: 'rgba(0,0,0,0.7)',
-            borderColor: 'rgba(0,0,0,0.7)',
-            textStyle: {
-                color: '#fff',
-            },
-        },
-        xAxis: {
-            data: data?.map((_e) => _e.name),
-            splitLine: {
-                show: true,
-                lineStyle: {
-                    width: 2,
-                },
-            },
-            axisLabel: {
-                show: true,
-                margin: 14,
-                fontSize: 12,
-            },
-        },
-        yAxis: [
+const renderChart1 = () => {
+    var xData = [
+            '0801',
+            '0801',
+            '0801',
+            '0801',
+            '0801',
+            '0801',
+            '0801',
+            '0801',
+        ],
+        yData1 = [400, 410, 350, 320, 280, 340, 360, 400, 420, 410, 420, 380],
+        yData2 = [350, 320, 260, 240, 220, 280, 300, 360, 340, 340, 340, 290],
+        yData3 = [200, 260, 200, 190, 180, 220, 260, 300, 280, 300, 280, 200],
+        borderData = [],
+        seriesData = [],
+        legend = ['服务提供', '服务保障', '服务安全'],
+        colorArr = [
             {
-                name: '人次',
-                type: 'value',
-                splitNumber: 5,
-                splitLine: {
-                    show: true,
-                    lineStyle: {
-                        color: ['#fff'],
-                        opacity: 0.06,
+                start: 'rgba(0, 223, 214,',
+                end: 'rgba(17, 107, 243, 0.6)',
+            },
+            {
+                start: 'rgba(34, 120, 217,',
+                end: 'rgba(83, 60, 236, 0.6)',
+            },
+            {
+                start: 'rgba(27, 208, 207,',
+                end: 'rgba(9, 238, 105, 0.8)',
+            },
+            {
+                color: '#EC6941',
+            },
+        ];
+    var normalColor = '#DEEBFF';
+    var borderHeight = 4;
+    xData.forEach(() => {
+        borderData.push(borderHeight);
+    });
+    [yData1, yData2, yData3].forEach((item, index) => {
+        const obj1 = {
+                name: legend[index],
+                type: 'bar',
+                stack: legend[index],
+                data: item,
+                barWidth: '20%',
+                itemStyle: {
+                    normal: {
+                        color: {
+                            type: 'linear',
+                            x: 0,
+                            y: 0,
+                            x2: 0,
+                            y2: 1,
+                            colorStops: [
+                                {
+                                    offset: 0,
+                                    color: colorArr[index].start + '1)',
+                                },
+                                {
+                                    offset: 0.2,
+                                    color: colorArr[index].start + '1)',
+                                },
+                                {
+                                    offset: 1,
+                                    color: colorArr[index].end,
+                                },
+                            ],
+                            globalCoord: false,
+                        },
                     },
                 },
             },
-        ],
-        series: [
-            {
-                name: '访客数量(人次)',
-                type: 'line',
-                data: data?.map((_e) => _e.value),
-                lineStyle: {
-                    color: '#7E2DFF',
-                },
+            obj2 = {
+                name: '',
+                type: 'bar',
+                stack: legend[index],
                 itemStyle: {
-                    color: '#7E2DFF',
+                    barBorderRadius: '2px',
+                    normal: {
+                        color: colorArr[index].start + '1)',
+                    },
+                },
+                data: [],
+            };
+        seriesData.push(obj1);
+        seriesData.push(obj2);
+    });
+    const option = {
+        grid: {
+            left: '3%',
+            top: '20%',
+            right: '3%',
+            bottom: '2%',
+            containLabel: true,
+        },
+        legend: {
+            show: true,
+            itemWidth: 16,
+            itemHeight: 9,
+            right: '15%',
+            top: '2%',
+            textStyle: {
+                color: '#fff',
+            },
+            data: legend,
+        },
+        tooltip: {
+            trigger: 'axis',
+            backgroundColor: 'rgba(18, 57, 60, .8)', //设置背景颜色
+            textStyle: {
+                color: '#fff',
+            },
+            borderColor: 'rgba(18, 57, 60, .8)',
+            axisPointer: {
+                type: 'shadow',
+                shadowStyle: {
+                    color: 'rgba(0, 11, 34, .4)',
+                },
+            },
+            // formatter: function (params: any) {
+            //     console.log('params', params);
+            //     var str = '';
+            //     for (var i = 0; i < params.length; i++) {
+            //         if (params[i].seriesName !== '') {
+            //             str +=
+            //                 params[i].name +
+            //                 ':' +
+            //                 params[i].seriesName +
+            //                 '-' +
+            //                 params[i].value +
+            //                 '<br/>';
+            //         }
+            //     }
+            //     return str;
+            // },
+        },
+        xAxis: [
+            {
+                type: 'category',
+                data: xData,
+                axisPointer: {
+                    type: 'shadow',
+                },
+                axisLabel: {
+                    interval: 0,
+                    align: 'center',
+                    textStyle: {
+                        color: normalColor,
+                        fontSize: 12,
+                    },
+                },
+                axisLine: {
+                    lineStyle: {
+                        color: '#fff',
+                    },
+                },
+                axisTick: {
+                    show: false,
+                },
+                splitLine: {
+                    show: false,
                 },
             },
         ],
+        yAxis: [
+            {
+                type: 'value',
+                axisLabel: {
+                    formatter: '{value}',
+                    textStyle: {
+                        color: normalColor,
+                        fontSize: 12,
+                    },
+                },
+                axisLine: {
+                    lineStyle: {
+                        color: '#fff',
+                    },
+                },
+                axisTick: {
+                    show: false,
+                },
+                splitLine: {
+                    show: false,
+                },
+            },
+        ],
+        series: seriesData,
     };
     // 绘制图表
     let myChart = echarts.init(document.getElementById('ylyChart1'));
@@ -189,5 +313,12 @@ const renderChart1 = (data: any) => {
 .chart {
     width: 100%;
     height: 200px;
+    background-color: linear-gradient(
+        180deg,
+        rgba(0, 223, 214, 1) 0%,
+        rgba(0, 223, 214, 1) 0%,
+        rgba(29, 125, 215, 1) 100%,
+        rgba(29, 125, 215, 1) 100%
+    );
 }
 </style>

@@ -114,71 +114,183 @@ function getData(isAdmin: boolean, deptId: number) {
     };
 }
 const renderChart1 = (data: any) => {
-    const option = {
-        title: {
-            text: '最近7日访客累计',
-            left: 'center',
-        },
-        legend: {
-            top: 'bottom',
-        },
-        grid: {
-            containLabel: true,
-            left: 20,
-            right: 20,
-            bottom: 40,
-            top: 40,
-        },
-        tooltip: {
-            trigger: 'axis',
-            backgroundColor: 'rgba(0,0,0,0.7)',
-            borderColor: 'rgba(0,0,0,0.7)',
-            textStyle: {
-                color: '#fff',
-            },
-        },
-        xAxis: {
-            data: data?.map((_e) => _e.name),
-            splitLine: {
-                show: true,
-                lineStyle: {
-                    width: 2,
+    const colorList = ['#46ea91', '#2ba0ff', '#ed593b', '#7357ff', '#f2d750'],
+        option = {
+            backgroundColor: '#0D2753',
+            legend: {
+                icon: 'circle',
+                top: '5%',
+                right: '5%',
+                itemWidth: 6,
+                itemGap: 5,
+                textStyle: {
+                    color: '#fff',
+                    padding: [3, 0, 0, 0],
                 },
             },
-            axisLabel: {
-                show: true,
-                margin: 14,
-                fontSize: 12,
+            tooltip: {
+                trigger: 'axis',
             },
-        },
-        yAxis: [
-            {
-                name: '人次',
-                type: 'value',
-                splitNumber: 5,
-                splitLine: {
-                    show: true,
-                    lineStyle: {
-                        color: ['#fff'],
-                        opacity: 0.06,
+            grid: {
+                top: '15%',
+                left: '5%',
+                bottom: '10%',
+                right: '5%',
+            },
+            xAxis: [
+                {
+                    type: 'category',
+                    data: ['1', '2', '3', '4', '5', '6', '7', '8'],
+                    axisLine: {
+                        lineStyle: {
+                            color: '#33BBFF',
+                        },
+                    },
+                    axisTick: {
+                        show: false,
+                    },
+                    axisLabel: {
+                        interval: 0,
+                        textStyle: {
+                            color: '#fff',
+                        },
+                        // 默认x轴字体大小
+                        fontSize: 12,
+                        // margin:文字到x轴的距离
+                        margin: 10,
+                    },
+                    axisPointer: {
+                        label: {
+                            // padding: [11, 5, 7],
+                            padding: [0, 0, 0, 0],
+                            // 这里的margin和axisLabel的margin要一致!
+                            margin: 10,
+                            // 移入时的字体大小
+                            fontSize: 12,
+                            backgroundColor: 'rgba(0,0,0,0)',
+                        },
+                    },
+                    boundaryGap: false,
+                },
+            ],
+            yAxis: [
+                {
+                    name: '(人次)',
+                    axisTick: {
+                        show: false,
+                    },
+                    axisLine: {
+                        show: true,
+                        lineStyle: {
+                            color: '#05D5FF',
+                        },
+                    },
+                    axisLabel: {
+                        textStyle: {
+                            color: '#5FBBEB',
+                        },
+                    },
+                    splitLine: {
+                        show: false,
                     },
                 },
-            },
-        ],
-        series: [
-            {
-                name: '访客数量(人次)',
-                type: 'line',
-                data: data?.map((_e) => _e.value),
-                lineStyle: {
-                    color: '#7E2DFF',
+            ],
+            series: [
+                {
+                    name: '养老院1',
+                    type: 'line',
+                    data: [100, 20, 30, 102, 15, 30, 20, 18],
+                    symbolSize: 1,
+                    symbol: 'circle',
+                    smooth: true,
+                    showSymbol: false,
+                    lineStyle: {
+                        width: 2,
+                        color: new echarts.graphic.LinearGradient(1, 1, 0, 0, [
+                            {
+                                offset: 0,
+                                color: '#90ffc6',
+                            },
+                            {
+                                offset: 1,
+                                color: '#46ea91',
+                            },
+                        ]),
+                        shadowColor: 'rgba(144, 255, 198, .3)',
+                        shadowBlur: 5,
+                        shadowOffsetY: 5,
+                    },
+                    itemStyle: {
+                        normal: {
+                            color: colorList[0],
+                            borderColor: colorList[0],
+                        },
+                    },
                 },
-                itemStyle: {
-                    color: '#7E2DFF',
+                {
+                    name: '养老院2',
+                    type: 'line',
+                    data: [20, 12, 11, 14, 25, 16, 10, 20],
+                    symbolSize: 1,
+                    symbol: 'circle',
+                    smooth: true,
+                    showSymbol: false,
+                    lineStyle: {
+                        width: 2,
+                        color: new echarts.graphic.LinearGradient(1, 1, 0, 0, [
+                            {
+                                offset: 0,
+                                color: '#67bcfc',
+                            },
+                            {
+                                offset: 1,
+                                color: '#2ba0ff',
+                            },
+                        ]),
+                        shadowColor: 'rgba(105, 188, 252,.3)',
+                        shadowBlur: 5,
+                        shadowOffsetY: 5,
+                    },
+                    itemStyle: {
+                        normal: {
+                            color: colorList[1],
+                            borderColor: colorList[1],
+                        },
+                    },
                 },
-            },
-        ],
-    };
+                {
+                    name: '养老院3',
+                    type: 'line',
+                    data: [150, 120, 170, 140, 100, 160, 110, 110],
+                    symbolSize: 1,
+                    symbol: 'circle',
+                    smooth: true,
+                    showSymbol: false,
+                    lineStyle: {
+                        width: 2,
+                        color: new echarts.graphic.LinearGradient(1, 1, 0, 0, [
+                            {
+                                offset: 0,
+                                color: '#fc937e ',
+                            },
+                            {
+                                offset: 1,
+                                color: '#ed593b',
+                            },
+                        ]),
+                        shadowColor: 'rgb(252, 147, 126,.3)',
+                        shadowBlur: 2,
+                        shadowOffsetY: 2,
+                    },
+                    itemStyle: {
+                        normal: {
+                            color: colorList[2],
+                            borderColor: colorList[2],
+                        },
+                    },
+                },
+            ],
+        };
     // 绘制图表
     let myChart = echarts.init(document.getElementById('ylyChart2'));
     myChart.setOption(option);

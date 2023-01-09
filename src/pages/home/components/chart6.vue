@@ -1,6 +1,6 @@
 <template>
     <div class="wrap">
-        <div id="ylyChart1" class="chart"></div>
+        <div id="ylyChart6" class="chart"></div>
         <div class="rg">
             <div class="cell out">
                 <span class="label">设备分类</span>
@@ -218,7 +218,7 @@ const renderChart1 = (data: any) => {
         ],
     };
     // 绘制图表
-    let myChart = echarts.init(document.getElementById('ylyChart1'));
+    let myChart = echarts.init(document.getElementById('ylyChart6'));
     myChart.setOption(option);
 };
 </script>

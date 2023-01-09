@@ -10,8 +10,8 @@
             </div>
         </div>
     </div>
-    <div id="ylyChart1" class="chart1"></div>
-    <div id="ylyChart2" class="chart2"></div>
+    <div id="ylyChart33" class="chart1"></div>
+    <div id="ylyChart22" class="chart2"></div>
 </template>
 
 <script setup lang="ts">
@@ -199,7 +199,7 @@ const renderChart1 = (data: any) => {
         ],
     };
     // 绘制图表
-    let myChart = echarts.init(document.getElementById('ylyChart1'));
+    let myChart = echarts.init(document.getElementById('ylyChart33'));
     myChart.setOption(option);
 };
 const renderChart4 = (data: any) => {
@@ -257,7 +257,7 @@ const renderChart4 = (data: any) => {
             },
         ],
     };
-    let myChart = echarts.init(document.getElementById('ylyChart2'));
+    let myChart = echarts.init(document.getElementById('ylyChart22'));
     // 绘制图表
     myChart.setOption(option);
 };
