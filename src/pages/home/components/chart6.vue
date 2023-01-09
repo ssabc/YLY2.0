@@ -57,166 +57,321 @@ watchEffect(() => {
 });
 
 function initFn() {
-    const { data1 } = getData(isAdmin.value, $props.ylyFlag);
     nextTick(() => {
-        renderChart1(data1);
+        renderChart1();
     });
 }
+const renderChart1 = () => {
+    let angle = 0; // 角度
+    let dataValue = 65;
 
-function getData(isAdmin: boolean, deptId: number) {
-    console.log('isAdmin, deptId', isAdmin, deptId);
-    if (deptId == 4) {
-        return {
-            data0: [{ value: 3, name: '黄浦老年公寓' }],
-            data1: [
-                { value: 1, name: '12.1' },
-                { value: 0, name: '12.2' },
-                { value: 1, name: '12.3' },
-                { value: 0, name: '12.4' },
-            ],
-            data2: [
-                { value: 0, name: '' },
-                { value: 0, name: '' },
-                { value: 2, name: '' },
-                { value: 0, name: '' },
-                { value: 0, name: '' },
-                { value: 0, name: '' },
-                { value: 0, name: '' },
-            ],
-        };
-    }
-
-    if (deptId == 6) {
-        return {
-            data0: [{ value: 2, name: '千鹤昌里' }],
-            data1: [
-                { value: 0, name: '12.1' },
-                { value: 1, name: '12.2' },
-                { value: 1, name: '12.3' },
-                { value: 0, name: '12.4' },
-            ],
-            data2: [
-                { value: 0, name: '' },
-                { value: 0, name: '' },
-                { value: 1, name: '' },
-                { value: 1, name: '' },
-                { value: 0, name: '' },
-                { value: 0, name: '' },
-                { value: 0, name: '' },
-            ],
-        };
-    }
-
-    if (deptId == 5) {
-        return {
-            data0: [{ value: 6, name: '千鹤乳山' }],
-            data1: [
-                { value: 0, name: '12.1' },
-                { value: 1, name: '12.2' },
-                { value: 1, name: '12.3' },
-                { value: 0, name: '12.4' },
-            ],
-            data2: [
-                { value: 0, name: '' },
-                { value: 1, name: '' },
-                { value: 1, name: '' },
-                { value: 0, name: '' },
-                { value: 0, name: '' },
-                { value: 0, name: '' },
-                { value: 0, name: '' },
-            ],
-        };
-    }
-
-    return {
-        data0: [
-            { value: 3, name: '黄浦老年公寓' },
-            { value: 2, name: '千鹤昌里' },
-            { value: 6, name: '千鹤乳山' },
-        ],
-        data1: [
-            { value: 1, name: '12.1' },
-            { value: 2, name: '12.2' },
-            { value: 3, name: '12.3' },
-            { value: 0, name: '12.4' },
-        ],
-        data2: [
-            { value: 0, name: '' },
-            { value: 1, name: '' },
-            { value: 4, name: '' },
-            { value: 1, name: '' },
-            { value: 0, name: '' },
-            { value: 0, name: '' },
-            { value: 0, name: '' },
-        ],
-    };
-}
-const renderChart1 = (data: any) => {
     const option = {
         title: {
-            text: '最近7日访客累计',
-            left: 'center',
-        },
-        legend: {
-            top: 'bottom',
-        },
-        grid: {
-            containLabel: true,
-            left: 20,
-            right: 20,
-            bottom: 40,
-            top: 40,
-        },
-        tooltip: {
-            trigger: 'axis',
-            backgroundColor: 'rgba(0,0,0,0.7)',
-            borderColor: 'rgba(0,0,0,0.7)',
+            text: `{v|${dataValue}}{unit|%}\n{t|记录仪总在线率}`,
+            x: 'center',
+            y: 'center',
             textStyle: {
-                color: '#fff',
-            },
-        },
-        xAxis: {
-            data: data?.map((_e) => _e.name),
-            splitLine: {
-                show: true,
-                lineStyle: {
-                    width: 2,
+                rich: {
+                    v: {
+                        fontSize: 22,
+                        color: '#28edf2',
+                        padding: [0, 0, 4, 0],
+                    },
+                    unit: { fontSize: 12, color: '#28edf2' },
+                    t: { fontSize: 12, color: '#28edf2' },
                 },
             },
-            axisLabel: {
-                show: true,
-                margin: 14,
-                fontSize: 12,
-            },
         },
-        yAxis: [
+        series: [
+            /** 绘制内部圆弧-1 <right-top> */
             {
-                name: '人次',
-                type: 'value',
-                splitNumber: 5,
-                splitLine: {
-                    show: true,
+                type: 'custom',
+                coordinateSystem: 'none',
+                renderItem: (params, api) => {
+                    return {
+                        type: 'arc',
+                        shape: {
+                            cx: api.getWidth() / 2,
+                            cy: api.getHeight() / 2,
+                            r:
+                                (Math.min(api.getWidth(), api.getHeight()) /
+                                    2) *
+                                0.6,
+                            startAngle: ((270 + angle) * Math.PI) / 180,
+                            endAngle: ((360 + angle) * Math.PI) / 180,
+                        },
+                        style: {
+                            fill: 'transparent',
+                            stroke: 'rgba(1, 248, 68, 0.4)',
+                            lineWidth: 2,
+                        },
+                        silent: true,
+                    };
+                },
+                data: [0],
+            },
+            /** 绘制内部圆弧-2 <left-bottom> */
+            {
+                type: 'custom',
+                coordinateSystem: 'none',
+                renderItem: (params, api) => {
+                    return {
+                        type: 'arc',
+                        shape: {
+                            cx: api.getWidth() / 2,
+                            cy: api.getHeight() / 2,
+                            r:
+                                (Math.min(api.getWidth(), api.getHeight()) /
+                                    2) *
+                                0.6,
+                            startAngle: ((90 + angle) * Math.PI) / 180,
+                            endAngle: ((180 + angle) * Math.PI) / 180,
+                        },
+                        style: {
+                            fill: 'transparent',
+                            stroke: 'rgba(1, 248, 68, 0.4)',
+                            lineWidth: 2,
+                        },
+                        silent: true,
+                    };
+                },
+                data: [0],
+            },
+            /** 绘制外部圆弧-1 <right-bottom> */
+            {
+                type: 'custom',
+                coordinateSystem: 'none',
+                renderItem: (params, api) => {
+                    return {
+                        type: 'arc',
+                        shape: {
+                            cx: api.getWidth() / 2,
+                            cy: api.getHeight() / 2,
+                            r:
+                                (Math.min(api.getWidth(), api.getHeight()) /
+                                    2) *
+                                0.66,
+                            startAngle: ((355 + -angle) * Math.PI) / 180,
+                            endAngle: ((120 + -angle) * Math.PI) / 180,
+                        },
+                        style: {
+                            fill: 'transparent',
+                            stroke: 'rgba(1, 248, 68, 0.4)',
+                            lineWidth: 2.6,
+                        },
+                        silent: true,
+                    };
+                },
+                data: [0],
+            },
+            /** 绘制外部圆弧-2 <left-top> */
+            {
+                type: 'custom',
+                coordinateSystem: 'none',
+                renderItem: (params, api) => {
+                    return {
+                        type: 'arc',
+                        shape: {
+                            cx: api.getWidth() / 2,
+                            cy: api.getHeight() / 2,
+                            r:
+                                (Math.min(api.getWidth(), api.getHeight()) /
+                                    2) *
+                                0.66,
+                            startAngle: ((175 + -angle) * Math.PI) / 180,
+                            endAngle: ((300 + -angle) * Math.PI) / 180,
+                        },
+                        style: {
+                            fill: 'transparent',
+                            stroke: 'rgba(1, 248, 68, 0.4)',
+                            lineWidth: 2.6,
+                        },
+                        silent: true,
+                    };
+                },
+                data: [0],
+            },
+            /** 绘制外部圆弧-1-开始圆点 <right-bottom> */
+            {
+                type: 'custom',
+                coordinateSystem: 'none',
+                renderItem: (params, api) => {
+                    let x0 = api.getWidth() / 2;
+                    let y0 = api.getHeight() / 2;
+                    let r =
+                        (Math.min(api.getWidth(), api.getHeight()) / 2) * 0.66;
+                    return {
+                        type: 'circle',
+                        shape: {
+                            /** 角度355° 外弧1开始角度 */
+                            cx:
+                                x0 +
+                                r * Math.cos(((355 + -angle) * Math.PI) / 180),
+                            cy:
+                                y0 +
+                                r * Math.sin(((355 + -angle) * Math.PI) / 180),
+                            r: 4,
+                        },
+                        style: {
+                            fill: 'rgba(1, 248, 68, 0.4)',
+                            stroke: 'rgba(1, 248, 68, 0.4)',
+                        },
+                        silent: true,
+                    };
+                },
+                data: [0],
+            },
+            /** 绘制外部圆弧-2-开始圆点 <left-top> */
+            {
+                type: 'custom',
+                coordinateSystem: 'none',
+                renderItem: (params, api) => {
+                    let x0 = api.getWidth() / 2;
+                    let y0 = api.getHeight() / 2;
+                    let r =
+                        (Math.min(api.getWidth(), api.getHeight()) / 2) * 0.66;
+                    return {
+                        type: 'circle',
+                        shape: {
+                            /** 角度175° 外弧2开始角度 */
+                            cx:
+                                x0 +
+                                r * Math.cos(((175 + -angle) * Math.PI) / 180),
+                            cy:
+                                y0 +
+                                r * Math.sin(((175 + -angle) * Math.PI) / 180),
+                            r: 4,
+                        },
+                        style: {
+                            fill: 'rgba(1, 248, 68, 0.4)',
+                            stroke: 'rgba(1, 248, 68, 0.4)',
+                        },
+                        silent: true,
+                    };
+                },
+                data: [0],
+            },
+            /** 刻度仪表盘 */
+            {
+                type: 'gauge',
+                center: ['50%', '50%'],
+                radius: '68.5%', // 错位调整此处
+                startAngle: 0,
+                endAngle: 360,
+                axisLine: { show: false },
+                splitLine: { show: false },
+                axisTick: {
+                    splitNumber: 10,
+                    // length: 8,  // 刻度长度
+                    length: '4%',
                     lineStyle: {
-                        color: ['#fff'],
-                        opacity: 0.06,
+                        color: 'rgba(1, 248, 68, 0.4)',
+                        width: 1.5,
                     },
                 },
+                axisLabel: { show: false },
             },
-        ],
-        series: [
+            /** 内心圆 */
             {
-                name: '访客数量(人次)',
-                type: 'line',
-                data: data?.map((_e) => _e.value),
-                lineStyle: {
-                    color: '#7E2DFF',
+                type: 'custom',
+                coordinateSystem: 'none',
+                renderItem: (params, api) => {
+                    return {
+                        type: 'circle',
+                        shape: {
+                            cx: api.getWidth() / 2,
+                            cy: api.getHeight() / 2,
+                            r:
+                                (Math.min(api.getWidth(), api.getHeight()) /
+                                    2) *
+                                0.38,
+                            startAngle: ((175 + angle) * Math.PI) / 180,
+                            endAngle: ((300 + angle) * Math.PI) / 180,
+                        },
+                        style: {
+                            fill: 'transparent',
+                            stroke: '#00374C80',
+                            lineWidth: 2.6,
+                        },
+                        silent: true,
+                    };
                 },
-                itemStyle: {
-                    color: '#7E2DFF',
+                data: [0],
+            },
+            /** 饼图 */
+            {
+                name: '已完成',
+                type: 'pie',
+                startAngle: 90,
+                z: 0,
+                label: {
+                    position: 'center',
                 },
+                radius: ['56%', '44%'],
+                silent: true,
+                animation: false, // 关闭饼图动画
+                data: [
+                    {
+                        value: dataValue,
+                        itemStyle: {
+                            color: {
+                                type: 'linear',
+                                x: 0,
+                                y: 0.2,
+                                x2: 1,
+                                y2: 0,
+                                colorStops: [
+                                    { offset: 0, color: '#01f74420' },
+                                    { offset: 1, color: '#01f744' },
+                                ],
+                            },
+                        },
+                    },
+                    {
+                        name: '未完成',
+                        value: 100 - dataValue,
+                        label: { show: false },
+                        itemStyle: { color: '#00374C' },
+                    },
+                ],
+            },
+            /** 饼图上刻度 */
+            {
+                type: 'gauge',
+                center: ['50%', '50%'],
+                radius: '63%', // 错位调整此处
+                startAngle: 0,
+                endAngle: 360,
+                splitNumber: 12,
+                axisLine: { show: false },
+                splitLine: {
+                    // length: 39,
+                    length: '24%',
+                    lineStyle: {
+                        width: 10,
+                        color: '#002837',
+                    },
+                },
+                axisTick: { show: false },
+                axisLabel: { show: false },
             },
         ],
     };
+
+    setInterval(() => {
+        angle = angle + 2;
+        myChart.setOption(option, true);
+    }, 100);
+
+    /**
+ * 圆弧角度
+  ◜    270°   ◝
+180°    ↻      360°
+  ◟    90°    ◞
+ *
+
+ */
+
     // 绘制图表
     let myChart = echarts.init(document.getElementById('ylyChart6'));
     myChart.setOption(option);
@@ -226,8 +381,10 @@ const renderChart1 = (data: any) => {
 <style lang="less" scoped>
 .wrap {
     display: flex;
+    justify-content: space-around;
     .rg {
         flex: 1;
+        max-width: 300px;
     }
 }
 .chart {

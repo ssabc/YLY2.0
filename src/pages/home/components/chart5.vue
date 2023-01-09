@@ -1,35 +1,37 @@
 <template>
-    <div class="cells flex">
-        <div class="cell">
-            <span class="label">总呼叫数：</span>
-            <span class="value">80</span>
-            <span class="unit">次</span>
+    <div class="wrap">
+        <div class="cells flex">
+            <div class="cell">
+                <span class="label">总呼叫数：</span>
+                <span class="value">80</span>
+                <span class="unit">次</span>
+            </div>
+            <div class="cell">
+                <span class="label">记录时长：</span>
+                <span class="value">80</span>
+                <span class="unit">分钟</span>
+            </div>
+            <div class="cell">
+                <span class="label">已处置数：</span>
+                <span class="value red">60</span>
+                <span class="unit">件</span>
+            </div>
         </div>
-        <div class="cell">
-            <span class="label">记录时长：</span>
-            <span class="value">80</span>
-            <span class="unit">分钟</span>
+        <div class="row flex">
+            <div class="tip red">未处置</div>
+            <div class="content flex">
+                <span>养老院1</span>
+                <span class="date">022 12 21 17:50</span>
+                <span>设备编号：01098654</span>
+            </div>
         </div>
-        <div class="cell">
-            <span class="label">已处置数：</span>
-            <span class="value red">60</span>
-            <span class="unit">件</span>
-        </div>
-    </div>
-    <div class="row flex">
-        <div class="tip red">未处置</div>
-        <div class="content flex">
-            <span>养老院1</span>
-            <span class="date">022 12 21 17:50</span>
-            <span>设备编号：01098654</span>
-        </div>
-    </div>
-    <div class="row flex">
-        <div class="tip">已处置</div>
-        <div class="content flex">
-            <span>养老院1</span>
-            <span class="date">022 12 21 17:50</span>
-            <span>设备编号：01098654</span>
+        <div class="row flex">
+            <div class="tip">已处置</div>
+            <div class="content flex">
+                <span>养老院1</span>
+                <span class="date">022 12 21 17:50</span>
+                <span>设备编号：01098654</span>
+            </div>
         </div>
     </div>
 </template>
@@ -53,7 +55,7 @@ watchEffect(() => {
 function initFn() {
     const { data1 } = getData(isAdmin.value, $props.ylyFlag);
     nextTick(() => {
-        renderChart1(data1);
+        // renderChart1(data1);
     });
 }
 
@@ -147,10 +149,6 @@ function getData(isAdmin: boolean, deptId: number) {
 }
 const renderChart1 = (data: any) => {
     const option = {
-        title: {
-            text: '最近7日访客累计',
-            left: 'center',
-        },
         legend: {
             top: 'bottom',
         },
@@ -218,6 +216,12 @@ const renderChart1 = (data: any) => {
 </script>
 
 <style lang="less" scoped>
+.wrap {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
 .cells {
     color: #fff;
     font-size: 12px;
@@ -238,7 +242,7 @@ const renderChart1 = (data: any) => {
             font-size: 28px;
             font-weight: bold;
             &.red {
-                color: #E61707;
+                color: #e61707;
             }
         }
         .unit {
@@ -268,7 +272,7 @@ const renderChart1 = (data: any) => {
         border-top-left-radius: 4px;
         border-bottom-left-radius: 4px;
         &.red {
-            background-color: #E61707;
+            background-color: #e61707;
         }
     }
     .date {

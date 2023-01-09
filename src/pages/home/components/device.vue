@@ -1,7 +1,7 @@
 <!--
  * @Author: sZhao
  * @Date: 2023-01-08 16:48:43
- * @LastEditTime: 2023-01-08 19:30:28
+ * @LastEditTime: 2023-01-09 22:09:19
  * @LastEditors: sZhao
  * @Description:
 -->
@@ -92,6 +92,8 @@ const data = reactive<any>({
         flex: 1;
         margin-right: 10px;
         padding: 4px;
+        display: flex;
+        justify-content: space-around;
         &:last-child {
             margin-right: 0;
         }
@@ -102,12 +104,13 @@ const data = reactive<any>({
             height: 23px;
         }
         .info {
-            padding-left: 6px;
+            padding: 4px 0;
             font-size: 14px;
         }
         color: #fff;
         .value {
             // font-size: 16px;
+            padding: 4px 0;
             .unit {
                 font-size: 12px;
             }
@@ -134,6 +137,7 @@ const data = reactive<any>({
             font-style: italic;
             font-size: 22px;
             color: #ffe400;
+            padding: 4px 0;
         }
     }
 }

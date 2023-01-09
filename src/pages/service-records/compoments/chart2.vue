@@ -1,5 +1,5 @@
 <template>
-    <div id="ylyChart2" class="chart"></div>
+    <div id="servicechart1" class="chart"></div>
 </template>
 
 <script setup lang="ts">
@@ -123,7 +123,7 @@ const renderChart1 = (data: any) => {
                 itemWidth: 6,
                 itemGap: 5,
                 textStyle: {
-                    color: '#fff',
+                    color: '#000',
                     padding: [3, 0, 0, 0],
                 },
             },
@@ -151,7 +151,7 @@ const renderChart1 = (data: any) => {
                     axisLabel: {
                         interval: 0,
                         textStyle: {
-                            color: '#fff',
+                            color: '#000',
                         },
                         // 默认x轴字体大小
                         fontSize: 12,
@@ -291,7 +291,7 @@ const renderChart1 = (data: any) => {
             ],
         };
     // 绘制图表
-    let myChart = echarts.init(document.getElementById('ylyChart2'));
+    let myChart = echarts.init(document.getElementById('servicechart1'));
     myChart.setOption(option);
 };
 </script>
@@ -299,6 +299,6 @@ const renderChart1 = (data: any) => {
 <style lang="less" scoped>
 .chart {
     width: 100%;
-    height: 200px;
+    height: 400px;
 }
 </style>

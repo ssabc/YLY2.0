@@ -65,6 +65,26 @@ const getters: Getters = {
             },
         ];
     },
+    recordTypes: () => {
+        return [
+            {
+                label: '值班长',
+                value: '0',
+            },
+            {
+                label: '服务提供',
+                value: '1',
+            },
+            {
+                label: '服务保障',
+                value: '2',
+            },
+            {
+                label: '服务安全',
+                value: '3',
+            },
+        ];
+    },
     statusTypes: () => {
         return [
             {

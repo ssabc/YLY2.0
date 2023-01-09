@@ -11,17 +11,17 @@
         </div>
         <div class="content">
             <div class="row r1">
-                <div class="column">
+                <div class="column c1 flex1">
                     <div class="box">
                         <div class="title">设备情况</div>
                         <Device></Device>
                     </div>
-                    <div class="box">
+                    <div class="box box2">
                         <div class="title">记录时长分类统计</div>
                         <Chart1 :yly-flag="true"></Chart1>
                     </div>
                 </div>
-                <div class="column home-img-wrap">
+                <div class="column home-img-wrap flex1">
                     <div class="cells">
                         <div class="cell">
                             <div class="label">总时长:</div>
@@ -46,7 +46,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="column">
+                <div class="column flex1">
                     <div class="box">
                         <div class="title">访客情况监测（本周）</div>
                         <div class="visit-num">
@@ -61,14 +61,14 @@
                 </div>
             </div>
             <div class="row r2">
-                <div class="column" style="flex: 1.3">
+                <div class="column">
                     <div class="box">
                         <div class="title">记录总时长统计</div>
                         <Chart4></Chart4>
                     </div>
                 </div>
-                <div class="column">
-                    <div class="box">
+                <div class="column flex1">
+                    <div class="box hgb-wrap">
                         <div class="title bell-wrap flex">
                             护工帮
                             <BellOutlined style="color: #16d4e3" />
@@ -76,7 +76,7 @@
                         <Chart5></Chart5>
                     </div>
                 </div>
-                <div class="column">
+                <div class="column flex1">
                     <div class="box">
                         <div class="title">设备状态（今日）</div>
                         <Chart6></Chart6>
@@ -114,84 +114,13 @@ const $store = useStore(),
 onMounted(() => {
     console.log('home');
     // data.yly = $store.getters['common/deptId'];
-    renderChart1([
-        { value: 10, name: '张小五' },
-        { value: 8, name: '李小六' },
-        { value: 10, name: '周医生' },
-        { value: 24, name: '宋医生' },
-    ]);
+    // renderChart1([
+    //     { value: 10, name: '张小五' },
+    //     { value: 8, name: '李小六' },
+    //     { value: 10, name: '周医生' },
+    //     { value: 24, name: '宋医生' },
+    // ]);
 });
-
-const renderChart1 = (data: any) => {
-    const option = {
-        title: {
-            text: '最近7日访客累计',
-            left: 'center',
-        },
-        legend: {
-            top: 'bottom',
-        },
-        grid: {
-            containLabel: true,
-            left: 20,
-            right: 20,
-            bottom: 40,
-            top: 40,
-        },
-        tooltip: {
-            trigger: 'axis',
-            backgroundColor: 'rgba(0,0,0,0.7)',
-            borderColor: 'rgba(0,0,0,0.7)',
-            textStyle: {
-                color: '#fff',
-            },
-        },
-        xAxis: {
-            data: data?.map((_e: any) => _e.name),
-            splitLine: {
-                show: true,
-                lineStyle: {
-                    width: 2,
-                },
-            },
-            axisLabel: {
-                show: true,
-                margin: 14,
-                fontSize: 12,
-            },
-        },
-        yAxis: [
-            {
-                name: '人次',
-                type: 'value',
-                splitNumber: 5,
-                splitLine: {
-                    show: true,
-                    lineStyle: {
-                        color: ['#fff'],
-                        opacity: 0.06,
-                    },
-                },
-            },
-        ],
-        series: [
-            {
-                name: '访客数量(人次)',
-                type: 'line',
-                data: data?.map((_e: any) => _e.value),
-                lineStyle: {
-                    color: '#7E2DFF',
-                },
-                itemStyle: {
-                    color: '#7E2DFF',
-                },
-            },
-        ],
-    };
-    // 绘制图表
-    let myChart = echarts.init(document.getElementById('ylyChart1'));
-    myChart.setOption(option);
-};
 </script>
 
 <style lang="less" scoped>
@@ -207,7 +136,7 @@ const renderChart1 = (data: any) => {
                 height: 100%;
             }
             .column {
-                flex: 1;
+                // flex: 1;
                 margin-right: 15px;
                 &:last-child {
                     margin-right: 0;
@@ -276,6 +205,9 @@ const renderChart1 = (data: any) => {
 .charts {
     padding: 10px 0;
 }
+.flex1 {
+    flex: 1;
+}
 .chart1 {
     width: 300px;
     height: 200px;
@@ -300,6 +232,19 @@ const renderChart1 = (data: any) => {
     .value {
         font-size: 20px;
         font-weight: bold;
+    }
+}
+.hgb-wrap {
+    display: flex;
+    flex-direction: column;
+}
+.r1 .c1 {
+    display: flex;
+    flex-direction: column;
+    .box2 {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
     }
 }
 </style>

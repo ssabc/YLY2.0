@@ -154,67 +154,67 @@ const renderChart1 = () => {
     });
     [yData1, yData2, yData3].forEach((item, index) => {
         const obj1 = {
-                name: legend[index],
-                type: 'bar',
-                stack: legend[index],
-                data: item,
-                barWidth: '20%',
-                itemStyle: {
-                    normal: {
-                        color: {
-                            type: 'linear',
-                            x: 0,
-                            y: 0,
-                            x2: 0,
-                            y2: 1,
-                            colorStops: [
-                                {
-                                    offset: 0,
-                                    color: colorArr[index].start + '1)',
-                                },
-                                {
-                                    offset: 0.2,
-                                    color: colorArr[index].start + '1)',
-                                },
-                                {
-                                    offset: 1,
-                                    color: colorArr[index].end,
-                                },
-                            ],
-                            globalCoord: false,
-                        },
+            name: legend[index],
+            type: 'bar',
+            stack: legend[index],
+            data: item,
+            barWidth: '20%',
+            itemStyle: {
+                normal: {
+                    color: {
+                        type: 'linear',
+                        x: 0,
+                        y: 0,
+                        x2: 0,
+                        y2: 1,
+                        colorStops: [
+                            {
+                                offset: 0,
+                                color: colorArr[index].start + '1)',
+                            },
+                            {
+                                offset: 0.2,
+                                color: colorArr[index].start + '1)',
+                            },
+                            {
+                                offset: 1,
+                                color: colorArr[index].end,
+                            },
+                        ],
+                        globalCoord: false,
                     },
                 },
             },
-            obj2 = {
-                name: '',
-                type: 'bar',
-                stack: legend[index],
-                itemStyle: {
-                    barBorderRadius: '2px',
-                    normal: {
-                        color: colorArr[index].start + '1)',
-                    },
-                },
-                data: [],
-            };
+        };
+        // obj2 = {
+        //     name: legend[index],
+        //     type: 'bar',
+        //     stack: legend[index],
+        //     itemStyle: {
+        //         barBorderRadius: '2px',
+        //         normal: {
+        //             color: colorArr[index].start + '1)',
+        //         },
+        //     },
+        //     data: [],
+        // };
         seriesData.push(obj1);
-        seriesData.push(obj2);
+        // seriesData.push(obj2);
     });
     const option = {
         grid: {
             left: '3%',
-            top: '20%',
+            top: '5%',
             right: '3%',
-            bottom: '2%',
+            bottom: '5%',
             containLabel: true,
         },
         legend: {
             show: true,
             itemWidth: 16,
             itemHeight: 9,
-            right: '15%',
-            top: '2%',
+            right: '2%',
+            top: 0,
             textStyle: {
                 color: '#fff',
             },
@@ -313,6 +313,7 @@ const renderChart1 = () => {
 .chart {
     width: 100%;
     height: 200px;
+    flex: 1;
     background-color: linear-gradient(
         180deg,
         rgba(0, 223, 214, 1) 0%,
