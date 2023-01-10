@@ -17,22 +17,21 @@
                 <span class="unit">件</span>
             </div>
         </div>
-        <div class="row flex">
-            <div class="tip red">未处置</div>
+        <!-- <vue3-seamless-scroll
+            :list="listData"
+            :class-option="optionSingleHeight"
+        > -->
+        <div v-for="(item, index) in listData" :key="index" class="row flex">
+            <div class="tip" :class="item.status == 1 ? 'red' : ''">
+                {{ item.status == 1 ? '未处置' : '已处置' }}
+            </div>
             <div class="content flex">
-                <span>养老院1</span>
-                <span class="date">022 12 21 17:50</span>
+                <span>养老院{{ index + 1 }}</span>
+                <span class="date">{{ item.date }}</span>
                 <span>设备编号：01098654</span>
             </div>
         </div>
-        <div class="row flex">
-            <div class="tip">已处置</div>
-            <div class="content flex">
-                <span>养老院1</span>
-                <span class="date">022 12 21 17:50</span>
-                <span>设备编号：01098654</span>
-            </div>
-        </div>
+        <!-- </vue3-seamless-scroll> -->
     </div>
 </template>
 
@@ -40,13 +39,48 @@
 import { useStore } from 'vuex';
 import { computed, watchEffect, nextTick } from 'vue';
 import * as echarts from 'echarts';
+// import vue3SeamlessScroll from 'vue3-seamless-scroll/src';
 
 interface Props {
     ylyFlag: any;
 }
 const $store = useStore(),
     $props = defineProps<Props>(),
-    isAdmin = computed(() => $store.getters['common/isAdmin']);
+    isAdmin = computed(() => $store.getters['common/isAdmin']),
+    listData = computed(() => [
+        {
+            status: 1,
+            title: '无缝滚动第一行无缝滚动第一行',
+            date: '2017-12-16',
+        },
+        {
+            status: 0,
+            title: '无缝滚动第二行无缝滚动第二行',
+            date: '2017-12-16',
+        },
+        // {
+        //     status: 1,
+        //     title: '无缝滚动第三行无缝滚动第三行',
+        //     date: '2017-12-16',
+        // },
+        // {
+        //     status: 0,
+        //     title: '无缝滚动第四行无缝滚动第四行',
+        //     date: '2017-12-16',
+        // },
+    ]),
+    optionSingleHeight = computed(() => {
+        return {
+            step: 0.2, // 数值越大速度滚动越快
+            // limitMoveNum: 2, // 开始无缝滚动的数据量 this.dataList.length
+            // hoverStop: true, // 是否开启鼠标悬停stop
+            // direction: 1, // 0向下 1向上 2向左 3向右
+            // openWatch: true, // 开启数据实时监控刷新dom
+            singleHeight: 26, // 单步运动停止的高度(默认值0是无缝不停止的滚动) direction => 0/1
+            // singleWidth: 0, // 单步运动停止的宽度(默认值0是无缝不停止的滚动) direction => 2/3
+            // waitTime: 1000, // 单步运动停止的时间(默认值1000ms)
+        };
+    });
 
 watchEffect(() => {
     initFn();

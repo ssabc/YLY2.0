@@ -20,15 +20,16 @@
 <script setup lang="ts">
 import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
-import { ref, reactive, computed, toRaw } from 'vue';
+import { ref, reactive, computed, toRaw, createVNode } from 'vue';
 import type {
     ColumnProps,
     FormListProps,
     TableHandleOptItem,
 } from 'GlobComponentsModule';
-import { repairList, oneRepair, repaiConfirm } from '@/api/app';
-import { getNowDate, dealReqData } from '@/utils/tools';
-import { message as $message } from 'ant-design-vue';
+import { repairList } from '@/api/app';
+import { dealReqData } from '@/utils/tools';
+import { Modal } from 'ant-design-vue';
+import { ExclamationCircleOutlined } from '@ant-design/icons-vue';
 
 interface Data {
     formData: {
@@ -53,43 +54,35 @@ const $store = useStore(),
         /** 表单list */
         list: [
             {
-                type: 'range-picker',
-                name: 'date',
-                label: '可用时间',
+                type: 'input',
+                name: 'name',
+                label: '所属机构：',
                 props: {
-                    valueFormat: 'YYYY-MM-DD',
+                    placeholder: '请输入机构名称',
+                    allowClear: true,
                 },
             },
             {
                 type: 'select',
                 name: 'status',
-                label: '类型',
-                width: 120,
+                label: '账户类型：',
+                width: 160,
                 props: {
-                    placeholder: '类型选择',
+                    placeholder: '请选择账户类型',
                     allowClear: true,
                 },
-                option: $store.getters['common/statusTypes'] || [],
+                option: $store.getters['common/recordTypes'] || [],
             },
             {
                 type: 'select',
-                name: 'dept-id',
-                label: '养老院选择',
-                hidden: !isAdmin.value,
+                name: 'status',
+                label: '启用状态：',
+                width: 160,
                 props: {
-                    placeholder: '养老院选择',
+                    placeholder: '请选择启用状态',
                     allowClear: true,
                 },
-                option: $store.getters['common/ylyList'] || [],
-            },
-            {
-                type: 'input',
-                name: 'name',
-                label: '工作人员',
-                props: {
-                    placeholder: '请输入工作人员名称',
-                    allowClear: true,
-                },
+                option: $store.getters['common/recordTypes'] || [],
             },
             {
                 type: 'handle',
@@ -117,67 +110,49 @@ const $store = useStore(),
         /** 列表项 */
         columns: [
             {
-                title: '序号',
-                type: 'index',
-                width: 80,
-                dataIndex: 'index',
-            },
-            {
-                title: '报修时间',
-                dataIndex: 'RepairTime',
+                title: '所属机构',
+                dataIndex: 'Dept',
+                // hidden: !isAdmin.value,
                 minWidth: 120,
-                customRender: ({ text }) => {
-                    return getNowDate(text)?.date;
-                },
             },
             {
-                title: '报修人',
+                title: '账户类型',
                 dataIndex: 'Name',
             },
             {
-                title: '报修次数',
-                dataIndex: 'RepairCount',
-                minWidth: 120,
+                title: '启用状态',
+                dataIndex: 'Name',
             },
             {
-                title: '报修设备号',
-                dataIndex: 'Mac',
-                minWidth: 120,
+                title: '设置者账号',
+                dataIndex: 'Name',
             },
             {
-                title: '养老院',
-                dataIndex: 'Dept',
-                hidden: !isAdmin.value,
-                minWidth: 120,
+                title: '联系人',
+                dataIndex: 'Name',
+            },
+            {
+                title: '联系电话',
+                dataIndex: 'Name',
             },
             {
                 title: '操作',
                 type: 'handle',
-                minWidth: 120,
-                hidden: isAdmin.value,
+                minWidth: 240,
                 option: [
                     {
-                        name: '自主工单地址',
+                        name: '查看',
                         type: 'edit',
-                        likeBtn: true,
+                    },
+                    {
+                        name: '编辑',
+                        type: 'edit',
+                    },
+                    {
+                        name: '删除',
+                        type: 'edit',
                     },
                 ],
-            },
-            {
-                title: '报修情况',
-                hidden: !isAdmin.value,
-                dataIndex: 'RepairStatus',
-                minWidth: 120,
-                customRender: ({ text }) => {
-                    return text == 0 ? '已修复' : '未修复';
-                },
-            },
-            {
-                title: '报修情况',
-                hidden: isAdmin.value,
-                type: isAdmin.value ? '' : 'switch',
-                dataIndex: 'RepairStatus',
-                minWidth: 120,
             },
         ],
     });
@@ -185,59 +160,33 @@ const $store = useStore(),
  * @description: table 项操作
  */
 function handleClick(item: TableHandleOptItem, row: any) {
-    console.log(item, row);
     const { name } = item;
     const rowData = toRaw(row);
     switch (name) {
-        case '自主工单地址':
-            console.log('自主工单地址', rowData);
-            // oneRepairFn(rowData);
-            window.open(
-                'https://pgsqltest.cube.lenovo.com/webchat/ticket/index.html'
-            );
+        case '点击查看':
+            // handleToDetail(rowData);
             break;
-        case '已修复':
-            rowData.RepairStatus = 0;
-            console.log('已修复', rowData);
-            handleRepairFn(rowData);
+        case '下载本地':
+            // handleDownload(rowData);
             break;
-        case '未修复':
-            console.log('未修复', rowData);
-            rowData.RepairStatus = 1;
-            oneRepairFn2(rowData);
+        case '删除':
+            handleDelete();
             break;
         default:
     }
 }
-
-function oneRepairFn({ MemId }: any) {
-    oneRepair({
-        mem_id: MemId,
-    }).then((res: any) => {
-        console.log('mem_id1', res);
-        $message.success('操作成功.');
-        sendRequest = ref(true);
-        $router.push('/repair/customer-plat');
-    });
+function handleToDetail(row: any) {
+    console.log(row, '---');
+    $router.push('/service-records/video-detail');
 }
 
-function oneRepairFn2({ MemId }: any) {
-    oneRepair({
-        mem_id: MemId,
-    }).then((res: any) => {
-        console.log('mem_id1', res);
-        $message.success('操作成功.');
-        sendRequest = ref(true);
-    });
-}
-
-function handleRepairFn({ MemId }: any) {
-    repaiConfirm({
-        mem_id: MemId,
-    }).then((res: any) => {
-        console.log('mem_id2', res);
-        $message.success('操作成功.');
-        sendRequest = ref(true);
+function handleDelete() {
+    Modal.confirm({
+        content: '确定删除吗？',
+        icon: createVNode(ExclamationCircleOutlined),
+        onCancel() {
+            Modal.destroyAll();
+        },
     });
 }
 </script>

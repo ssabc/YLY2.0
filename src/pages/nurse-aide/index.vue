@@ -1,5 +1,4 @@
 <template>
-    <pageHead></pageHead>
     <GmForm
         v-model:data="data.formData"
         :list="data.list"
@@ -7,53 +6,68 @@
         @on-handle="sendRequest = true"
     >
     </GmForm>
-    <br />
-    <GmTable
-        v-model:data="data.tableData"
-        v-model:sendRequest="sendRequest"
-        :headers="data.columns"
-        :request-api="fetchCarerWarning"
-        :send-data="dealReqData(data.formData)"
-        @on-handle="handleClick"
-    />
-    <div class="label-div">
-        <span>护工帮告警记录</span>
-        <a-popover title="告警列表" placement="topRight" trigger="hover">
-            <template #content>
-                <p>黄浦老年公寓 张三 告警 时间</p>
-                <p>黄浦老年公寓 张三 告警 时间</p>
-            </template>
-            <exclamation-outlined class="tip" />
-        </a-popover>
+    <div class="cells">
+        <div v-for="item in statisList" :key="item.name" class="cell">
+            <div
+                class="lf icon-wrap"
+                :style="{ 'background-color': item.color }"
+            >
+                <component :is="item.icon"></component>
+            </div>
+            <div class="ct">
+                <div class="label">{{ item.name }}</div>
+                <div class="value">
+                    <span class="main" :style="{ color: item.color }">{{
+                        item.value
+                    }}</span>
+                    <div class="unit">{{ item.unit }}</div>
+                </div>
+                <div class="bt">查看 〉〉</div>
+            </div>
+        </div>
     </div>
-    <div class="iframe-wrap">
-        <IframeComp></IframeComp>
+    <div class="row">
+        <div class="column c1">
+            <div>护工帮使用情况</div>
+            <Chart1 :yly-flag="true"></Chart1>
+        </div>
+        <div class="column c1">
+            <div>护工帮数据统计</div>
+            <Chart2 :yly-flag="true"></Chart2>
+        </div>
     </div>
-    <VideoModal
-        v-if="data.infoModal.visible"
-        :modal-data="data.infoModal"
-        @cancel="data.infoModal.visible = false"
-    ></VideoModal>
+    <div class="row">
+        <div class="column c1">
+            <div>24小时呼叫记录</div>
+            <GmTable
+                v-model:data="data.tableData"
+                v-model:sendRequest="sendRequest"
+                :headers="data.columns"
+                :request-api="repairList"
+                :send-data="dealReqData(data.formData)"
+                @on-handle="handleClick"
+            />
+        </div>
+    </div>
 </template>
 
 <script setup lang="ts">
 import { useStore } from 'vuex';
-import { ref, reactive, toRaw, createVNode, computed } from 'vue';
-import { r as $router } from '@/routes';
-import { Modal } from 'ant-design-vue';
-import {
-    ExclamationCircleOutlined,
-    ExclamationOutlined,
-} from '@ant-design/icons-vue';
-import { message as $message } from 'ant-design-vue';
+import { useRouter } from 'vue-router';
+import { ref, reactive, computed, toRaw, createVNode } from 'vue';
 import type {
     ColumnProps,
     FormListProps,
     TableHandleOptItem,
-    ModalData,
 } from 'GlobComponentsModule';
-import { fetchCarerWarning } from '@/api/app';
-import { getOpsOptions, dealReqData, getNowDate } from '@/utils/tools';
+import { DiffOutlined } from '@ant-design/icons-vue';
+import Chart1 from './compoments/chart1.vue';
+import Chart2 from './compoments/chart2.vue';
+import { getOpsOptions, getNowDate, dealReqData } from '@/utils/tools';
+import { repairList } from '@/api/app';
+import { message as $message } from 'ant-design-vue';
+import { Modal } from 'ant-design-vue';
+import { ExclamationCircleOutlined } from '@ant-design/icons-vue';
 
 interface Data {
     formData: {
@@ -62,7 +76,6 @@ interface Data {
     list: FormListProps[];
     tableData: Item[];
     columns: ColumnProps[];
-    infoModal: ModalData;
 }
 interface Item {
     deviceId: string;
@@ -74,47 +87,28 @@ let sendRequest = ref(false);
 
 const $store = useStore(),
     isAdmin = computed(() => $store.getters['common/isAdmin']),
+    $router = useRouter(),
     data = reactive<Data>({
         /** 表单list */
         list: [
             {
                 type: 'select',
-                name: 'upgradeStatus',
-                label: '处理情况',
-                width: 130,
+                name: 'status',
+                label: '',
+                width: 160,
                 props: {
-                    placeholder: '处理情况选择',
+                    placeholder: '请选择记录类型',
                     allowClear: true,
                 },
-                option: $store.getters['common/dealTypes'] || [],
+                option: $store.getters['common/recordTypes'] || [],
             },
             {
                 type: 'range-picker',
                 name: 'date',
-                label: '告警日期',
+                label: '可用时间',
                 props: {
                     valueFormat: 'YYYY-MM-DD',
                 },
-            },
-            {
-                type: 'input',
-                name: 'name',
-                label: '工作人员',
-                props: {
-                    placeholder: '请输入工作人员名称',
-                    allowClear: true,
-                },
-            },
-            {
-                type: 'select',
-                name: 'Dept',
-                label: '告警养老院',
-                hidden: !isAdmin.value,
-                props: {
-                    placeholder: '养老院选择',
-                    allowClear: true,
-                },
-                option: $store.getters['common/ylyList'] || [],
             },
             {
                 type: 'handle',
@@ -142,47 +136,85 @@ const $store = useStore(),
         /** 列表项 */
         columns: [
             {
-                title: '序号',
-                type: 'index',
-                width: 80,
-                dataIndex: 'index',
+                title: '设备编号',
+                dataIndex: 'Name',
             },
             {
-                title: '告警时间',
-                dataIndex: 'WarningTime',
+                title: '养老院名称',
+                dataIndex: 'Dept',
+                hidden: !isAdmin.value,
+                minWidth: 120,
+            },
+            {
+                title: '服务内容',
+                dataIndex: 'Name',
+            },
+            {
+                title: '记录时长',
+                dataIndex: 'Name',
+            },
+            {
+                title: '记录时间',
+                dataIndex: 'RepairTime',
                 minWidth: 120,
                 customRender: ({ text }) => {
                     return getNowDate(text)?.date;
                 },
             },
             {
-                title: '告警人',
-                dataIndex: 'WarningName',
-            },
-            {
-                title: '设备编号',
-                dataIndex: 'Mac',
-            },
-            {
-                title: '处理情况',
-                dataIndex: 'Content',
+                title: '上传时间',
+                dataIndex: 'RepairTime',
                 minWidth: 120,
+                customRender: ({ text }) => {
+                    return getNowDate(text)?.date;
+                },
             },
             {
                 title: '操作',
                 type: 'handle',
-                width: 240,
+                minWidth: 240,
                 option: getOpsOptions(isAdmin),
             },
         ],
-        /** 弹窗信息 */
-        infoModal: {
-            visible: false,
-            title: '',
-            type: 'add', // add: 新增， edit: 编辑
-            data: {},
+    }),
+    statisList = computed(() => [
+        {
+            name: '总呼叫数',
+            value: 100,
+            color: '#1d66d6',
+            icon: DiffOutlined,
+            unit: '分钟',
         },
-    });
+        {
+            name: '记录时长',
+            value: 100,
+            color: '#28d094',
+            icon: DiffOutlined,
+            unit: '分钟',
+        },
+        {
+            name: '未处置数',
+            value: 100,
+            color: '#FDDB78',
+            icon: DiffOutlined,
+            unit: '分钟',
+        },
+        {
+            name: '已处置数',
+            value: 100,
+            color: '#FDDB78',
+            icon: DiffOutlined,
+            unit: '分钟',
+        },
+        {
+            name: '24小时呼叫数',
+            value: 100,
+            color: '#FA746B',
+            icon: DiffOutlined,
+            unit: '分钟',
+        },
+    ]);
+
 /**
  * @description: table 项操作
  */
@@ -191,10 +223,7 @@ function handleClick(item: TableHandleOptItem, row: any) {
     const rowData = toRaw(row);
     switch (name) {
         case '点击查看':
-            handleInfoModal({
-                type: 'view',
-                row: rowData,
-            });
+            handleToDetail(rowData);
             break;
         case '下载本地':
             handleDownload(rowData);
@@ -205,17 +234,12 @@ function handleClick(item: TableHandleOptItem, row: any) {
         default:
     }
 }
-interface HandleParams {
-    type: string; // 弹窗类型
-    row?: any;
+
+function handleToDetail(row: any) {
+    console.log(row, '---');
+    $router.push('/service-records/video-detail');
 }
-function handleInfoModal({ type, row }: HandleParams) {
-    data.infoModal.type = type;
-    data.infoModal.data = Object.assign({}, row || {}, {
-        FileName: row.WarningName,
-    });
-    data.infoModal.visible = true;
-}
+
 function handleDelete() {
     Modal.confirm({
         content: '确定删除吗？',
@@ -245,33 +269,62 @@ function handleDownload(row: any) {
     };
     x.send();
 }
-
-function handleToDetail(row: any) {
-    console.log(row, '---');
-    $router.push('/nurse-aide/detail');
-}
 </script>
 <style lang="less" scoped>
-.iframe-wrap {
-    padding: 20px 0;
-    height: 500px;
-    min-height: 300px;
-}
-.hd-wrap {
-    padding: 0 0 20px;
-}
-.label-div {
-    height: 40px;
-    background-color: rgb(219, 173, 160);
+.cells {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 10px;
-    color: rgb(251, 17, 16);
-    font-size: 20px;
-    font-weight: bolder;
+    padding: 10px 0;
+    .cell {
+        flex: 1;
+        background-color: #efefef;
+        border-radius: 4px;
+        margin-right: 10px;
+        display: flex;
+        align-items: center;
+        padding: 10px;
+        &:last-child {
+            margin-right: 0;
+        }
+        .icon-wrap {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #fff;
+            font-size: 22px;
+            margin-right: 10px;
+        }
+        .ct {
+            padding-top: 5px;
+            color: #999;
+            font-size: 12px;
+            flex: 1;
+            .value {
+                padding: 10px 0;
+                display: flex;
+                align-items: flex-end;
+                .main {
+                    font-size: 22px;
+                    font-weight: bold;
+                    margin-right: 10px;
+                }
+            }
+            .bt {
+                color: #02a7f0;
+                cursor: pointer;
+                text-align: right;
+            }
+        }
+    }
 }
-.tip {
-    cursor: pointer;
+.row {
+    display: flex;
+    .column {
+        &.c1 {
+            flex: 1;
+        }
+    }
 }
 </style>

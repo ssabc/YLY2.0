@@ -1,7 +1,7 @@
 /*
  * @Author: szhao
  * @Date: 2022-12-02 16:12:30
- * @LastEditTime: 2023-01-07 15:46:09
+ * @LastEditTime: 2023-01-10 13:54:01
  * @LastEditors: szhao
  * @Description:
  */
@@ -25,6 +25,12 @@ export const r: RouteItem[] = [
                 path: 'index',
                 meta: { title: '服务总览', hiddenBreadCrumb: true },
                 component: lazyImportPagesRootVueFile('service-records'),
+            },
+            {
+                name: 'ServiceRecordsVideoDetail',
+                path: 'video-detail',
+                meta: { title: '视频详情', hidden: true },
+                component: lazyImportPagesRootVueFile('video-detail'),
             },
             {
                 name: 'ChiefOperator',

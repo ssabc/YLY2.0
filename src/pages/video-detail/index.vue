@@ -1,12 +1,12 @@
 <!--
  * @Author: szhao
- * @Date: 2023-01-07 16:18:32
- * @LastEditTime: 2023-01-10 15:31:41
+ * @Date: 2023-01-10 13:47:11
+ * @LastEditTime: 2023-01-10 13:47:23
  * @LastEditors: szhao
- * @Description: 报修详情
+ * @Description: 视频详情
 -->
 <template>
-    <div>我是 报修详情</div>
+    <div>我是 视频详情</div>
 </template>
 
 <script setup lang="ts">

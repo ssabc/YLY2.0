@@ -6,7 +6,27 @@
         @on-handle="sendRequest = true"
     >
     </GmForm>
-    <br />
+    <div class="cells">
+        <div v-for="item in statisList" :key="item.name" class="cell">
+            <div
+                class="lf icon-wrap"
+                :style="{ 'background-color': item.color }"
+            >
+                <component :is="item.icon"></component>
+            </div>
+            <div class="ct">
+                <div class="label">{{ item.name }}</div>
+                <div class="value">
+                    <span class="main" :style="{ color: item.color }">{{
+                        item.value
+                    }}</span>
+                    <div class="unit">{{ item.unit }}</div>
+                </div>
+                <div class="bt">查看 〉〉</div>
+            </div>
+        </div>
+    </div>
+    <div>分配明细</div>
     <GmTable
         v-model:data="data.tableData"
         v-model:sendRequest="sendRequest"
@@ -21,14 +41,11 @@
 import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
 import { ref, reactive, computed, toRaw } from 'vue';
-import type {
-    ColumnProps,
-    FormListProps,
-    TableHandleOptItem,
-} from 'GlobComponentsModule';
-import { repairList, oneRepair, repaiConfirm } from '@/api/app';
+import type { FormListProps } from 'GlobComponentsModule';
+import { DiffOutlined } from '@ant-design/icons-vue';
+import type { ColumnProps, TableHandleOptItem } from 'GlobComponentsModule';
+import { repairList } from '@/api/app';
 import { getNowDate, dealReqData } from '@/utils/tools';
-import { message as $message } from 'ant-design-vue';
 
 interface Data {
     formData: {
@@ -53,43 +70,46 @@ const $store = useStore(),
         /** 表单list */
         list: [
             {
-                type: 'range-picker',
-                name: 'date',
-                label: '可用时间',
+                type: 'select',
+                name: 'status',
+                label: '',
+                width: 160,
                 props: {
-                    valueFormat: 'YYYY-MM-DD',
+                    placeholder: '请选择设备类别',
+                    allowClear: true,
+                },
+                option: $store.getters['common/recordTypes'] || [],
+            },
+            {
+                type: 'input',
+                name: 'name',
+                label: '',
+                props: {
+                    placeholder: '请输入设备编号',
+                    allowClear: true,
                 },
             },
             {
                 type: 'select',
                 name: 'status',
-                label: '类型',
-                width: 120,
+                label: '',
+                width: 160,
                 props: {
-                    placeholder: '类型选择',
+                    placeholder: '请选择设备分类',
                     allowClear: true,
                 },
-                option: $store.getters['common/statusTypes'] || [],
+                option: $store.getters['common/recordTypes'] || [],
             },
             {
                 type: 'select',
-                name: 'dept-id',
-                label: '养老院选择',
-                hidden: !isAdmin.value,
+                name: 'status',
+                label: '',
+                width: 160,
                 props: {
-                    placeholder: '养老院选择',
+                    placeholder: '请选择设备分配状态',
                     allowClear: true,
                 },
-                option: $store.getters['common/ylyList'] || [],
-            },
-            {
-                type: 'input',
-                name: 'name',
-                label: '工作人员',
-                props: {
-                    placeholder: '请输入工作人员名称',
-                    allowClear: true,
-                },
+                option: $store.getters['common/recordTypes'] || [],
             },
             {
                 type: 'handle',
@@ -123,32 +143,30 @@ const $store = useStore(),
                 dataIndex: 'index',
             },
             {
-                title: '报修时间',
-                dataIndex: 'RepairTime',
-                minWidth: 120,
-                customRender: ({ text }) => {
-                    return getNowDate(text)?.date;
-                },
-            },
-            {
-                title: '报修人',
+                title: '设备类别',
                 dataIndex: 'Name',
             },
             {
-                title: '报修次数',
-                dataIndex: 'RepairCount',
-                minWidth: 120,
+                title: '设备编号',
+                dataIndex: 'Name',
             },
             {
-                title: '报修设备号',
-                dataIndex: 'Mac',
-                minWidth: 120,
+                title: '设备分类',
+                dataIndex: 'Name',
             },
             {
-                title: '养老院',
+                title: '所属养老院',
                 dataIndex: 'Dept',
-                hidden: !isAdmin.value,
+                // hidden: !isAdmin.value,
                 minWidth: 120,
+            },
+            {
+                title: '运行状态',
+                dataIndex: 'Name',
+            },
+            {
+                title: '分配日期',
+                dataIndex: 'Name',
             },
             {
                 title: '操作',
@@ -157,87 +175,144 @@ const $store = useStore(),
                 hidden: isAdmin.value,
                 option: [
                     {
-                        name: '自主工单地址',
+                        name: '点击查看',
+                        type: 'view',
+                    },
+                    {
+                        name: '编辑',
                         type: 'edit',
-                        likeBtn: true,
                     },
                 ],
             },
-            {
-                title: '报修情况',
-                hidden: !isAdmin.value,
-                dataIndex: 'RepairStatus',
-                minWidth: 120,
-                customRender: ({ text }) => {
-                    return text == 0 ? '已修复' : '未修复';
-                },
-            },
-            {
-                title: '报修情况',
-                hidden: isAdmin.value,
-                type: isAdmin.value ? '' : 'switch',
-                dataIndex: 'RepairStatus',
-                minWidth: 120,
-            },
         ],
-    });
+    }),
+    statisList = computed(() => [
+        {
+            name: '设备总数',
+            value: 100,
+            color: '#1d66d6',
+            icon: DiffOutlined,
+            unit: '分钟',
+        },
+        {
+            name: '已分配',
+            value: 100,
+            color: '#28d094',
+            icon: DiffOutlined,
+            unit: '分钟',
+        },
+        {
+            name: '未分配',
+            value: 100,
+            color: '#FDDB78',
+            icon: DiffOutlined,
+            unit: '分钟',
+        },
+    ]);
+
 /**
  * @description: table 项操作
  */
 function handleClick(item: TableHandleOptItem, row: any) {
-    console.log(item, row);
     const { name } = item;
     const rowData = toRaw(row);
     switch (name) {
-        case '自主工单地址':
-            console.log('自主工单地址', rowData);
-            // oneRepairFn(rowData);
-            window.open(
-                'https://pgsqltest.cube.lenovo.com/webchat/ticket/index.html'
-            );
+        case '点击查看':
+            handleToDetail(rowData);
             break;
-        case '已修复':
-            rowData.RepairStatus = 0;
-            console.log('已修复', rowData);
-            handleRepairFn(rowData);
-            break;
-        case '未修复':
-            console.log('未修复', rowData);
-            rowData.RepairStatus = 1;
-            oneRepairFn2(rowData);
+        case '编辑':
             break;
         default:
     }
 }
-
-function oneRepairFn({ MemId }: any) {
-    oneRepair({
-        mem_id: MemId,
-    }).then((res: any) => {
-        console.log('mem_id1', res);
-        $message.success('操作成功.');
-        sendRequest = ref(true);
-        $router.push('/repair/customer-plat');
-    });
-}
-
-function oneRepairFn2({ MemId }: any) {
-    oneRepair({
-        mem_id: MemId,
-    }).then((res: any) => {
-        console.log('mem_id1', res);
-        $message.success('操作成功.');
-        sendRequest = ref(true);
-    });
-}
-
-function handleRepairFn({ MemId }: any) {
-    repaiConfirm({
-        mem_id: MemId,
-    }).then((res: any) => {
-        console.log('mem_id2', res);
-        $message.success('操作成功.');
-        sendRequest = ref(true);
-    });
+function handleToDetail(row: any) {
+    console.log(row, '---');
+    $router.push('/device-assign/detail');
 }
 </script>
+<style lang="less" scoped>
+.cells {
+    display: flex;
+    padding: 10px 0;
+    .cell {
+        flex: 1;
+        background-color: #efefef;
+        border-radius: 4px;
+        margin-right: 10px;
+        display: flex;
+        align-items: center;
+        padding: 10px;
+        &:last-child {
+            margin-right: 0;
+        }
+        .icon-wrap {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #fff;
+            font-size: 22px;
+            margin-right: 10px;
+        }
+        .ct {
+            padding-top: 5px;
+            color: #999;
+            font-size: 12px;
+            flex: 1;
+            .value {
+                padding: 10px 0;
+                display: flex;
+                align-items: flex-end;
+                .main {
+                    font-size: 22px;
+                    font-weight: bold;
+                    margin-right: 10px;
+                }
+            }
+            .bt {
+                color: #02a7f0;
+                cursor: pointer;
+                text-align: right;
+            }
+        }
+    }
+}
+.row {
+    display: flex;
+    .column {
+        &.c1 {
+            flex: 1;
+        }
+        &.c2 {
+            width: 300px;
+            height: 100%;
+            .time-desc {
+                padding: 20px 0;
+            }
+            .time-cells {
+                .time-cell {
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    border-top: 1px solid #efefef;
+                    padding: 20px 0;
+                    .value {
+                        font-size: 18px;
+                    }
+                    .label {
+                        color: #999;
+                    }
+                    .icon {
+                        width: 6px;
+                        height: 6px;
+                        background-color: red;
+                        border-radius: 50%;
+                    }
+                }
+            }
+        }
+    }
+}
+</style>

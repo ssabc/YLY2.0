@@ -1,8 +1,8 @@
 /*
  * @Author: szhao
  * @Date: 2022-12-02 16:12:30
- * @LastEditTime: 2023-01-08 19:29:33
- * @LastEditors: sZhao
+ * @LastEditTime: 2023-01-10 15:47:28
+ * @LastEditors: szhao
  * @Description:
  */
 import type { RouteItem } from 'RouterModule';
@@ -42,7 +42,9 @@ export const r: RouteItem[] = [
                 name: 'AccountManagement',
                 path: 'account-management',
                 meta: { title: '账户管理' },
-                component: lazyImportPagesRootVueFile('config-center'),
+                component: lazyImportPagesRootVueFile(
+                    'config-center/account-management'
+                ),
             },
             {
                 name: 'AccountManagementDetail',
@@ -64,7 +66,9 @@ export const r: RouteItem[] = [
                 name: 'UserManagement',
                 path: 'user-management',
                 meta: { title: '用户管理' },
-                component: lazyImportPagesRootVueFile('config-center'),
+                component: lazyImportPagesRootVueFile(
+                    'config-center/user-management'
+                ),
             },
             {
                 name: 'UserManagementDetail',
@@ -84,9 +88,11 @@ export const r: RouteItem[] = [
             },
             {
                 name: 'OperationLogs',
-                path: 'oeration-logs',
+                path: 'operation-logs',
                 meta: { title: '操作日志' },
-                component: lazyImportPagesRootVueFile('config-center'),
+                component: lazyImportPagesRootVueFile(
+                    'config-center/operation-logs'
+                ),
             },
         ],
     },

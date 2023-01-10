@@ -13,7 +13,6 @@
         :headers="data.columns"
         :request-api="repairList"
         :send-data="dealReqData(data.formData)"
-        @on-handle="handleClick"
     />
 </template>
 
@@ -56,9 +55,9 @@ const $store = useStore(),
             {
                 type: 'input',
                 name: 'name',
-                label: '用户姓名：',
+                label: '操作类型：',
                 props: {
-                    placeholder: '请输入用户姓名',
+                    placeholder: '请输入资源名称',
                     allowClear: true,
                 },
             },
@@ -88,80 +87,31 @@ const $store = useStore(),
         /** 列表项 */
         columns: [
             {
-                title: '用户类型',
+                title: '系统菜单',
                 dataIndex: 'Dept',
                 // hidden: !isAdmin.value,
                 minWidth: 120,
             },
             {
-                title: '用户机构',
+                title: '操作类型',
                 dataIndex: 'Name',
             },
             {
-                title: '所持设备编号',
+                title: '操作账户',
                 dataIndex: 'Name',
             },
             {
-                title: '所持设备类型',
+                title: '请求IP',
                 dataIndex: 'Name',
             },
             {
-                title: '联系人',
+                title: '操作账户类型',
                 dataIndex: 'Name',
             },
             {
-                title: '联系电话',
+                title: '操作时间',
                 dataIndex: 'Name',
-            },
-            {
-                title: '设置账号',
-                dataIndex: 'Name',
-            },
-            {
-                title: '操作',
-                type: 'handle',
-                minWidth: 240,
-                option: [
-                    {
-                        name: '详情',
-                        type: 'edit',
-                    },
-                    {
-                        name: '删除',
-                        type: 'edit',
-                    },
-                ],
             },
         ],
     });
-/**
- * @description: table 项操作
- */
-function handleClick(item: TableHandleOptItem, row: any) {
-    const { name } = item;
-    const rowData = toRaw(row);
-    switch (name) {
-        case '详情':
-            // handleToDetail(rowData);
-            break;
-        case '删除':
-            handleDelete();
-            break;
-        default:
-    }
-}
-function handleToDetail(row: any) {
-    console.log(row, '---');
-    $router.push('/service-records/video-detail');
-}
-
-function handleDelete() {
-    Modal.confirm({
-        content: '确定删除吗？',
-        icon: createVNode(ExclamationCircleOutlined),
-        onCancel() {
-            Modal.destroyAll();
-        },
-    });
-}
 </script>

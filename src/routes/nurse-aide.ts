@@ -1,7 +1,7 @@
 /*
  * @Author: szhao
  * @Date: 2022-12-02 16:12:30
- * @LastEditTime: 2023-01-07 15:48:34
+ * @LastEditTime: 2023-01-10 13:52:42
  * @LastEditors: szhao
  * @Description:
  */
@@ -22,15 +22,15 @@ export const r: RouteItem[] = [
         children: [
             {
                 name: 'NurseAideIndex',
-                path: 'index',
-                meta: { title: '护工帮总览' },
-                component: lazyImportPagesRootVueFile('nurse-aide'),
-            },
-            {
-                name: 'NurseAideDetail',
                 path: 'detail',
                 meta: { title: '查看详情', hidden: true },
                 component: lazyImportPagesRootVueFile('nurse-aide/detail'),
+            },
+            {
+                name: 'NurseAideDetail',
+                path: 'index',
+                meta: { title: '护工帮总览' },
+                component: lazyImportPagesRootVueFile('nurse-aide'),
             },
             {
                 name: 'callRecord',
@@ -39,10 +39,10 @@ export const r: RouteItem[] = [
                 component: lazyImportPagesRootVueFile('nurse-aide/call-record'),
             },
             {
-                name: 'videoDetail',
+                name: 'NurseAideVideoDetail',
                 path: 'video-detail',
                 meta: { title: '视频详情', hidden: true },
-                component: lazyImportPagesRootVueFile('nurse-aide'),
+                component: lazyImportPagesRootVueFile('video-detail'),
             },
         ],
     },
