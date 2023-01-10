@@ -75,9 +75,9 @@ let userInfo = ref<UserInfoVO>({});
 userInfo = computed(() => $store.getters['common/userInfo']?.account || {});
 
 onMounted(() => {
-    fetchWarningCount({}).then((res: any) => {
-        data.bellNum = res.data?.Unhandled;
-    });
+    // fetchWarningCount({}).then((res: any) => {
+    //     data.bellNum = res.data?.Unhandled;
+    // });
 });
 
 // 更新并高亮路由

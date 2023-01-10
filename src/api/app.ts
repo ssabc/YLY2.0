@@ -1,5 +1,23 @@
+/*
+ * @Author: sZhao
+ * @Date: 2023-01-08 15:09:43
+ * @LastEditTime: 2023-01-10 21:32:24
+ * @LastEditors: sZhao
+ * @Description:
+ */
 import { request } from '@/utils/axios';
 const prefix = '/api';
+
+/**
+ * @description: home
+ */
+export function fetchHomeInfo(data: any) {
+    return request({
+        url: `${prefix}/manage/comprehensive`,
+        method: 'post',
+        data,
+    });
+}
 
 /**
  * @description: 历史记录

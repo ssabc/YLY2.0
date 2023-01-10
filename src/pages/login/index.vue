@@ -12,7 +12,7 @@
                 @on-handle="handleClick"
                 @press-enter="submit"
             >
-                <!-- <template #verifyCode>
+                <template #verifyCode>
                     <div class="flex items-center justify-center">
                         <a-input
                             v-model:value="data.formData.verifyCode"
@@ -27,7 +27,7 @@
                             @click="getIdentifyCode"
                         />
                     </div>
-                </template> -->
+                </template>
                 <template #slotSubmit>
                     <a-button
                         type="primary"
@@ -94,11 +94,11 @@ const data = reactive<Data>({
                 message: '请输入密码',
                 trigger: 'change',
             },
-            // verifyCode: {
-            //     required: true,
-            //     validator: validateVerifyCode,
-            //     trigger: 'blur',
-            // },
+            verifyCode: {
+                required: true,
+                validator: validateVerifyCode,
+                trigger: 'blur',
+            },
         },
         codeBaseUrl: '',
     }),
@@ -115,13 +115,7 @@ onMounted(() => {
  * @description: 提交登录
  */
 function submit() {
-    console.log('4444444444444');
-    // refGmForm.value.handleClick(data.formData, 'submit');
-    $store.dispatch('common/updateUserInfo', {
-        account: 'zs',
-        token: 'tokentokentokentokentokentokentokentoken',
-    });
-    $router.push('/');
+    refGmForm.value.handleClick(data.formData, 'submit');
 }
 /**
  * @description: 统一处理点击事件

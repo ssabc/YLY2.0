@@ -6,127 +6,44 @@
 import { useStore } from 'vuex';
 import { computed, watchEffect, nextTick } from 'vue';
 import * as echarts from 'echarts';
+import { groupBy } from '@/utils/tools';
 
 interface Props {
-    ylyFlag: any;
+    ylyFlag?: any;
+    pData?: any;
 }
+
 const $store = useStore(),
     $props = defineProps<Props>(),
     isAdmin = computed(() => $store.getters['common/isAdmin']);
 
 watchEffect(() => {
-    initFn();
+    initFn($props.pData);
 });
 
-function initFn() {
-    const { data1 } = getData(isAdmin.value, $props.ylyFlag);
+function initFn(list: any) {
+    let res = groupBy(list, function (_e: any) {
+        return _e.Date;
+    });
     nextTick(() => {
-        renderChart1();
+        renderChart1(res);
     });
 }
-
-function getData(isAdmin: boolean, deptId: number) {
-    console.log('isAdmin, deptId', isAdmin, deptId);
-    if (deptId == 4) {
-        return {
-            data0: [{ value: 3, name: '黄浦老年公寓' }],
-            data1: [
-                { value: 1, name: '12.1' },
-                { value: 0, name: '12.2' },
-                { value: 1, name: '12.3' },
-                { value: 0, name: '12.4' },
-            ],
-            data2: [
-                { value: 0, name: '' },
-                { value: 0, name: '' },
-                { value: 2, name: '' },
-                { value: 0, name: '' },
-                { value: 0, name: '' },
-                { value: 0, name: '' },
-                { value: 0, name: '' },
-            ],
-        };
-    }
-
-    if (deptId == 6) {
-        return {
-            data0: [{ value: 2, name: '千鹤昌里' }],
-            data1: [
-                { value: 0, name: '12.1' },
-                { value: 1, name: '12.2' },
-                { value: 1, name: '12.3' },
-                { value: 0, name: '12.4' },
-            ],
-            data2: [
-                { value: 0, name: '' },
-                { value: 0, name: '' },
-                { value: 1, name: '' },
-                { value: 1, name: '' },
-                { value: 0, name: '' },
-                { value: 0, name: '' },
-                { value: 0, name: '' },
-            ],
-        };
-    }
-
-    if (deptId == 5) {
-        return {
-            data0: [{ value: 6, name: '千鹤乳山' }],
-            data1: [
-                { value: 0, name: '12.1' },
-                { value: 1, name: '12.2' },
-                { value: 1, name: '12.3' },
-                { value: 0, name: '12.4' },
-            ],
-            data2: [
-                { value: 0, name: '' },
-                { value: 1, name: '' },
-                { value: 1, name: '' },
-                { value: 0, name: '' },
-                { value: 0, name: '' },
-                { value: 0, name: '' },
-                { value: 0, name: '' },
-            ],
-        };
-    }
-
-    return {
-        data0: [
-            { value: 3, name: '黄浦老年公寓' },
-            { value: 2, name: '千鹤昌里' },
-            { value: 6, name: '千鹤乳山' },
-        ],
-        data1: [
-            { value: 1, name: '12.1' },
-            { value: 2, name: '12.2' },
-            { value: 3, name: '12.3' },
-            { value: 0, name: '12.4' },
-        ],
-        data2: [
-            { value: 0, name: '' },
-            { value: 1, name: '' },
-            { value: 4, name: '' },
-            { value: 1, name: '' },
-            { value: 0, name: '' },
-            { value: 0, name: '' },
-            { value: 0, name: '' },
-        ],
-    };
-}
-const renderChart1 = () => {
-    var xData = [
-            '0801',
-            '0801',
-            '0801',
-            '0801',
-            '0801',
-            '0801',
-            '0801',
-            '0801',
-        ],
-        yData1 = [400, 410, 350, 320, 280, 340, 360, 400, 420, 410, 420, 380],
-        yData2 = [350, 320, 260, 240, 220, 280, 300, 360, 340, 340, 340, 290],
-        yData3 = [200, 260, 200, 190, 180, 220, 260, 300, 280, 300, 280, 200],
+const renderChart1 = (_d: any) => {
+    const xData = _d?.map((_e: any) => _e?.[0]?.Date),
+        _fn = (_d: any, type: string) => {
+            return _d?.map(
+                (_e: any) =>
+                    _e?.filter((_s: any) => _s?.ServiceType === type)?.[0]
+                        ?.TotalFileDuration
+            );
+        },
+        // 服务提供
+        yData1 = _fn(_d, '服务提供'),
+        // 服务保障
+        yData2 = _fn(_d, '服务保障'),
+        // 服务安全
+        yData3 = _fn(_d, '服务安全'),
         borderData = [],
         seriesData = [],
         legend = ['服务提供', '服务保障', '服务安全'],
@@ -186,20 +103,7 @@ const renderChart1 = () => {
                 },
             },
         };
-        // obj2 = {
-        //     name: legend[index],
-        //     type: 'bar',
-        //     stack: legend[index],
-        //     itemStyle: {
-        //         barBorderRadius: '2px',
-        //         normal: {
-        //             color: colorArr[index].start + '1)',
-        //         },
-        //     },
-        //     data: [],
-        // };
         seriesData.push(obj1);
-        // seriesData.push(obj2);
     });
     const option = {
         grid: {

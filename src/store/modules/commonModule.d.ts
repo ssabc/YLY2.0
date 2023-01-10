@@ -1,8 +1,8 @@
 /*
  * @Author: zhaoshan
  * @Date: 2022-11-30 14:10:30
- * @LastEditTime: 2023-01-07 10:42:43
- * @LastEditors: szhao
+ * @LastEditTime: 2023-01-10 21:30:43
+ * @LastEditors: sZhao
  * @Description:
  */
 declare module 'CommonModule' {
@@ -10,6 +10,7 @@ declare module 'CommonModule' {
     interface UserInfoVO {
         type?: string;
         username?: string;
+        group?: any[];
     }
     interface UserInfo {
         account?: UserInfoVO;

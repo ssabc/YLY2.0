@@ -97,9 +97,9 @@ const data = reactive<Data>({
 
 onMounted(() => {
     console.log($route, '---$route');
-    fetchWarningCount({}).then((res: any) => {
-        data.bellNum = res.data?.Unhandled;
-    });
+    // fetchWarningCount({}).then((res: any) => {
+    //     data.bellNum = res.data?.Unhandled;
+    // });
 });
 
 /**

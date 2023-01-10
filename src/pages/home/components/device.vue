@@ -1,19 +1,39 @@
 <!--
  * @Author: sZhao
  * @Date: 2023-01-08 16:48:43
- * @LastEditTime: 2023-01-09 22:09:19
+ * @LastEditTime: 2023-01-10 21:55:15
  * @LastEditors: sZhao
  * @Description:
 -->
 <template>
     <div class="cells s1 flex">
-        <div v-for="item in data.list" :key="item.name" class="cell flex">
+        <div class="cell flex">
             <img class="device-icon" :src="deviceIcon" />
             <div class="info">
-                <div class="label">{{ item.name }}</div>
+                <div class="label">服务记录仪</div>
                 <div class="value">
-                    {{ item.value }}
-                    <span class="unit">{{ item.unit }}</span>
+                    {{ info.DeviceCount }}
+                    <span class="unit">个</span>
+                </div>
+            </div>
+        </div>
+        <div class="cell flex">
+            <img class="device-icon" :src="deviceIcon" />
+            <div class="info">
+                <div class="label">采集站</div>
+                <div class="value">
+                    {{ info.StationCount }}
+                    <span class="unit">台</span>
+                </div>
+            </div>
+        </div>
+        <div class="cell flex">
+            <img class="device-icon" :src="deviceIcon" />
+            <div class="info">
+                <div class="label">数字哨兵</div>
+                <div class="value">
+                    {{ info.SentryCount }}
+                    <span class="unit">台</span>
                 </div>
             </div>
         </div>
@@ -30,11 +50,35 @@
         <span class="line color1"></span>
     </div>
     <div class="cells s2 flex">
-        <div v-for="item in data.list2" :key="item.name" class="cell flex">
+        <div class="cell flex">
             <div class="info">
-                <div class="label">{{ item.name }}</div>
+                <div class="label">值班长</div>
                 <div class="value">
-                    {{ item.value }}
+                    {{ info.Foreman }}
+                </div>
+            </div>
+        </div>
+        <div class="cell flex">
+            <div class="info">
+                <div class="label">服务提供</div>
+                <div class="value">
+                    {{ info.Provision }}
+                </div>
+            </div>
+        </div>
+        <div class="cell flex">
+            <div class="info">
+                <div class="label">服务保障</div>
+                <div class="value">
+                    {{ info.Guarantee }}
+                </div>
+            </div>
+        </div>
+        <div class="cell flex">
+            <div class="info">
+                <div class="label">服务安全</div>
+                <div class="value">
+                    {{ info.Security }}
                 </div>
             </div>
         </div>
@@ -42,45 +86,18 @@
 </template>
 
 <script setup lang="ts">
-import { reactive } from 'vue';
+import { watchEffect, computed } from 'vue';
 import deviceIcon from '@/assets/pictures/device.svg';
 
-const data = reactive<any>({
-    list: [
-        {
-            name: '服务记录仪',
-            value: '99',
-            unit: '个',
-        },
-        {
-            name: '采集站',
-            value: '4',
-            unit: '台',
-        },
-        {
-            name: '数字哨兵',
-            value: '3',
-            unit: '台',
-        },
-    ],
-    list2: [
-        {
-            name: '值班长',
-            value: '3',
-        },
-        {
-            name: '服务提供',
-            value: '80',
-        },
-        {
-            name: '服务保障',
-            value: '8',
-        },
-        {
-            name: '服务安全',
-            value: '8',
-        },
-    ],
+interface Props {
+    ylyFlag?: any;
+    pData?: any;
+}
+const $props = defineProps<Props>(),
+    info = computed(() => $props.pData || {});
+
+watchEffect(() => {
+    console.log('111111111', $props.pData);
 });
 </script>
 
@@ -153,16 +170,16 @@ const data = reactive<any>({
             margin-right: 0;
         }
         &.color1 {
-            background-color: #204AAA;
+            background-color: #204aaa;
         }
         &.color2 {
             background-color: #ffe400;
         }
         &.color3 {
-            background-color: #CCCCCC;
+            background-color: #cccccc;
         }
         &.mid {
-            width:50px;
+            width: 50px;
         }
         &.small {
             width: 2px;

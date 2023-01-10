@@ -47,7 +47,7 @@ import * as echarts from 'echarts';
 import 'echarts-liquidfill/src/liquidFill.js';
 
 interface Props {
-    ylyFlag: any;
+    ylyFlag?: any;
 }
 const $store = useStore(),
     $props = defineProps<Props>(),

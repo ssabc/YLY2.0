@@ -9,7 +9,7 @@
         </div>
     </div>
     <div class="charts">
-        <div v-for="item in chartList" :key="item.key" class="chart-wrap">
+        <div v-for="item in data.chartList" :key="item.key" class="chart-wrap">
             <div :id="item.key" class="chart"></div>
             <div>{{ item.name }}</div>
         </div>
@@ -18,12 +18,15 @@
 
 <script setup lang="ts">
 import { useStore } from 'vuex';
-import { computed, watchEffect, nextTick } from 'vue';
+import { reactive, computed, watchEffect, nextTick } from 'vue';
 import * as echarts from 'echarts';
+import { groupBy } from '@/utils/tools';
 
 interface Props {
-    ylyFlag: any;
+    ylyFlag?: any;
+    pData?: any;
 }
+
 const $store = useStore(),
     $props = defineProps<Props>(),
     isAdmin = computed(() => $store.getters['common/isAdmin']),
@@ -46,39 +49,47 @@ const $store = useStore(),
             },
         ];
     }),
-    chartList = computed(() => {
-        return [
-            {
-                name: '养老院1',
-                key: 'homeChart4_1',
-                data: [],
-            },
-            {
-                name: '养老院1',
-                key: 'homeChart4_2',
-                data: [],
-            },
-            {
-                name: '养老院1',
-                key: 'homeChart4_3',
-                data: [],
-            },
-        ];
+    data = reactive<any>({
+        chartList: [],
     });
 
 watchEffect(() => {
-    initFn();
+    initFn($props.pData || []);
 });
 
-function initFn() {
+function initFn(_list: any) {
+    let _res = groupBy(_list, function (_e: any) {
+        return _e.GroupName;
+    });
+    data.chartList = _res?.map((_e: any, index: number) => {
+        const name = _e?.[0]?.GroupName,
+            key = `homeChart4_${index + 1}`;
+        return {
+            name,
+            key,
+            data: _e,
+        };
+    });
+    console.log($props.pData, data.chartList);
     nextTick(() => {
-        renderChart();
+        const _fn = (_d: any) => {
+            console.log(_d, '3343344');
+            const _tmp = JSON.parse(JSON.stringify(pieList.value));
+            _tmp?.forEach((_e: any) => {
+                _e.value =
+                    _d?.filter((_s: any) => _s.ServiceType === _e.name)?.[0]
+                        ?.TotalFileDuration || 0;
+            });
+            return _tmp?.filter((_e: any) => _e.value > 0);
+        };
+        data.chartList?.map((_e: any) => {
+            renderChart(_e.key, _fn(_e.data));
+        });
     });
 }
 
-const renderChart = () => {
+const renderChart = (key: string, datas: any) => {
     const color = ['#199ED8', '#CCCCCC', '#00FF00'];
-    const datas = pieList.value;
     let sum = 0;
     for (var i of datas) {
         sum += i.value;
@@ -133,16 +144,8 @@ const renderChart = () => {
         ],
     };
     // 绘制图表
-    let myChart = echarts.init(document.getElementById('homeChart4_1'));
+    let myChart = echarts.init(document.getElementById(key));
     myChart.setOption(option);
-
-    // 绘制图表
-    let myChart2 = echarts.init(document.getElementById('homeChart4_2'));
-    myChart2.setOption(option);
-
-    // 绘制图表
-    let myChart3 = echarts.init(document.getElementById('homeChart4_3'));
-    myChart3.setOption(option);
 };
 </script>
 

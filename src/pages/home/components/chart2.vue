@@ -8,7 +8,7 @@ import { computed, watchEffect, nextTick } from 'vue';
 import * as echarts from 'echarts';
 
 interface Props {
-    ylyFlag: any;
+    ylyFlag?: any;
 }
 const $store = useStore(),
     $props = defineProps<Props>(),
@@ -139,7 +139,15 @@ const renderChart1 = (data: any) => {
             xAxis: [
                 {
                     type: 'category',
-                    data: ['1', '2', '3', '4', '5', '6', '7', '8'],
+                    data: [
+                        '12/1',
+                        '12/2',
+                        '12/3',
+                        '12/4',
+                        '12/5',
+                        '12/6',
+                        '12/7',
+                    ],
                     axisLine: {
                         lineStyle: {
                             color: '#33BBFF',

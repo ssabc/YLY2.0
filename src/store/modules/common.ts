@@ -28,7 +28,7 @@ const getters: Getters = {
     isAdmin: (state: State) => {
         const _t = getters.userInfo(state)?.account?.type;
         console.log('类型：', _t);
-        return _t === 'corp';
+        return _t === 'district';
     },
     deptId: () => {
         return getters.userInfo(state)?.account?.id;
@@ -38,7 +38,7 @@ const getters: Getters = {
             ? userInfo
             : JSON.parse(localStorage.getItem('userInfo') || '{}'),
     ylyList: (state: State) => {
-        const _t = getters.userInfo(state)?.account?.dept || [];
+        const _t = getters.userInfo(state)?.account?.group || [];
         console.log('类型：', _t);
         return _t.map((_e: any) => ({
             label: _e.name,

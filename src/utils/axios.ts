@@ -81,6 +81,7 @@ export function request(config: any, params?: Params) {
     // 请求拦截器
     service.interceptors.request.use(
         (config: any) => {
+            console.log('config', config)
             // let cancel: Canceler = (msg?: string) => {
             //     console.info(msg);
             // };

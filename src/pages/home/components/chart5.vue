@@ -42,7 +42,7 @@ import { computed, watchEffect, nextTick } from 'vue';
 import * as echarts from 'echarts';
 
 interface Props {
-    ylyFlag: any;
+    ylyFlag?: any;
 }
 const $store = useStore(),
     $props = defineProps<Props>(),
@@ -245,7 +245,7 @@ const renderChart1 = (data: any) => {
     justify-content: space-around;
 }
 .scroll {
-    height: 200px;
+    height: 150px;
     width: 100%;
     overflow: hidden;
 }

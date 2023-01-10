@@ -1,8 +1,8 @@
 /*
  * @Author: szhao
  * @Date: 2022-12-02 19:32:00
- * @LastEditTime: 2022-12-05 19:55:07
- * @LastEditors: szhao
+ * @LastEditTime: 2023-01-10 22:05:54
+ * @LastEditors: sZhao
  * @Description:
  */
 
@@ -93,4 +93,17 @@ export const dealReqData = function (_d: any) {
         delete _r.date;
     }
     return _r;
+};
+
+export const groupBy = function (arr: any, fn: any) {
+    const group: any = {};
+    arr?.map((item: any) => {
+        const type = JSON.stringify(fn(item));
+        group[type] = group[type] || [];
+        group[type].push(item);
+    });
+
+    return Object.keys(group).map((item) => {
+        return group[item];
+    });
 };

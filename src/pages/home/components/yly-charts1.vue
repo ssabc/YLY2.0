@@ -20,7 +20,7 @@ import { computed, watchEffect, nextTick, reactive } from 'vue';
 import * as echarts from 'echarts';
 
 interface Props {
-    ylyFlag: any;
+    ylyFlag?: any;
 }
 const data = reactive<any>({
         ylyList: [],

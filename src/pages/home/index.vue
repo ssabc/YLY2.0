@@ -14,11 +14,14 @@
                 <div class="column c1 flex1">
                     <div class="box">
                         <div class="title">设备情况</div>
-                        <Device></Device>
+                        <Device :p-data="data.info.DeviceStatus"></Device>
                     </div>
                     <div class="box box2">
                         <div class="title">记录时长分类统计</div>
-                        <Chart1 :yly-flag="true"></Chart1>
+                        <Chart1
+                            :p-data="data.info.FileDurationStat"
+                            :yly-flag="true"
+                        ></Chart1>
                     </div>
                 </div>
                 <div class="column home-img-wrap flex1">
@@ -26,21 +29,21 @@
                         <div class="cell">
                             <div class="label">总时长:</div>
                             <div class="value">
-                                2550
+                                {{ data.CenterStat.TotalFileDuration }}
                                 <span class="unit">分钟</span>
                             </div>
                         </div>
                         <div class="cell">
                             <div class="label">今日新增时长:</div>
                             <div class="value">
-                                50
+                                {{ data.CenterStat.TodayFileDuration }}
                                 <span class="unit">分钟</span>
                             </div>
                         </div>
                         <div class="cell">
                             <div class="label">总访客人数:</div>
                             <div class="value">
-                                120
+                                {{ data.CenterStat.TotalVisitor }}
                                 <span class="unit">人次</span>
                             </div>
                         </div>
@@ -56,7 +59,10 @@
                     </div>
                     <div class="box">
                         <div class="title">服务记录排名（本月）</div>
-                        <Chart3></Chart3>
+                        <Chart3
+                            :p-data="data.info.ServiceDurationRank"
+                            :yly-flag="true"
+                        ></Chart3>
                     </div>
                 </div>
             </div>
@@ -64,7 +70,9 @@
                 <div class="column">
                     <div class="box">
                         <div class="title">记录总时长统计</div>
-                        <Chart4></Chart4>
+                        <Chart4
+                            :p-data="data.info.ServiceDurationRank"
+                        ></Chart4>
                     </div>
                 </div>
                 <div class="column flex1">
@@ -90,7 +98,7 @@
 <script setup lang="ts">
 import { useStore } from 'vuex';
 import { reactive, computed, onMounted } from 'vue';
-import * as echarts from 'echarts';
+import { fetchHomeInfo } from '@/api/app';
 import Device from './components/device.vue';
 import Chart1 from './components/chart1.vue';
 import Chart2 from './components/chart2.vue';
@@ -108,7 +116,9 @@ const $store = useStore(),
     isAdmin = computed(() => $store.getters['common/isAdmin']),
     deptId = computed(() => $store.getters['common/deptId']),
     data = reactive<any>({
+        info: {},
         yly: '',
+        CenterStat: {},
     });
 
 onMounted(() => {
@@ -120,7 +130,19 @@ onMounted(() => {
     //     { value: 10, name: '周医生' },
     //     { value: 24, name: '宋医生' },
     // ]);
+    getHomeInfo();
 });
+
+/**
+ * @description: 获取首页数据
+ */
+function getHomeInfo() {
+    fetchHomeInfo({}).then((res: any) => {
+        console.log(res);
+        data.info = res?.data || {};
+        data.CenterStat = data.info?.CenterStat || {};
+    });
+}
 </script>
 
 <style lang="less" scoped>

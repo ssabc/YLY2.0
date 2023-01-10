@@ -1,3 +1,10 @@
+/*
+ * @Author: sZhao
+ * @Date: 2023-01-08 15:09:44
+ * @LastEditTime: 2023-01-10 21:22:53
+ * @LastEditors: sZhao
+ * @Description:
+ */
 import vue from '@vitejs/plugin-vue';
 import path from 'path';
 import Components from 'unplugin-vue-components/vite';
@@ -32,8 +39,9 @@ export default ({ mode }) => {
         server: {
             proxy: {
                 '/api/': {
-                    target: 'http://119.3.126.12/',
+                    target: 'http://119.3.126.12:3000/',
                     changeOrigin: true,
+                    rewrite: (path) => path.replace(/^\/api/, ''),
                 },
             },
         },

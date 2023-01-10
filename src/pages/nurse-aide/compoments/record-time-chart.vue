@@ -11,7 +11,7 @@ import { computed, watchEffect, nextTick } from 'vue';
 import * as echarts from 'echarts';
 
 interface Props {
-    ylyFlag: any;
+    ylyFlag?: any;
 }
 const $store = useStore(),
     $props = defineProps<Props>(),

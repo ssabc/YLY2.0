@@ -7,7 +7,7 @@
     >
     </GmForm>
     <div class="cells">
-        <div v-for="item in statisList" :key="item.name" class="cell">
+        <div v-for="item in data.statisList" :key="item.name" class="cell">
             <div
                 class="lf icon-wrap"
                 :style="{ 'background-color': item.color }"
@@ -57,16 +57,20 @@
 <script setup lang="ts">
 import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
-import { ref, reactive, computed } from 'vue';
+import { ref, reactive, computed, onMounted } from 'vue';
 import type { FormListProps } from 'GlobComponentsModule';
 import { DiffOutlined } from '@ant-design/icons-vue';
 import Chart2 from './compoments/chart2.vue';
+import { fetchServiceRecord } from '@/api/service-records';
+import { getReqData } from '@/utils/tools';
 
 interface Data {
     formData: {
         inputName?: string;
+        date?: any[];
     };
     list: FormListProps[];
+    statisList?: any[];
 }
 let sendRequest = ref(false);
 
@@ -116,37 +120,8 @@ const $store = useStore(),
         ],
         /** 表单数据 */
         formData: {},
+        statisList: [],
     }),
-    statisList = computed(() => [
-        {
-            name: '值班长记录总时长',
-            value: 100,
-            color: '#1d66d6',
-            icon: DiffOutlined,
-            unit: '分钟',
-        },
-        {
-            name: '服务提供记录总时长',
-            value: 100,
-            color: '#28d094',
-            icon: DiffOutlined,
-            unit: '分钟',
-        },
-        {
-            name: '服务保障记录总时长',
-            value: 100,
-            color: '#FDDB78',
-            icon: DiffOutlined,
-            unit: '分钟',
-        },
-        {
-            name: '服务安全记录总时长',
-            value: 100,
-            color: '#FA746B',
-            icon: DiffOutlined,
-            unit: '分钟',
-        },
-    ]),
     timeList = computed(() => [
         {
             name: '养老院1',
@@ -174,6 +149,60 @@ const $store = useStore(),
             unit: '分钟',
         },
     ]);
+
+onMounted(() => {
+    getInfoAjax();
+});
+
+function getInfoAjax() {
+    const req = getReqData(data.formData);
+    fetchServiceRecord(req).then((res: any) => {
+        // data.DataRecord = res.data?.DataRecord || [];
+        setStatisList(res.data?.TotalDuration || {});
+    });
+}
+
+function setStatisList(_t: any) {
+    const _fn1 = (_d: any) => {
+        const _fn = (_e: any, _key: string) => {
+            return (
+                _e?.filter((_s: any) => _s?.ServiceType === _key)?.[0]
+                    ?.TotalFileDuration || 0
+            );
+        };
+        return [
+            {
+                name: '值班长记录总时长',
+                value: _fn(_d, '值班长'),
+                color: '#1d66d6',
+                icon: DiffOutlined,
+                unit: '分钟',
+            },
+            {
+                name: '服务提供记录总时长',
+                value: _fn(_d, '服务提供'),
+                color: '#28d094',
+                icon: DiffOutlined,
+                unit: '分钟',
+            },
+            {
+                name: '服务保障记录总时长',
+                value: _fn(_d, '服务保障'),
+                color: '#FDDB78',
+                icon: DiffOutlined,
+                unit: '分钟',
+            },
+            {
+                name: '服务安全记录总时长',
+                value: _fn(_d, '服务安全'),
+                color: '#FA746B',
+                icon: DiffOutlined,
+                unit: '分钟',
+            },
+        ];
+    };
+    data.statisList = _fn1(_t);
+}
 </script>
 <style lang="less" scoped>
 .cells {
