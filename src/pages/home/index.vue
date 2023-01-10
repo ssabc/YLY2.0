@@ -230,8 +230,7 @@ onMounted(() => {
     align-items: center;
     color: #56d9ff;
     .value {
-        font-size: 20px;
-        font-weight: bold;
+        font-size: 28px;
     }
 }
 .hgb-wrap {

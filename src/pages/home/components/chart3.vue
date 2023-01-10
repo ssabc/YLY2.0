@@ -1,19 +1,41 @@
 <!--
  * @Author: sZhao
  * @Date: 2023-01-08 16:48:43
- * @LastEditTime: 2023-01-08 17:01:12
- * @LastEditors: sZhao
+ * @LastEditTime: 2023-01-10 19:57:02
+ * @LastEditors: szhao
  * @Description:
 -->
 <template>
-    <GmTable
-        class="table"
-        :bordered="false"
-        v-model:data="data.tableData"
-        v-model:sendRequest="sendRequest"
-        :headers="data.columns"
-        :request-api="repairList"
-    />
+    <div class="like-table">
+        <div class="hd">
+            <div class="tr">
+                <div class="th">排名</div>
+                <div class="th">养老院</div>
+                <div class="th">记录时长(小时)</div>
+                <div class="th">设备号</div>
+                <div class="th">记录类型</div>
+            </div>
+        </div>
+        <div class="bd">
+            <vue3-seamless-scroll
+                :list="data.tableData"
+                :hover="true"
+                class="scroll"
+            >
+                <div
+                    v-for="(item, index) in data.tableData"
+                    :key="item.name"
+                    class="tr"
+                >
+                    <div class="td">{{ index + 1 }}</div>
+                    <div class="td">{{ item.name }}</div>
+                    <div class="td">{{ item.name }}</div>
+                    <div class="td">{{ item.name }}</div>
+                    <div class="td">{{ item.name }}</div>
+                </div>
+            </vue3-seamless-scroll>
+        </div>
+    </div>
 </template>
 
 <script setup lang="ts">
@@ -26,16 +48,41 @@ interface Data {
     columns: ColumnProps[];
 }
 interface Item {
-    deviceId: string;
-    sn: string;
-    groupId: string;
-    upgradeStatus: string;
+    name: string;
 }
 let sendRequest = ref(false);
 
 const data = reactive<Data>({
     /** 列表数据 */
-    tableData: [],
+    tableData: [
+        {
+            name: '养老院1',
+        },
+        {
+            name: '养老院1',
+        },
+        {
+            name: '养老院1',
+        },
+        {
+            name: '养老院1',
+        },
+        {
+            name: '养老院1',
+        },
+        {
+            name: '养老院1',
+        },
+        {
+            name: '养老院1',
+        },
+        {
+            name: '养老院1',
+        },
+        {
+            name: '养老院1',
+        },
+    ],
     /** 列表项 */
     columns: [
         {
@@ -65,18 +112,9 @@ const data = reactive<Data>({
 </script>
 
 <style lang="less" scoped>
-.table {
-    :deep(.ant-table),
-    :deep(.ant-table-placeholder) {
-        background-color: rgba(0, 0, 0, 0);
-        color: #fff;
-    }
-    :deep(.ant-empty-description) {
-        color: #fff;
-    }
-    :deep(.ant-table-thead > tr > th) {
-        background-color: rgba(12, 34, 55, 0.6980392156862745);
-        color: #fff;
-    }
+.scroll {
+    height: 200px;
+    width: 100%;
+    overflow: hidden;
 }
 </style>

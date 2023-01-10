@@ -34,11 +34,13 @@
     "ant-design-vue": "2.2.8",
     "axios": "^0.26.1",
     "echarts": "^5.4.0",
+    "echarts-liquidfill": "^3.1.0",
     "js-md5": "^0.7.3",
     "mathjs": "^11.4.0",
     "qs": "^6.11.0",
     "vue": "^3.2.25",
-    "vue-seamless-scroll": "^1.1.23"
+    "vue-seamless-scroll": "^1.1.23",
+    "vue3-seamless-scroll": "^2.0.1"
   },
   "devDependencies": {
     "@commitlint/cli": "^16.2.3",
