@@ -1,13 +1,19 @@
 <template>
-    <GmForm
-        v-model:data="data.formData"
-        :list="data.list"
-        layout="inline"
-        @on-handle="sendRequest = true"
-    >
-    </GmForm>
+    <div class="cm-box">
+        <GmForm
+            v-model:data="data.formData"
+            :list="data.list"
+            layout="inline"
+            @on-handle="handleSearch"
+        >
+        </GmForm>
+    </div>
     <div class="cells">
-        <div v-for="item in data.statisList" :key="item.name" class="cell">
+        <div
+            v-for="(item, idx) in data.statisList"
+            :key="item.name"
+            class="cell"
+        >
             <div
                 class="lf icon-wrap"
                 :style="{ 'background-color': item.color }"
@@ -22,14 +28,14 @@
                     }}</span>
                     <div class="unit">{{ item.unit }}</div>
                 </div>
-                <div class="bt">查看 〉〉</div>
+                <div class="bt" @click="handleView(idx)">查看 〉〉</div>
             </div>
         </div>
     </div>
-    <div class="row">
+    <div class="row cm-box">
         <div class="column c1">
             <div>数据记录</div>
-            <Chart2 :yly-flag="true"></Chart2>
+            <Chart2 :p-data="data.chartData"></Chart2>
         </div>
         <div class="column c2">
             <div>
@@ -55,14 +61,14 @@
 </template>
 
 <script setup lang="ts">
-import { useStore } from 'vuex';
-import { useRouter } from 'vue-router';
-import { ref, reactive, computed, onMounted } from 'vue';
+import { reactive, computed, onMounted } from 'vue';
 import type { FormListProps } from 'GlobComponentsModule';
 import { DiffOutlined } from '@ant-design/icons-vue';
 import Chart2 from './compoments/chart2.vue';
 import { fetchServiceRecord } from '@/api/service-records';
-import { getReqData } from '@/utils/tools';
+import { getReqData, GetNumberOfDays } from '@/utils/tools';
+import { message as $message } from 'ant-design-vue';
+import { useRouter } from 'vue-router';
 
 interface Data {
     formData: {
@@ -71,26 +77,23 @@ interface Data {
     };
     list: FormListProps[];
     statisList?: any[];
+    chartData?: any;
 }
-let sendRequest = ref(false);
 
-const $store = useStore(),
-    isAdmin = computed(() => $store.getters['common/isAdmin']),
-    $router = useRouter(),
-    data = reactive<Data>({
+const data = reactive<Data>({
         /** 表单list */
         list: [
-            {
-                type: 'select',
-                name: 'status',
-                label: '',
-                width: 160,
-                props: {
-                    placeholder: '请选择记录类型',
-                    allowClear: true,
-                },
-                option: $store.getters['common/recordTypes'] || [],
-            },
+            // {
+            //     type: 'select',
+            //     name: 'service-type',
+            //     label: '',
+            //     width: 160,
+            //     props: {
+            //         placeholder: '请选择记录类型',
+            //         allowClear: true,
+            //     },
+            //     option: $store.getters['common/recordTypes'] || [],
+            // },
             {
                 type: 'range-picker',
                 name: 'date',
@@ -121,7 +124,9 @@ const $store = useStore(),
         /** 表单数据 */
         formData: {},
         statisList: [],
+        chartData: [],
     }),
+    $router = useRouter(),
     timeList = computed(() => [
         {
             name: '养老院1',
@@ -155,10 +160,26 @@ onMounted(() => {
 });
 
 function getInfoAjax() {
+    if (
+        data.formData.date?.[0] &&
+        data.formData.date?.[1] &&
+        GetNumberOfDays(data.formData.date[0], data.formData.date[1]) > 7
+    ) {
+        $message.error('日期区间不能超过7天');
+        return;
+    }
     const req = getReqData(data.formData);
     fetchServiceRecord(req).then((res: any) => {
-        // data.DataRecord = res.data?.DataRecord || [];
         setStatisList(res.data?.TotalDuration || {});
+        data.chartData = {
+            chart1: {
+                legend: data.statisList?.map((_e) => ({
+                    name: _e.aliseName,
+                    color: _e.color,
+                })),
+                list: res.data?.DataRecord || [],
+            },
+        };
     });
 }
 
@@ -173,6 +194,7 @@ function setStatisList(_t: any) {
         return [
             {
                 name: '值班长记录总时长',
+                aliseName: '值班长',
                 value: _fn(_d, '值班长'),
                 color: '#1d66d6',
                 icon: DiffOutlined,
@@ -180,6 +202,7 @@ function setStatisList(_t: any) {
             },
             {
                 name: '服务提供记录总时长',
+                aliseName: '服务提供',
                 value: _fn(_d, '服务提供'),
                 color: '#28d094',
                 icon: DiffOutlined,
@@ -187,6 +210,7 @@ function setStatisList(_t: any) {
             },
             {
                 name: '服务保障记录总时长',
+                aliseName: '服务保障',
                 value: _fn(_d, '服务保障'),
                 color: '#FDDB78',
                 icon: DiffOutlined,
@@ -194,6 +218,7 @@ function setStatisList(_t: any) {
             },
             {
                 name: '服务安全记录总时长',
+                aliseName: '服务安全',
                 value: _fn(_d, '服务安全'),
                 color: '#FA746B',
                 icon: DiffOutlined,
@@ -203,6 +228,14 @@ function setStatisList(_t: any) {
     };
     data.statisList = _fn1(_t);
 }
+
+function handleSearch() {
+    getInfoAjax();
+}
+
+function handleView(idx: number) {
+    $router.push(`/service-records/list/${idx}`);
+}
 </script>
 <style lang="less" scoped>
 .cells {
@@ -210,7 +243,7 @@ function setStatisList(_t: any) {
     padding: 10px 0;
     .cell {
         flex: 1;
-        background-color: #efefef;
+        background-color: #fff;
         border-radius: 4px;
         margin-right: 10px;
         display: flex;

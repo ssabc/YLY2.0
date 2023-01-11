@@ -1,30 +1,31 @@
 <template>
-    <GmForm
-        v-model:data="data.formData"
-        :list="data.list"
-        layout="inline"
-        @on-handle="sendRequest = true"
-    >
-    </GmForm>
-    <br />
+    <div class="cm-box">
+        <GmForm
+            v-model:data="data.formData"
+            :list="data.list"
+            layout="inline"
+            @on-handle="sendRequest = true"
+        >
+        </GmForm>
+    </div>
     <div class="row">
-        <div class="column c1">
+        <div class="column c1 cm-box mr-15">
             <div>访客数量统计（每周）</div>
             <Chart1 :yly-flag="true"></Chart1>
         </div>
         <div class="column c1 c2">
-            <div>
+            <div class="cm-box">
                 <div>采集柜在线统计</div>
-                <Chart2 :yly-flag="true"></Chart2>
+                <Chart4 :yly-flag="true"></Chart4>
             </div>
-            <div>
+            <div class="cm-box">
                 <div>数字哨兵在线统计</div>
-                <Chart3 :yly-flag="true"></Chart3>
+                <Chart5 :yly-flag="true"></Chart5>
             </div>
         </div>
     </div>
-    <div>
-        <div>在线记录</div>
+    <div class="cm-box">
+        <div class="table-title">在线记录</div>
         <a-tabs v-model:active-key="data.activeKey">
             <a-tab-pane
                 v-for="item in data.tabs"
@@ -36,7 +37,7 @@
             v-model:data="data.tableData"
             v-model:sendRequest="sendRequest"
             :headers="data.columns"
-            :request-api="repairList"
+            :request-api="fetchServiceRecord"
             :send-data="dealReqData(data.formData)"
         />
     </div>
@@ -47,11 +48,11 @@ import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
 import { ref, reactive, computed } from 'vue';
 import type { ColumnProps, FormListProps } from 'GlobComponentsModule';
-import { repairList } from '@/api/app';
+import { fetchServiceRecord } from '@/api/service-records';
 import { dealReqData } from '@/utils/tools';
 import Chart1 from '../compoments/chart1.vue';
-import Chart2 from '../compoments/chart2.vue';
-import Chart3 from '../compoments/chart3.vue';
+import Chart4 from '../compoments/chart4.vue';
+import Chart5 from '../compoments/chart5.vue';
 
 interface Data {
     activeKey?: string;
@@ -183,5 +184,8 @@ const $store = useStore(),
             flex: 1;
         }
     }
+}
+.mr-15 {
+    margin-right: 15px;
 }
 </style>

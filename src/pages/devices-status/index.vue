@@ -20,19 +20,17 @@
         </div>
     </div>
     <div class="row">
-        <div class="column c1 c2">
-            <div>
-                <div>采集柜在线统计</div>
-                <Chart2 :yly-flag="true"></Chart2>
-            </div>
-            <div>
-                <div>数字哨兵在线统计</div>
-                <Chart3 :yly-flag="true"></Chart3>
-            </div>
+        <div class="column c1 cm-box mr-15">
+            <div>采集柜在线统计</div>
+            <Chart2 :yly-flag="true"></Chart2>
+        </div>
+        <div class="column c1 cm-box">
+            <div>数字哨兵在线统计</div>
+            <Chart3 :yly-flag="true"></Chart3>
         </div>
     </div>
     <div class="row">
-        <div class="column c1">
+        <div class="column c1 cm-box">
             <div>访客数量统计（每周）</div>
             <Chart1 :yly-flag="true"></Chart1>
         </div>
@@ -141,7 +139,7 @@ const $store = useStore(),
     padding: 10px 0;
     .cell {
         flex: 1;
-        background-color: #efefef;
+        background-color: #fff;
         border-radius: 4px;
         margin-right: 10px;
         display: flex;
@@ -183,6 +181,9 @@ const $store = useStore(),
             }
         }
     }
+}
+.mr-15 {
+    margin-right: 15px;
 }
 .row {
     display: flex;

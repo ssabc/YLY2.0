@@ -1,14 +1,15 @@
 <template>
-    <GmForm
-        v-model:data="data.formData"
-        :list="data.list"
-        layout="inline"
-        @on-handle="sendRequest = true"
-    >
-    </GmForm>
-    <br />
-    <div>
-        <div>在线记录</div>
+    <div class="cm-box">
+        <GmForm
+            v-model:data="data.formData"
+            :list="data.list"
+            layout="inline"
+            @on-handle="sendRequest = true"
+        >
+        </GmForm>
+    </div>
+    <div class="cm-box">
+        <div class="table-title">在线记录</div>
         <a-tabs v-model:active-key="data.activeKey">
             <a-tab-pane
                 v-for="item in data.tabs"
@@ -20,7 +21,7 @@
             v-model:data="data.tableData"
             v-model:sendRequest="sendRequest"
             :headers="data.columns"
-            :request-api="repairList"
+            :request-api="fetchServiceRecord"
             :send-data="dealReqData(data.formData)"
             @on-handle="handleClick"
         />
@@ -36,7 +37,7 @@ import type {
     FormListProps,
     TableHandleOptItem,
 } from 'GlobComponentsModule';
-import { repairList } from '@/api/app';
+import { fetchServiceRecord } from '@/api/service-records';
 import { getOpsOptions, getNowDate, dealReqData } from '@/utils/tools';
 import { message as $message } from 'ant-design-vue';
 import { Modal } from 'ant-design-vue';
@@ -178,7 +179,7 @@ function handleClick(item: TableHandleOptItem, row: any) {
         case '点击查看':
             handleToDetail(rowData);
             break;
-        case '下载本地':
+        case '下载':
             handleDownload(rowData);
             break;
         case '删除':
@@ -189,7 +190,7 @@ function handleClick(item: TableHandleOptItem, row: any) {
 }
 function handleToDetail(row: any) {
     console.log(row, '---');
-    $router.push('/service-records/video-detail');
+    $router.push('/device-assign/detail');
 }
 
 function handleDelete() {

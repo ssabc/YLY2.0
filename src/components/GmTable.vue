@@ -165,12 +165,15 @@ function fetchTableData() {
         })
             .then((res) => {
                 console.log('es.data', res.data);
-                if (res.data?.List) {
-                    tableData.value = res.data?.List ?? [];
+                if (res.data?.Data) {
+                    tableData.value = res.data?.Data ?? [];
                     pagination.total = res.data?.Total || 0;
+                } else if (res.data?.DataRecord) {
+                    tableData.value = res.data?.DataRecord ?? [];
+                    pagination.total = res.data?.DataRecord.length || 0;
                 } else {
-                    tableData.value = res.data ?? [];
-                    pagination.total = res.data?.length || 0;
+                    tableData.value = [];
+                    pagination.total = 0;
                 }
                 $emit('update:sendRequest', false);
                 loading.value = false;

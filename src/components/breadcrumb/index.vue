@@ -1,19 +1,20 @@
 <template>
-    <a-breadcrumb
-        v-if="showBreadcrumb"
-        separator=""
-        class="breadcrumb select-none"
-    >
-        <template v-for="(item, index) of routeInfo" :key="index">
-            <a-breadcrumb-item
-                v-if="item && item.meta && item.meta.title !== '列表'"
-                class="breadcrumb-item"
-                @click="go(item)"
-            >
-                {{ item.meta.title }}
-            </a-breadcrumb-item>
-        </template>
-    </a-breadcrumb>
+    <div v-if="showBreadcrumb" class="flex">
+        <a-breadcrumb separator="" class="breadcrumb select-none">
+            <template v-for="(item, index) of routeInfo" :key="index">
+                <a-breadcrumb-item
+                    v-if="item && item.meta && item.meta.title !== '列表'"
+                    class="breadcrumb-item"
+                    @click="go(item)"
+                >
+                    {{ item.meta.title }}
+                </a-breadcrumb-item>
+            </template>
+        </a-breadcrumb>
+        <div v-show="$route.meta.isShowBack" class="back" @click="handleBack">
+            <div>《 返回</div>
+        </div>
+    </div>
 </template>
 
 <script setup lang="ts">
@@ -40,7 +41,6 @@ let routeInfo = ref<RouteInfo>({}), // 路由信息
     showBreadcrumb = ref<boolean>(false);
 
 showBreadcrumb = computed<boolean>(() => {
-    console.log($props.currentMenu?.meta, '44444444');
     return (
         !$props.currentMenu?.meta?.hiddenBreadCrumb &&
         !!$props.currentMenu?.meta?.title
@@ -50,7 +50,6 @@ routeInfo = computed<RouteInfo>(() => {
     const info: { [key: string]: RouteItem } = {},
         currentRoute = $props.currentRoute,
         currPath = $route.path;
-    console.log('currentRoute', currentRoute);
     for (const [key, item] of Object.entries(currentRoute)) {
         if (key === 'meta') {
             info['1'] = currentRoute;
@@ -99,10 +98,15 @@ function go(item: RouteItem) {
                 : item.name,
     });
 }
+
+function handleBack() {
+    $router.go(-1);
+}
 </script>
 
 <style lang="less" scoped>
 .breadcrumb {
+    flex: 1;
     padding-bottom: 1rem;
     .breadcrumb-item {
         display: block;
@@ -122,6 +126,18 @@ function go(item: RouteItem) {
     }
     .breadcrumb-item:hover {
         color: rgb(0 0 0 / 85%);
+        cursor: pointer;
+    }
+}
+.back {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-bottom: 1rem;
+    & > div {
+        background-color: #fff;
+        line-height: 42px;
+        padding: 0 10px;
         cursor: pointer;
     }
 }

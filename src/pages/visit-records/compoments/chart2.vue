@@ -299,6 +299,6 @@ const renderChart1 = (data: any) => {
 <style lang="less" scoped>
 .chart {
     width: 100%;
-    height: 400px;
+    height: 260px;
 }
 </style>

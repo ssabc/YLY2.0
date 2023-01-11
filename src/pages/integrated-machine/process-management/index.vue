@@ -183,7 +183,7 @@ function handleClick(item: TableHandleOptItem, row: any) {
                 row: rowData,
             });
             break;
-        case '下载本地':
+        case '下载':
             handleDownload(rowData);
             break;
         case '删除':

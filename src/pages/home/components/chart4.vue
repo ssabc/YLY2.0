@@ -58,7 +58,7 @@ watchEffect(() => {
 });
 
 function initFn(_list: any) {
-    let _res = groupBy(_list, function (_e: any) {
+    const _res = groupBy(_list, function (_e: any) {
         return _e.GroupName;
     });
     data.chartList = _res?.map((_e: any, index: number) => {
@@ -73,7 +73,6 @@ function initFn(_list: any) {
     console.log($props.pData, data.chartList);
     nextTick(() => {
         const _fn = (_d: any) => {
-            console.log(_d, '3343344');
             const _tmp = JSON.parse(JSON.stringify(pieList.value));
             _tmp?.forEach((_e: any) => {
                 _e.value =
@@ -89,6 +88,7 @@ function initFn(_list: any) {
 }
 
 const renderChart = (key: string, datas: any) => {
+    // 1212 [{"name":"服务提供","color":"#199ED8","value":11}]
     const color = ['#199ED8', '#CCCCCC', '#00FF00'];
     let sum = 0;
     for (var i of datas) {

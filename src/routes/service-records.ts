@@ -1,7 +1,7 @@
 /*
  * @Author: szhao
  * @Date: 2022-12-02 16:12:30
- * @LastEditTime: 2023-01-10 13:54:01
+ * @LastEditTime: 2023-01-11 15:30:55
  * @LastEditors: szhao
  * @Description:
  */
@@ -29,40 +29,38 @@ export const r: RouteItem[] = [
             {
                 name: 'ServiceRecordsVideoDetail',
                 path: 'video-detail',
-                meta: { title: '视频详情', hidden: true },
-                component: lazyImportPagesRootVueFile('video-detail'),
+                meta: { title: '视频详情', hidden: true, isShowBack: true },
+                component: lazyImportPagesRootVueFile('service-records/detail'),
+            },
+            {
+                name: 'ServiceRecordsList',
+                path: 'list/:type',
+                meta: { title: '记录', hidden: true },
+                component: lazyImportPagesRootVueFile('service-records/list'),
             },
             {
                 name: 'ChiefOperator',
                 path: 'chief-operator',
+                redirect: '/service-records/list/0',
                 meta: { title: '值班长记录' },
-                component: lazyImportPagesRootVueFile(
-                    'service-records/chief-operator'
-                ),
             },
             {
                 name: 'ServiceProvider',
                 path: 'service-provider',
+                redirect: '/service-records/list/1',
                 meta: { title: '服务提供记录' },
-                component: lazyImportPagesRootVueFile(
-                    'service-records/service-provider'
-                ),
             },
             {
                 name: 'ServiceEnsure',
                 path: 'service-ensure',
+                redirect: '/service-records/list/2',
                 meta: { title: '服务保障记录' },
-                component: lazyImportPagesRootVueFile(
-                    'service-records/service-ensure'
-                ),
             },
             {
                 name: 'ServiceSecure',
                 path: 'service-secure',
+                redirect: '/service-records/list/3',
                 meta: { title: '服务安全记录' },
-                component: lazyImportPagesRootVueFile(
-                    'service-records/service-secure'
-                ),
             },
         ],
     },

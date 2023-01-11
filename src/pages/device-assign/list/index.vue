@@ -7,11 +7,9 @@
             @on-handle="handleFormClick"
         >
         </GmForm>
-        <br />
-        <recordTimeChart :p-data="data.chartData"></recordTimeChart>
     </div>
     <div class="cm-box">
-        <div class="table-title">访客明细</div>
+        <div class="table-title">视频记录</div>
         <GmTable
             v-model:data="data.tableData"
             v-model:sendRequest="sendRequest"
@@ -32,16 +30,14 @@ import type {
     FormListProps,
     TableHandleOptItem,
 } from 'GlobComponentsModule';
-import { fetchServiceStat, fetchServiceFileList } from '@/api/service-records';
+import { fetchServiceFileList } from '@/api/service-records';
 import {
     getOpsOptions,
     getNowDate,
     dealReqData,
-    getReqData,
     GetNumberOfDays,
 } from '@/utils/tools';
 import { message as $message } from 'ant-design-vue';
-import recordTimeChart from '@/pages/service-records/compoments/record-time-chart.vue';
 import { Modal } from 'ant-design-vue';
 import { ExclamationCircleOutlined } from '@ant-design/icons-vue';
 interface Data {
@@ -70,6 +66,48 @@ const $store = useStore(),
     data = reactive<Data>({
         /** 表单list */
         list: [
+            {
+                type: 'select',
+                name: 'serviceType',
+                label: '',
+                width: 160,
+                props: {
+                    placeholder: '请选择设备类别',
+                    allowClear: true,
+                },
+                option: $store.getters['common/recordTypes'] || [],
+            },
+            {
+                type: 'input',
+                name: 'name',
+                label: '',
+                props: {
+                    placeholder: '请输入设备编号',
+                    allowClear: true,
+                },
+            },
+            {
+                type: 'select',
+                name: 'serviceType',
+                label: '',
+                width: 160,
+                props: {
+                    placeholder: '请选择设备分类',
+                    allowClear: true,
+                },
+                option: $store.getters['common/recordTypes'] || [],
+            },
+            {
+                type: 'select',
+                name: 'serviceType',
+                label: '',
+                width: 160,
+                props: {
+                    placeholder: '请选择设备分类状态',
+                    allowClear: true,
+                },
+                option: $store.getters['common/recordTypes'] || [],
+            },
             {
                 type: 'range-picker',
                 name: 'date',
@@ -112,17 +150,45 @@ const $store = useStore(),
                 dataIndex: 'index',
             },
             {
-                title: '日期',
-                dataIndex: 'Name',
+                title: '设备类别',
+                dataIndex: 'Sn',
             },
             {
-                title: '养老院名称',
+                title: '设备编号',
+                dataIndex: 'Sn',
+            },
+            {
+                title: '设备分类',
+                dataIndex: 'Sn',
+            },
+            {
+                title: '所属养老院',
                 dataIndex: 'GroupName',
+                hidden: !isAdmin.value,
                 minWidth: 120,
             },
             {
-                title: '访问人数',
-                dataIndex: 'Name',
+                title: '运行状态',
+                dataIndex: 'Sn',
+            },
+            {
+                title: '分配日期',
+                dataIndex: 'Sn',
+            },
+            {
+                title: '操作',
+                type: 'handle',
+                minWidth: 240,
+                option: [
+                    {
+                        name: '查看详情',
+                        type: 'view',
+                    },
+                    {
+                        name: '编辑',
+                        type: 'edit',
+                    },
+                ],
             },
         ],
         chartData: [],
@@ -153,26 +219,7 @@ function refreshList() {
         $message.error('日期区间不能超过7天');
         return;
     }
-    getInfoAjax();
     sendRequest.value = true;
-}
-
-function getInfoAjax() {
-    if (
-        data.formData.date?.[0] &&
-        data.formData.date?.[1] &&
-        GetNumberOfDays(data.formData.date[0], data.formData.date[1]) > 7
-    ) {
-        // $message.error('日期区间不能超过7天');
-        return;
-    }
-    const req = getReqData(data.formData);
-    fetchServiceStat(req).then((res: any) => {
-        data.chartData = {
-            name: '访客数量统计（每周）',
-            list: res.data || [],
-        };
-    });
 }
 
 function handleFormClick(e: any) {
@@ -183,5 +230,35 @@ function handleFormClick(e: any) {
             break;
         default:
     }
+}
+/**
+ * @description: table 项操作
+ */
+function handleClick(item: TableHandleOptItem, row: any) {
+    const { name } = item;
+    const rowData = toRaw(row);
+    switch (name) {
+        case '查看详情':
+            handleToDetail(rowData);
+            break;
+        case '编辑':
+            handleDelete();
+            break;
+        default:
+    }
+}
+function handleToDetail(row: any) {
+    console.log(row, '---');
+    $router.push('/device-assign/detail');
+}
+
+function handleDelete() {
+    Modal.confirm({
+        content: '确定删除吗？',
+        icon: createVNode(ExclamationCircleOutlined),
+        onCancel() {
+            Modal.destroyAll();
+        },
+    });
 }
 </script>

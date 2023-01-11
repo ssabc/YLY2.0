@@ -1,7 +1,7 @@
 <!--
  * @Author: szhao
  * @Date: 2022-11-30 14:10:30
- * @LastEditTime: 2023-01-07 10:20:38
+ * @LastEditTime: 2023-01-11 16:56:49
  * @LastEditors: szhao
  * @Description:
 -->
@@ -38,3 +38,18 @@ watch(
     }
 );
 </script>
+<style lang="less">
+.cm-box {
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 10px 15px;
+    margin-bottom: 1rem;
+}
+
+.marginBt10 {
+    margin-bottom: 1rem;
+}
+.table-title {
+    padding: 10px 0;
+}
+</style>

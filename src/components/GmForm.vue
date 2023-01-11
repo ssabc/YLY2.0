@@ -1,4 +1,3 @@
-
 <template>
     <a-form
         ref="refForm"
@@ -140,12 +139,22 @@
 <script setup lang="ts">
 import type { FormListProps } from 'GlobComponentsModule';
 import { ref, computed } from 'vue';
+import { Moment } from 'moment';
 
 interface Props {
     data: any; // 表单数据对象
     list: FormListProps[]; // 表单项集合
     rules?: object; // 表单验证规则
 }
+
+const dates = ref<Moment[]>([]);
+const disabledDate = (current: Moment) => {
+    if (!dates.value || dates.value.length === 0) {
+        return false;
+    }
+    const diffDate = current.diff(dates.value[0], 'days');
+    return Math.abs(diffDate) > 7;
+};
 
 const $props = defineProps<Props>(),
     $emit = defineEmits<{

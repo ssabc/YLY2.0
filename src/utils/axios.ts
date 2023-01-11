@@ -1,9 +1,10 @@
-import type { AxiosInstance, Canceler } from 'axios';
+import type { AxiosInstance } from 'axios';
 import axios from 'axios';
 import { message as $message } from 'ant-design-vue';
 import { getType } from '@/utils/common';
 import $store from '@/store/index';
 import qs from 'qs';
+import { toLine } from '@/utils/tools';
 
 interface Params {
     resFlag?: boolean; // true：自定义处理接口响应数据，不走通用的响应数据处理逻辑
@@ -72,6 +73,16 @@ function showMessage(msg: string) {
     }
 }
 
+function dealwidthReqData(_d) {
+    const _r = {};
+    Object.keys(_d).forEach((_k: any) => {
+        _r[toLine(_k)] = _d[_k];
+        console.log(_k);
+    });
+    console.log(_r);
+    return _r;
+}
+
 export function request(config: any, params?: Params) {
     const service: AxiosInstance = axios.create({
         baseURL: '/',
@@ -81,7 +92,7 @@ export function request(config: any, params?: Params) {
     // 请求拦截器
     service.interceptors.request.use(
         (config: any) => {
-            console.log('config', config)
+            console.log('config', config);
             // let cancel: Canceler = (msg?: string) => {
             //     console.info(msg);
             // };
@@ -96,7 +107,7 @@ export function request(config: any, params?: Params) {
             params && params.showLoading && $message.loading('加载中...', 0);
 
             config.data = qs.stringify({
-                ...config.data,
+                ...dealwidthReqData(config.data),
                 token: $store.getters['common/userInfo']?.token,
             });
             config.headers['Content-Type'] =

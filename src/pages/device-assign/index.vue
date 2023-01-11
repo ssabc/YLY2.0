@@ -26,15 +26,17 @@
             </div>
         </div>
     </div>
-    <div>分配明细</div>
-    <GmTable
-        v-model:data="data.tableData"
-        v-model:sendRequest="sendRequest"
-        :headers="data.columns"
-        :request-api="repairList"
-        :send-data="dealReqData(data.formData)"
-        @on-handle="handleClick"
-    />
+    <div class="cm-box">
+        <div class="table-title">分配明细</div>
+        <GmTable
+            v-model:data="data.tableData"
+            v-model:sendRequest="sendRequest"
+            :headers="data.columns"
+            :request-api="fetchServiceRecord"
+            :send-data="dealReqData(data.formData)"
+            @on-handle="handleClick"
+        />
+    </div>
 </template>
 
 <script setup lang="ts">
@@ -44,7 +46,7 @@ import { ref, reactive, computed, toRaw } from 'vue';
 import type { FormListProps } from 'GlobComponentsModule';
 import { DiffOutlined } from '@ant-design/icons-vue';
 import type { ColumnProps, TableHandleOptItem } from 'GlobComponentsModule';
-import { repairList } from '@/api/app';
+import { fetchServiceRecord } from '@/api/service-records';
 import { getNowDate, dealReqData } from '@/utils/tools';
 
 interface Data {
@@ -236,7 +238,7 @@ function handleToDetail(row: any) {
     padding: 10px 0;
     .cell {
         flex: 1;
-        background-color: #efefef;
+        background-color: #fff;
         border-radius: 4px;
         margin-right: 10px;
         display: flex;

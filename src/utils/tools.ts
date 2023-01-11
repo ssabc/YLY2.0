@@ -1,8 +1,8 @@
 /*
  * @Author: szhao
  * @Date: 2022-12-02 19:32:00
- * @LastEditTime: 2023-01-10 22:05:54
- * @LastEditors: sZhao
+ * @LastEditTime: 2023-01-11 16:30:47
+ * @LastEditors: szhao
  * @Description:
  */
 
@@ -10,11 +10,11 @@ export const getOpsOptions = function (_v: any) {
     const _b = [
         {
             name: '点击查看',
-            type: 'edit',
+            type: 'view',
         },
         {
-            name: '下载本地',
-            type: 'edit',
+            name: '下载',
+            type: 'download',
         },
     ];
     if (_v.value) {
@@ -22,7 +22,7 @@ export const getOpsOptions = function (_v: any) {
             ..._b,
             {
                 name: '删除',
-                type: 'edit',
+                type: 'delete',
             },
         ];
     }
@@ -87,8 +87,8 @@ export const getReqData = function (_d: any, activeKey: string) {
 export const dealReqData = function (_d: any) {
     const _r = JSON.parse(JSON.stringify(_d));
     if (_r.date?.[0]) {
-        _r.date[0] = _r.date[0] + 'T00:00:00';
-        _r.date[1] = _r.date[1] + 'T23:59:59';
+        // _r.date[0] = _r.date[0] + 'T00:00:00';
+        // _r.date[1] = _r.date[1] + 'T23:59:59';
         _r['date-range'] = _r.date?.join('~');
         delete _r.date;
     }
@@ -106,4 +106,17 @@ export const groupBy = function (arr: any, fn: any) {
     return Object.keys(group).map((item) => {
         return group[item];
     });
+};
+
+export const GetNumberOfDays = function (date1: any, date2: any) {
+    //获得天数
+    //date1：开始日期，date2结束日期
+    const a1 = Date.parse(new Date(date1));
+    const a2 = Date.parse(new Date(date2));
+    const day = parseInt((a2 - a1) / (1000 * 60 * 60 * 24)); //核心：时间戳相减，然后除以天数
+    return day;
+};
+
+export const toLine = function (name) {
+    return name.replace(/([A-Z])/g, '-$1').toLowerCase();
 };

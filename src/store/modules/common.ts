@@ -69,19 +69,19 @@ const getters: Getters = {
         return [
             {
                 label: '值班长',
-                value: '0',
+                value: '值班长',
             },
             {
                 label: '服务提供',
-                value: '1',
+                value: '服务提供',
             },
             {
                 label: '服务保障',
-                value: '2',
+                value: '服务保障',
             },
             {
                 label: '服务安全',
-                value: '3',
+                value: '服务安全',
             },
         ];
     },

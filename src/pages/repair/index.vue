@@ -11,7 +11,7 @@
         v-model:data="data.tableData"
         v-model:sendRequest="sendRequest"
         :headers="data.columns"
-        :request-api="repairList"
+        :request-api="fetchServiceRecord"
         :send-data="dealReqData(data.formData)"
         @on-handle="handleClick"
     />
@@ -26,7 +26,7 @@ import type {
     FormListProps,
     TableHandleOptItem,
 } from 'GlobComponentsModule';
-import { repairList, oneRepair, repaiConfirm } from '@/api/app';
+import { fetchServiceRecord, oneRepair, repaiConfirm } from '@/api/app';
 import { getNowDate, dealReqData } from '@/utils/tools';
 import { message as $message } from 'ant-design-vue';
 

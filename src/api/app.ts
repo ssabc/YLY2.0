@@ -47,7 +47,7 @@ export function fetchCarerWarning(data: any) {
 }
 
 /** 报修列表 */
-export function repairList(data: any) {
+export function fetchServiceRecord(data: any) {
     return request({
         url: `${prefix}/manage/report-repair`,
         method: 'post',

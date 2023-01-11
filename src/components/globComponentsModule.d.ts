@@ -1,7 +1,7 @@
 /*
  * @Author: zhaoshan
  * @Date: 2022-11-30 14:10:30
- * @LastEditTime: 2022-12-05 19:45:26
+ * @LastEditTime: 2023-01-11 11:07:57
  * @LastEditors: szhao
  * @Description:
  */
@@ -61,6 +61,7 @@ declare module 'GlobComponentsModule' {
         valueName?: 'value' | string;
         width?: string | number;
         colon?: boolean;
+        disabledDate?: any;
     }
 
     export interface ModalData {

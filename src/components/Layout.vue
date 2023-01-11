@@ -43,16 +43,18 @@
                     </template>
                 </a-menu>
             </a-layout-sider>
-            <a-layout-content class="flex flex-col overflow-y-scroll p-4">
+            <a-layout-content class="flex flex-col overflow-y-scroll">
+                <!-- <div class="flex flex-col overflow-y-scroll"> -->
                 <RouteBreadcrumb
                     :current-menu="data.currentMenu"
                     :current-route="data.currentRoute"
                     :jump-route="jumpRoute"
                     :second-level-route-index="secondLevelRouteIndex"
                 />
-                <a-card :bordered="false" class="flex-1">
+                <a-card :bordered="false" class="main-content flex-1">
                     <ViewRouter />
                 </a-card>
+                <!-- </div> -->
             </a-layout-content>
         </a-layout>
         <ViewRouter v-else />
@@ -68,7 +70,6 @@ import { useRouter, useRoute } from 'vue-router';
 import { watch } from 'vue';
 import RouteBreadcrumb from './breadcrumb/index.vue';
 import type { RouteItem } from 'RouterModule';
-import { fetchWarningCount } from '@/api/app';
 
 interface Data {
     parentPath: string;
@@ -156,6 +157,9 @@ watch(
                         return r;
                     });
                 } else {
+                    if (ele.redirect && currentPath == ele.redirect) {
+                        return true;
+                    }
                     isRes = childPath.endsWith(ele.path);
                 }
 
@@ -176,6 +180,10 @@ watch(
 </script>
 
 <style lang="less" scoped>
+:deep(.main-content .ant-card-body) {
+    background-color: rgb(240, 242, 245);
+    padding: 0 1rem;
+}
 .base-layout {
     .ant-layout-sider {
         // background: #fafafa;

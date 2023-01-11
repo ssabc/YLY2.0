@@ -1,11 +1,4 @@
 <template>
-    <GmForm
-        v-model:data="data.formData"
-        :list="data.list"
-        layout="inline"
-        @on-handle="sendRequest = true"
-    >
-    </GmForm>
     <div class="cells">
         <div v-for="item in statisList" :key="item.name" class="cell">
             <div
@@ -26,24 +19,24 @@
             </div>
         </div>
     </div>
-    <div class="row">
-        <div class="column c1">
+    <div class="row chart">
+        <div class="column c1 cm-box" style="margin-right: 10px">
             <div>护工帮使用情况</div>
-            <Chart1 :yly-flag="true"></Chart1>
+            <Chart1></Chart1>
         </div>
-        <div class="column c1">
+        <div class="column c2 cm-box">
             <div>护工帮数据统计</div>
-            <Chart2 :yly-flag="true"></Chart2>
+            <Chart2></Chart2>
         </div>
     </div>
-    <div class="row">
-        <div class="column c1">
-            <div>24小时呼叫记录</div>
+    <div class="row cm-box">
+        <div class="column c-full">
+            <div class="table-title">24小时呼叫记录</div>
             <GmTable
                 v-model:data="data.tableData"
                 v-model:sendRequest="sendRequest"
                 :headers="data.columns"
-                :request-api="repairList"
+                :request-api="fetchServiceRecord"
                 :send-data="dealReqData(data.formData)"
                 @on-handle="handleClick"
             />
@@ -64,7 +57,7 @@ import { DiffOutlined } from '@ant-design/icons-vue';
 import Chart1 from './compoments/chart1.vue';
 import Chart2 from './compoments/chart2.vue';
 import { getOpsOptions, getNowDate, dealReqData } from '@/utils/tools';
-import { repairList } from '@/api/app';
+import { fetchServiceRecord } from '@/api/service-records';
 import { message as $message } from 'ant-design-vue';
 import { Modal } from 'ant-design-vue';
 import { ExclamationCircleOutlined } from '@ant-design/icons-vue';
@@ -225,7 +218,7 @@ function handleClick(item: TableHandleOptItem, row: any) {
         case '点击查看':
             handleToDetail(rowData);
             break;
-        case '下载本地':
+        case '下载':
             handleDownload(rowData);
             break;
         case '删除':
@@ -276,7 +269,7 @@ function handleDownload(row: any) {
     padding: 10px 0;
     .cell {
         flex: 1;
-        background-color: #efefef;
+        background-color: #fff;
         border-radius: 4px;
         margin-right: 10px;
         display: flex;
@@ -322,7 +315,15 @@ function handleDownload(row: any) {
 .row {
     display: flex;
     .column {
-        &.c1 {
+        &.c-full {
+            flex: 1;
+        }
+    }
+    &.chart {
+        .c1 {
+            width: 400px;
+        }
+        .c2 {
             flex: 1;
         }
     }

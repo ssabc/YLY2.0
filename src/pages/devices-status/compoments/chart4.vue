@@ -1,5 +1,5 @@
 <template>
-    <div id="deviceStatusChart3" class="chart"></div>
+    <div id="deviceStatusChart4" class="chart"></div>
 </template>
 
 <script setup lang="ts">
@@ -169,12 +169,11 @@ const renderChart1 = (data: any) => {
                             backgroundColor: 'rgba(0,0,0,0)',
                         },
                     },
-                    boundaryGap: false,
                 },
             ],
             yAxis: [
                 {
-                    name: '(人次)',
+                    name: '',
                     axisTick: {
                         show: false,
                     },
@@ -197,7 +196,7 @@ const renderChart1 = (data: any) => {
             series: [
                 {
                     name: '养老院1',
-                    type: 'line',
+                    type: 'bar',
                     data: [100, 20, 30, 102, 15, 30, 20, 18],
                     symbolSize: 1,
                     symbol: 'circle',
@@ -228,7 +227,7 @@ const renderChart1 = (data: any) => {
                 },
                 {
                     name: '养老院2',
-                    type: 'line',
+                    type: 'bar',
                     data: [20, 12, 11, 14, 25, 16, 10, 20],
                     symbolSize: 1,
                     symbol: 'circle',
@@ -259,7 +258,7 @@ const renderChart1 = (data: any) => {
                 },
                 {
                     name: '养老院3',
-                    type: 'line',
+                    type: 'bar',
                     data: [150, 120, 170, 140, 100, 160, 110, 110],
                     symbolSize: 1,
                     symbol: 'circle',
@@ -291,7 +290,7 @@ const renderChart1 = (data: any) => {
             ],
         };
     // 绘制图表
-    let myChart = echarts.init(document.getElementById('deviceStatusChart3'));
+    let myChart = echarts.init(document.getElementById('deviceStatusChart4'));
     myChart.setOption(option);
 };
 </script>
@@ -299,6 +298,6 @@ const renderChart1 = (data: any) => {
 <style lang="less" scoped>
 .chart {
     width: 100%;
-    height: 260px;
+    height: 100px;
 }
 </style>

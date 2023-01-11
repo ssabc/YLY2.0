@@ -1,17 +1,18 @@
 <template>
-    <GmForm
-        v-model:data="data.formData"
-        :list="data.list"
-        layout="inline"
-        @on-handle="sendRequest = true"
-    >
-    </GmForm>
-    <br />
+    <div class="cm-box">
+        <GmForm
+            v-model:data="data.formData"
+            :list="data.list"
+            layout="inline"
+            @on-handle="sendRequest = true"
+        >
+        </GmForm>
+    </div>
     <GmTable
         v-model:data="data.tableData"
         v-model:sendRequest="sendRequest"
         :headers="data.columns"
-        :request-api="repairList"
+        :request-api="fetchServiceRecord"
         :send-data="dealReqData(data.formData)"
         @on-handle="handleClick"
     />
@@ -26,7 +27,7 @@ import type {
     FormListProps,
     TableHandleOptItem,
 } from 'GlobComponentsModule';
-import { repairList } from '@/api/app';
+import { fetchServiceRecord } from '@/api/service-records';
 import { dealReqData } from '@/utils/tools';
 import { Modal } from 'ant-design-vue';
 import { ExclamationCircleOutlined } from '@ant-design/icons-vue';
@@ -166,7 +167,7 @@ function handleClick(item: TableHandleOptItem, row: any) {
         case '点击查看':
             // handleToDetail(rowData);
             break;
-        case '下载本地':
+        case '下载':
             // handleDownload(rowData);
             break;
         case '删除':
