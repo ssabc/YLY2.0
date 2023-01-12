@@ -23,7 +23,7 @@
         v-model:data="data.tableData"
         v-model:sendRequest="sendRequest"
         :headers="data.columns"
-        :request-api="fetchServiceRecord"
+        :request-api="fetchServiceFileList"
         :send-data="dealReqData(data.formData)"
     />
 </template>
@@ -33,7 +33,7 @@ import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
 import { ref, reactive, computed } from 'vue';
 import type { ColumnProps, FormListProps } from 'GlobComponentsModule';
-import { fetchServiceRecord } from '@/api/service-records';
+import { fetchServiceFileList } from '@/api/service-records';
 import { dealReqData } from '@/utils/tools';
 import Chart1 from './compoments/chart1.vue';
 import Chart2 from './compoments/chart2.vue';
@@ -101,16 +101,16 @@ const $store = useStore(),
             },
             {
                 title: '日期',
-                dataIndex: 'Name',
+                dataIndex: 'CreateTime',
             },
             {
                 title: '养老院名称',
-                dataIndex: 'Dept',
+                dataIndex: 'GroupName',
                 minWidth: 120,
             },
             {
                 title: '访问人数',
-                dataIndex: 'Name',
+                dataIndex: 'FileDuration',
             },
         ],
     });

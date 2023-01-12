@@ -1,7 +1,7 @@
 /*
  * @Author: szhao
  * @Date: 2022-12-02 19:32:00
- * @LastEditTime: 2023-01-11 16:30:47
+ * @LastEditTime: 2023-01-12 11:01:18
  * @LastEditors: szhao
  * @Description:
  */
@@ -118,5 +118,9 @@ export const GetNumberOfDays = function (date1: any, date2: any) {
 };
 
 export const toLine = function (name) {
-    return name.replace(/([A-Z])/g, '-$1').toLowerCase();
+    const _t = name.replace(/([A-Z])/g, '-$1').toLowerCase();
+    if (_t.substring(0, 1) === '-') {
+        return _t.substring(1);
+    }
+    return _t;
 };

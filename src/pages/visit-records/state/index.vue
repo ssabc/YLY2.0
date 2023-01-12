@@ -113,7 +113,7 @@ const $store = useStore(),
             },
             {
                 title: '日期',
-                dataIndex: 'Name',
+                dataIndex: 'CreateTime',
             },
             {
                 title: '养老院名称',
@@ -122,7 +122,7 @@ const $store = useStore(),
             },
             {
                 title: '访问人数',
-                dataIndex: 'Name',
+                dataIndex: 'FileDuration',
             },
         ],
         chartData: [],

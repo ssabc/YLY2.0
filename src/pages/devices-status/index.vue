@@ -46,9 +46,7 @@ import { DiffOutlined } from '@ant-design/icons-vue';
 import Chart1 from './compoments/chart1.vue';
 import Chart2 from './compoments/chart2.vue';
 import Chart3 from './compoments/chart3.vue';
-import {
-    fetchDeviceStatus,
-} from '@/api/app';
+import { fetchDeviceStatus } from '@/api/app';
 
 interface Data {
     formData: {
@@ -108,28 +106,28 @@ const $store = useStore(),
     statisList = computed(() => [
         {
             name: '设备总数',
-            value: 100,
+            value: 113,
             color: '#1d66d6',
             icon: DiffOutlined,
             unit: '',
         },
         {
             name: '服务记录仪',
-            value: 100,
+            value: 99,
             color: '#28d094',
             icon: DiffOutlined,
             unit: '',
         },
         {
             name: '采集柜',
-            value: 100,
+            value: 4,
             color: '#FDDB78',
             icon: DiffOutlined,
             unit: '',
         },
         {
             name: '数字哨兵',
-            value: 100,
+            value: 10,
             color: '#FA746B',
             icon: DiffOutlined,
             unit: '',
@@ -138,7 +136,7 @@ const $store = useStore(),
 
 onMounted(() => {
     getInfoAjax();
-})
+});
 
 function handleView() {
     $router.push(`/devices-status/usage-record`);

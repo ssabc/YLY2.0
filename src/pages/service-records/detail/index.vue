@@ -1,14 +1,18 @@
 <!--
  * @Author: szhao
  * @Date: 2023-01-10 10:59:12
- * @LastEditTime: 2023-01-12 10:04:21
+ * @LastEditTime: 2023-01-12 11:17:02
  * @LastEditors: szhao
  * @Description: 
 -->
 <template>
     <div class="row cm-box">
         <div class="column c1">
-            <video style="width: 100%; height: 100%" controls>
+            <video
+                v-if="data.videoUrl"
+                style="width: 100%; height: 100%"
+                controls
+            >
                 <source :src="data.videoUrl" type="video/mp4" />
                 <source :src="data.videoUrl" type="video/ogg" />
                 您的浏览器不支持Video标签。
@@ -30,7 +34,8 @@ import { useStore } from 'vuex';
 import { reactive, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import type { FormListProps } from 'GlobComponentsModule';
-import { fetchDeviceDetailById } from '@/api/device-assign';
+import { fetchServiceInfo, serviceFileSave } from '@/api/service-records';
+import { message as $message } from 'ant-design-vue';
 
 interface Data {
     formData: any;
@@ -56,7 +61,7 @@ const $store = useStore(),
             },
             {
                 type: 'select',
-                name: 'groupId',
+                name: 'GroupId',
                 label: '养老院名称：',
                 width: 300,
                 props: {
@@ -68,7 +73,7 @@ const $store = useStore(),
             },
             {
                 type: 'input',
-                name: 'onlineDuration',
+                name: 'FileDuration',
                 label: '记录时长：',
                 props: {
                     placeholder: '',
@@ -77,7 +82,7 @@ const $store = useStore(),
             },
             {
                 type: 'input',
-                name: 'allocationTime',
+                name: 'CreateTime',
                 label: '记录时间：',
                 props: {
                     placeholder: '',
@@ -86,7 +91,7 @@ const $store = useStore(),
             },
             {
                 type: 'input',
-                name: 'allocationTime',
+                name: 'UploadTime',
                 label: '上传时间：',
                 props: {
                     placeholder: '',
@@ -95,7 +100,7 @@ const $store = useStore(),
             },
             {
                 type: 'input',
-                name: 'userName',
+                name: 'UserName',
                 label: '上传人员：',
                 props: {
                     placeholder: '',
@@ -104,7 +109,7 @@ const $store = useStore(),
             },
             {
                 type: 'input',
-                name: 'repairCount',
+                name: 'FileSize',
                 label: '文件大小：',
                 props: {
                     placeholder: '',
@@ -112,16 +117,26 @@ const $store = useStore(),
                 },
             },
             {
-                type: 'select',
-                name: 'serviceType',
+                type: 'input',
+                name: 'FileTag',
                 label: '服务内容：',
-                width: 300,
                 props: {
-                    placeholder: '请选择服务内容',
+                    placeholder: '请输入服务内容',
                     allowClear: true,
+                    // disabled: true,
                 },
-                option: $store.getters['common/serviceTypes'] || [],
             },
+            // {
+            //     type: 'select',
+            //     name: 'fileTag',
+            //     label: '服务内容：',
+            //     width: 300,
+            //     props: {
+            //         placeholder: '请选择服务内容',
+            //         allowClear: true,
+            //     },
+            //     option: $store.getters['common/serviceTypes'] || [],
+            // },
             {
                 type: 'handle',
                 name: 'handle',
@@ -141,8 +156,9 @@ const $store = useStore(),
                 ],
             },
         ],
-        videoUrl: `http://119.3.126.12:8064/streams
-/001000101/20230106/20230106205039-00N.MP4`,
+        videoUrl: '',
+        //         `http://119.3.126.12:8064/streams
+        // /001000101/20230106/20230106205039-00N.MP4`
     });
 
 watch(
@@ -155,21 +171,12 @@ watch(
     }
 );
 
-function initFn(devId: any) {
-    fetchDeviceDetailById({ devId }).then((res) => {
-        const _d = (data.info = res.data ?? {});
-        data.formData = {
-            deviceType: '服务记录仪',
-            allocationTime: '2023-01-03',
-            describe: _d.Describe,
-            devId: _d.DevId,
-            groupId: _d.GroupId,
-            serviceType: _d.ServiceType,
-            Sn: _d.Sn,
-            onlineDuration: '21',
-            repairCount: 4.3,
-            userName: _d.UserName,
-        };
+function initFn(fileId: any) {
+    fetchServiceInfo({ fileId }).then((res) => {
+        // const _d = (data.info = res.data ?? {});
+        data.formData = res.data ?? {};
+        data.videoUrl = $route.query.baseurl + data.formData.FilePath;
+        console.log($route.query.baseurl + data.formData.FilePath);
     });
 }
 
@@ -178,6 +185,7 @@ function handleClick(e: any) {
     switch (label) {
         case '保存':
             console.log('保存');
+            onSubmit();
             break;
         case '取消':
             console.log('取消');
@@ -186,6 +194,19 @@ function handleClick(e: any) {
         default:
     }
 }
+
+/**
+ * @description: table 项操作
+ */
+const onSubmit = () => {
+    serviceFileSave({
+        fileId: data.formData?.FileId,
+        fileTag: data.formData?.FileTag,
+    }).then(() => {
+        $message.success('提交成功');
+        $router.go(-1);
+    });
+};
 </script>
 
 <style lang="less" scoped>
@@ -197,6 +218,7 @@ function handleClick(e: any) {
             min-width: 200px;
             background-color: #efefef;
             margin-right: 15px;
+            max-width: 500px;
         }
         &.c2 {
             width: 400px;

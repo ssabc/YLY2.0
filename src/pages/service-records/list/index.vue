@@ -49,6 +49,7 @@ interface Data {
         serviceType?: string;
         date?: any[];
     };
+    baseurl?: string;
     list: FormListProps[];
     tableData: Item[];
     columns: ColumnProps[];
@@ -129,7 +130,7 @@ const $store = useStore(),
             },
             {
                 title: '服务内容',
-                dataIndex: 'GroupName',
+                dataIndex: 'FileTag',
             },
             {
                 title: '记录时长',
@@ -159,6 +160,7 @@ const $store = useStore(),
             },
         ],
         chartData: [],
+        baseurl: '',
     });
 
 watch(
@@ -205,6 +207,10 @@ function getInfoAjax() {
             list: res.data || [],
         };
     });
+    fetchServiceFileList(req).then((res) => {
+        console.log(23434342, res.data?.Href);
+        data.baseurl = res.data?.Href || '';
+    });
 }
 
 function handleFormClick(e: any) {
@@ -237,7 +243,9 @@ function handleClick(item: TableHandleOptItem, row: any) {
 }
 function handleToDetail(row: any) {
     console.log(row, '---');
-    $router.push('/service-records/video-detail?id=1');
+    $router.push(
+        `/service-records/video-detail?id=${row.FileId}&baseurl=${data.baseurl}`
+    );
 }
 
 function handleDelete() {

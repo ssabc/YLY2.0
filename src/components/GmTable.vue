@@ -36,7 +36,7 @@
                                 'text-zinc-300': ele.disabled,
                                 'ant-btn ant-btn-primary btn': ele.likeBtn,
                             }"
-                            @click="$emit('on-handle', ele, record)"
+                            @click="$emit('on-handle', ele, record, index)"
                             v-text="ele.name"
                         />
                         <a-divider
@@ -57,7 +57,7 @@
                             checked-children="已修复"
                             un-checked-children="未修复"
                             @click="
-                                (e: any) => $emit('on-handle', { name: e ? '已修复' : '未修复', value: e }, record)
+                                (e: any) => $emit('on-handle', { name: e ? '已修复' : '未修复', value: e }, record, index)
                             "
                         />
                     </div>
@@ -99,7 +99,12 @@ interface Props {
 const $props = defineProps<Props>(),
     $emit = defineEmits<{
         (event: 'update:data', v: Array<object>): void;
-        (event: 'on-handle', v: TableHandleOptItem, row: any): void;
+        (
+            event: 'on-handle',
+            v: TableHandleOptItem,
+            row: any,
+            indx: number
+        ): void;
         (event: 'update:sendRequest', v: boolean): void;
     }>();
 // 分页配置

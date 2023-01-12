@@ -178,50 +178,53 @@ const $store = useStore(),
     statisList = computed(() => [
         {
             name: '总呼叫数',
-            value: 100,
+            value: 135,
             color: '#1d66d6',
             icon: DiffOutlined,
-            unit: '分钟',
+            unit: '',
         },
         {
             name: '记录时长',
-            value: 100,
+            value: 536,
             color: '#28d094',
             icon: DiffOutlined,
-            unit: '分钟',
+            unit: '',
         },
         {
             name: '未处置数',
             aliasName: '未处置',
-            value: 100,
+            value: 69,
             color: '#FDDB78',
             icon: DiffOutlined,
-            unit: '分钟',
+            unit: '',
         },
         {
             name: '已处置数',
             aliasName: '已处置',
-            value: 100,
+            value: 74,
             color: '#FDDB78',
             icon: DiffOutlined,
-            unit: '分钟',
+            unit: '',
         },
         {
             name: '24小时呼叫数',
-            value: 100,
+            value: 1,
             color: '#FA746B',
             icon: DiffOutlined,
-            unit: '分钟',
+            unit: '',
         },
     ]);
 
 /**
  * @description: table 项操作
  */
-function handleClick(item: TableHandleOptItem, row: any) {
+function handleClick(item: TableHandleOptItem, row: any, index: number) {
     const { name } = item;
     const rowData = toRaw(row);
     switch (name) {
+        case '立即处置':
+            handleDeal(index);
+            break;
         case '点击查看':
             handleToDetail(rowData);
             break;
@@ -233,6 +236,9 @@ function handleClick(item: TableHandleOptItem, row: any) {
             break;
         default:
     }
+}
+function handleDeal(index) {
+    data.tableData[index].IsHandled = !data.tableData[index].IsHandled;
 }
 
 function handleToDetail(row: any) {
