@@ -1,8 +1,8 @@
 <!--
  * @Author: szhao
  * @Date: 2023-01-07 16:18:32
- * @LastEditTime: 2023-01-11 23:43:16
- * @LastEditors: sZhao
+ * @LastEditTime: 2023-01-12 09:32:47
+ * @LastEditors: szhao
  * @Description:
 -->
 <template>
@@ -19,15 +19,15 @@
                     <div>设备基本信息：</div>
                     <div class="box">
                         <div class="sub-form">
-                            <a-form-item label="设备类型：" prop="serviceType">
+                            <a-form-item label="设备类型：" prop="deviceType">
                                 <a-input
-                                    v-model:value="data.formData.serviceType"
+                                    v-model:value="data.formData.deviceType"
                                     disabled
                                 ></a-input>
                             </a-form-item>
-                            <a-form-item label="设备编号：" prop="devId">
+                            <a-form-item label="设备编号：" prop="Sn">
                                 <a-input
-                                    v-model:value="data.formData.devId"
+                                    v-model:value="data.formData.Sn"
                                     disabled
                                 ></a-input>
                             </a-form-item>
@@ -83,7 +83,7 @@
                 </div>
             </div>
             <div style="padding: 20px 0">
-                <a-form-item  :wrapper-col="{ span: 14, offset: 10 }">
+                <a-form-item :wrapper-col="{ span: 14, offset: 10 }">
                     <a-button type="primary" @click="onSubmit">保存</a-button>
                     <a-button style="margin-left: 10px" @click="handleBack"
                         >返回</a-button
@@ -259,6 +259,7 @@ function initFn(devId: any) {
     fetchDeviceDetailById({ devId }).then((res) => {
         const _d = (data.info = res.data ?? {});
         data.formData = {
+            deviceType: '服务记录仪',
             startTime: _d.AllocationTime,
             devId: _d.DevId,
             groupId: _d.GroupId,

@@ -1,7 +1,7 @@
 <!--
  * @Author: szhao
  * @Date: 2023-01-10 10:59:12
- * @LastEditTime: 2023-01-11 19:33:10
+ * @LastEditTime: 2023-01-12 10:04:21
  * @LastEditors: szhao
  * @Description: 
 -->
@@ -27,9 +27,10 @@
 
 <script setup lang="ts">
 import { useStore } from 'vuex';
-import { reactive } from 'vue';
+import { reactive, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import type { FormListProps } from 'GlobComponentsModule';
+import { fetchDeviceDetailById } from '@/api/device-assign';
 
 interface Data {
     formData: any;
@@ -38,6 +39,7 @@ interface Data {
 }
 
 const $store = useStore(),
+    $route = useRoute(),
     $router = useRouter(),
     data = reactive<Data>({
         formData: {},
@@ -45,7 +47,7 @@ const $store = useStore(),
         list: [
             {
                 type: 'input',
-                name: 'name',
+                name: 'Sn',
                 label: '设备编号：',
                 props: {
                     placeholder: '',
@@ -53,17 +55,20 @@ const $store = useStore(),
                 },
             },
             {
-                type: 'input',
-                name: 'name',
+                type: 'select',
+                name: 'groupId',
                 label: '养老院名称：',
+                width: 300,
                 props: {
-                    placeholder: '',
+                    placeholder: '请选择养老院',
+                    allowClear: true,
                     disabled: true,
                 },
+                option: $store.getters['common/ylyList'],
             },
             {
                 type: 'input',
-                name: 'name',
+                name: 'onlineDuration',
                 label: '记录时长：',
                 props: {
                     placeholder: '',
@@ -72,7 +77,7 @@ const $store = useStore(),
             },
             {
                 type: 'input',
-                name: 'name',
+                name: 'allocationTime',
                 label: '记录时间：',
                 props: {
                     placeholder: '',
@@ -81,7 +86,7 @@ const $store = useStore(),
             },
             {
                 type: 'input',
-                name: 'name',
+                name: 'allocationTime',
                 label: '上传时间：',
                 props: {
                     placeholder: '',
@@ -90,7 +95,7 @@ const $store = useStore(),
             },
             {
                 type: 'input',
-                name: 'name',
+                name: 'userName',
                 label: '上传人员：',
                 props: {
                     placeholder: '',
@@ -99,7 +104,7 @@ const $store = useStore(),
             },
             {
                 type: 'input',
-                name: 'name',
+                name: 'repairCount',
                 label: '文件大小：',
                 props: {
                     placeholder: '',
@@ -108,14 +113,14 @@ const $store = useStore(),
             },
             {
                 type: 'select',
-                name: 'service-type',
+                name: 'serviceType',
                 label: '服务内容：',
                 width: 300,
                 props: {
                     placeholder: '请选择服务内容',
                     allowClear: true,
                 },
-                option: $store.getters['common/recordTypes'] || [],
+                option: $store.getters['common/serviceTypes'] || [],
             },
             {
                 type: 'handle',
@@ -139,6 +144,34 @@ const $store = useStore(),
         videoUrl: `http://119.3.126.12:8064/streams
 /001000101/20230106/20230106205039-00N.MP4`,
     });
+
+watch(
+    () => $route.query.id,
+    (e) => {
+        e && initFn(e);
+    },
+    {
+        immediate: true,
+    }
+);
+
+function initFn(devId: any) {
+    fetchDeviceDetailById({ devId }).then((res) => {
+        const _d = (data.info = res.data ?? {});
+        data.formData = {
+            deviceType: '服务记录仪',
+            allocationTime: '2023-01-03',
+            describe: _d.Describe,
+            devId: _d.DevId,
+            groupId: _d.GroupId,
+            serviceType: _d.ServiceType,
+            Sn: _d.Sn,
+            onlineDuration: '21',
+            repairCount: 4.3,
+            userName: _d.UserName,
+        };
+    });
+}
 
 function handleClick(e: any) {
     const { label } = e;

@@ -243,7 +243,7 @@ function handleClick(item: TableHandleOptItem, row: any) {
 }
 function handleToDetail(row: any) {
     console.log(row, '---');
-    $router.push('/service-records/video-detail');
+    $router.push('/nurse-aide/video-detail');
 }
 
 function handleDelete() {

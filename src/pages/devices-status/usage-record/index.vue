@@ -26,7 +26,7 @@
     </div>
     <div class="cm-box">
         <div class="table-title">在线记录</div>
-        <a-tabs v-model:active-key="data.activeKey">
+        <a-tabs v-model:active-key="data.activeKey" @change="handleChangeTab">
             <a-tab-pane
                 v-for="item in data.tabs"
                 :key="item.key"
@@ -37,7 +37,7 @@
             v-model:data="data.tableData"
             v-model:sendRequest="sendRequest"
             :headers="data.columns"
-            :request-api="fetchServiceRecord"
+            :request-api="fetchDeviceAssignList"
             :send-data="dealReqData(data.formData)"
         />
     </div>
@@ -48,7 +48,7 @@ import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
 import { ref, reactive, computed } from 'vue';
 import type { ColumnProps, FormListProps } from 'GlobComponentsModule';
-import { fetchServiceRecord } from '@/api/service-records';
+import { fetchDeviceAssignList } from '@/api/device-assign';
 import { dealReqData } from '@/utils/tools';
 import Chart1 from '../compoments/chart1.vue';
 import Chart4 from '../compoments/chart4.vue';
@@ -154,27 +154,36 @@ const $store = useStore(),
             },
             {
                 title: '设备编号',
-                dataIndex: 'Name',
+                dataIndex: 'Sn',
             },
             {
                 title: '养老院名称',
-                dataIndex: 'Dept',
+                dataIndex: 'GroupName',
                 minWidth: 120,
             },
             {
                 title: '在线时间',
-                dataIndex: 'Name',
+                dataIndex: 'AllocationTime',
             },
             {
                 title: '离线时间',
-                dataIndex: 'Name',
+                dataIndex: 'AllocationTime',
             },
             {
                 title: '在线时长',
-                dataIndex: 'Name',
+                dataIndex: 'OnlineDuration',
             },
         ],
     });
+
+function handleChangeTab(e) {
+    console.log(e);
+    if (e != 1) {
+        data.tableData = [];
+        return;
+    }
+    sendRequest.value = true;
+}
 </script>
 <style lang="less" scoped>
 .row {

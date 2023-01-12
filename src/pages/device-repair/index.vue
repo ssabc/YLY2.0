@@ -31,7 +31,7 @@
 <script setup lang="ts">
 import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
-import { ref, reactive, computed, toRaw, createVNode, onMounted} from 'vue';
+import { ref, reactive, computed, toRaw, createVNode, onMounted } from 'vue';
 import type {
     ColumnProps,
     FormListProps,
@@ -205,8 +205,8 @@ function handleClick(item: TableHandleOptItem, row: any) {
         case '点击查看':
             handleToDetail(rowData);
             break;
-        case '下载':
-            handleDownload(rowData);
+        case '报修':
+            handleToDetail(rowData);
             break;
         case '删除':
             handleDelete();

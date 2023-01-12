@@ -1,8 +1,8 @@
 <!--
  * @Author: szhao
  * @Date: 2023-01-07 16:18:32
- * @LastEditTime: 2023-01-12 00:04:44
- * @LastEditors: sZhao
+ * @LastEditTime: 2023-01-12 09:31:59
+ * @LastEditors: szhao
  * @Description:
 -->
 <template>
@@ -19,9 +19,9 @@
                     <div>设备基本信息：</div>
                     <div class="box">
                         <div class="sub-form">
-                            <a-form-item label="设备类型：" prop="serviceType">
+                            <a-form-item label="设备类型：" prop="deviceAType">
                                 <a-input
-                                    v-model:value="data.formData.serviceType"
+                                    v-model:value="data.formData.deviceType"
                                     disabled
                                 ></a-input>
                             </a-form-item>
@@ -66,8 +66,8 @@
                             </a-form-item>
                             <a-form-item label="故障描述：" prop="describe">
                                 <a-input
-                                    type="textarea"
                                     v-model:value="data.formData.describe"
+                                    type="textarea"
                                 ></a-input>
                             </a-form-item>
                         </div>
@@ -79,7 +79,7 @@
                 </div>
             </div>
             <div style="padding: 20px 0">
-                <a-form-item  :wrapper-col="{ span: 14, offset: 10 }">
+                <a-form-item :wrapper-col="{ span: 14, offset: 10 }">
                     <a-button type="primary" @click="onSubmit">保存</a-button>
                     <a-button style="margin-left: 10px" @click="handleBack"
                         >返回</a-button
@@ -105,7 +105,7 @@ import {
 
 interface Data {
     formData: {
-        inputName?: string;
+        deviceType?: string;
     };
     list: FormListProps[];
     tableData: Item[];
@@ -191,7 +191,9 @@ const $store = useStore(),
             },
         ],
         /** 表单数据 */
-        formData: {},
+        formData: {
+            deviceType: '服务记录仪',
+        },
         rules: {
             serviceType: {
                 required: true,
@@ -244,6 +246,7 @@ function initFn(devId: any) {
     fetchDeviceDetailById({ devId }).then((res) => {
         const _d = (data.info = res.data ?? {});
         data.formData = {
+            deviceType: '服务记录仪',
             describe: _d.Describe,
             devId: _d.DevId,
             groupId: _d.GroupId,

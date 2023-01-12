@@ -264,6 +264,7 @@ function handleClick(item: TableHandleOptItem, row: any) {
             handleToDetail(rowData);
             break;
         case '编辑':
+            handleToDetail(rowData);
             break;
         default:
     }

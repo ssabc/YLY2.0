@@ -137,6 +137,22 @@ const getters: Getters = {
             },
         ];
     },
+    serviceTypes: () => {
+        return [
+            {
+                label: '护工呼叫',
+                value: '1',
+            },
+            {
+                label: '常规巡检',
+                value: '2',
+            },
+            {
+                label: '其他',
+                value: '',
+            },
+        ];
+    },
     statusTypes: () => {
         return [
             {

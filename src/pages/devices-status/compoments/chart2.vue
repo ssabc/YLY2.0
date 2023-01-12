@@ -139,7 +139,16 @@ const renderChart1 = (data: any) => {
             xAxis: [
                 {
                     type: 'category',
-                    data: ['1', '2', '3', '4', '5', '6', '7', '8'],
+                    data: [
+                        '2023年1月4日',
+                        '2023年1月5日',
+                        '2023年1月6日',
+                        '2023年1月7日',
+                        '2023年1月8日',
+                        '2023年1月9日',
+                        '2023年1月10日',
+                        '2023年1月11日',
+                    ],
                     axisLine: {
                         lineStyle: {
                             color: '#33BBFF',
@@ -292,7 +301,8 @@ const renderChart1 = (data: any) => {
         };
     // 绘制图表
     let myChart = echarts.init(document.getElementById('deviceStatusChart2'));
-    myChart.clear();myChart.setOption(option);
+    myChart.clear();
+    myChart.setOption(option);
 };
 </script>
 

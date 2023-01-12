@@ -19,101 +19,12 @@ watchEffect(() => {
 });
 
 function initFn() {
-    const { data1 } = getData(isAdmin.value, $props.ylyFlag);
     nextTick(() => {
-        renderChart1(data1);
+        renderChart1();
     });
 }
 
-function getData(isAdmin: boolean, deptId: number) {
-    console.log('isAdmin, deptId', isAdmin, deptId);
-    if (deptId == 4) {
-        return {
-            data0: [{ value: 3, name: '黄浦老年公寓' }],
-            data1: [
-                { value: 1, name: '12.1' },
-                { value: 0, name: '12.2' },
-                { value: 1, name: '12.3' },
-                { value: 0, name: '12.4' },
-            ],
-            data2: [
-                { value: 0, name: '' },
-                { value: 0, name: '' },
-                { value: 2, name: '' },
-                { value: 0, name: '' },
-                { value: 0, name: '' },
-                { value: 0, name: '' },
-                { value: 0, name: '' },
-            ],
-        };
-    }
-
-    if (deptId == 6) {
-        return {
-            data0: [{ value: 2, name: '千鹤昌里' }],
-            data1: [
-                { value: 0, name: '12.1' },
-                { value: 1, name: '12.2' },
-                { value: 1, name: '12.3' },
-                { value: 0, name: '12.4' },
-            ],
-            data2: [
-                { value: 0, name: '' },
-                { value: 0, name: '' },
-                { value: 1, name: '' },
-                { value: 1, name: '' },
-                { value: 0, name: '' },
-                { value: 0, name: '' },
-                { value: 0, name: '' },
-            ],
-        };
-    }
-
-    if (deptId == 5) {
-        return {
-            data0: [{ value: 6, name: '千鹤乳山' }],
-            data1: [
-                { value: 0, name: '12.1' },
-                { value: 1, name: '12.2' },
-                { value: 1, name: '12.3' },
-                { value: 0, name: '12.4' },
-            ],
-            data2: [
-                { value: 0, name: '' },
-                { value: 1, name: '' },
-                { value: 1, name: '' },
-                { value: 0, name: '' },
-                { value: 0, name: '' },
-                { value: 0, name: '' },
-                { value: 0, name: '' },
-            ],
-        };
-    }
-
-    return {
-        data0: [
-            { value: 3, name: '黄浦老年公寓' },
-            { value: 2, name: '千鹤昌里' },
-            { value: 6, name: '千鹤乳山' },
-        ],
-        data1: [
-            { value: 1, name: '12.1' },
-            { value: 2, name: '12.2' },
-            { value: 3, name: '12.3' },
-            { value: 0, name: '12.4' },
-        ],
-        data2: [
-            { value: 0, name: '' },
-            { value: 1, name: '' },
-            { value: 4, name: '' },
-            { value: 1, name: '' },
-            { value: 0, name: '' },
-            { value: 0, name: '' },
-            { value: 0, name: '' },
-        ],
-    };
-}
-const renderChart1 = (data: any) => {
+const renderChart1 = () => {
     const colorList = ['#2984f8', '#67d4fb', '#ff9700', '#7357ff', '#f2d750'],
         option = {
             legend: {
@@ -139,7 +50,15 @@ const renderChart1 = (data: any) => {
             xAxis: [
                 {
                     type: 'category',
-                    data: ['1', '2', '3', '4', '5', '6', '7', '8'],
+                    data: [
+                        '2023年1月5日',
+                        '2023年1月6日',
+                        '2023年1月7日',
+                        '2023年1月8日',
+                        '2023年1月9日',
+                        '2023年1月10日',
+                        '2023年1月11日',
+                    ],
                     axisLine: {
                         lineStyle: {
                             color: '#33BBFF',
@@ -291,7 +210,8 @@ const renderChart1 = (data: any) => {
         };
     // 绘制图表
     let myChart = echarts.init(document.getElementById('deviceStatusChart1'));
-    myChart.clear();myChart.setOption(option);
+    myChart.clear();
+    myChart.setOption(option);
 };
 </script>
 

@@ -1,7 +1,7 @@
 /*
  * @Author: szhao
  * @Date: 2022-12-02 16:12:30
- * @LastEditTime: 2023-01-10 13:52:42
+ * @LastEditTime: 2023-01-12 09:46:54
  * @LastEditors: szhao
  * @Description:
  */
@@ -41,8 +41,8 @@ export const r: RouteItem[] = [
             {
                 name: 'NurseAideVideoDetail',
                 path: 'video-detail',
-                meta: { title: '视频详情', hidden: true },
-                component: lazyImportPagesRootVueFile('video-detail'),
+                meta: { title: '视频详情', hidden: true, isShowBack: true },
+                component: lazyImportPagesRootVueFile('nurse-aide/detail'),
             },
         ],
     },
