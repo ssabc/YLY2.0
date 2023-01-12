@@ -7,6 +7,7 @@
                 style="width: 200px"
                 :options="ylyList"
                 allow-clear
+                @change="handleChangeYLY"
             />
         </div>
         <div class="content">
@@ -122,14 +123,6 @@ const $store = useStore(),
     });
 
 onMounted(() => {
-    console.log('home');
-    // data.yly = $store.getters['common/deptId'];
-    // renderChart1([
-    //     { value: 10, name: '张小五' },
-    //     { value: 8, name: '李小六' },
-    //     { value: 10, name: '周医生' },
-    //     { value: 24, name: '宋医生' },
-    // ]);
     getHomeInfo();
 });
 
@@ -137,11 +130,19 @@ onMounted(() => {
  * @description: 获取首页数据
  */
 function getHomeInfo() {
-    fetchHomeInfo({}).then((res: any) => {
+    const _req = {}
+    if (data.yly) {
+        _req['group-id'] = data.yly;
+    }
+    fetchHomeInfo(_req).then((res: any) => {
         console.log(res);
         data.info = res?.data || {};
         data.CenterStat = data.info?.CenterStat || {};
     });
+}
+
+function handleChangeYLY(e) {
+    getHomeInfo();
 }
 </script>
 

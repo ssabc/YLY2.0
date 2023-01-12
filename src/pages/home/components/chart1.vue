@@ -209,7 +209,7 @@ const renderChart1 = (_d: any) => {
     };
     // 绘制图表
     let myChart = echarts.init(document.getElementById('ylyChart1'));
-    myChart.setOption(option);
+    myChart.clear();myChart.setOption(option);
 };
 </script>
 

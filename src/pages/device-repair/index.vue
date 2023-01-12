@@ -4,7 +4,7 @@
             v-model:data="data.formData"
             :list="data.list"
             layout="inline"
-            @on-handle="sendRequest = true"
+            @on-handle="handleFormClick"
         >
         </GmForm>
     </div>
@@ -21,7 +21,7 @@
             v-model:data="data.tableData"
             v-model:sendRequest="sendRequest"
             :headers="data.columns"
-            :request-api="fetchServiceRecord"
+            :request-api="fetchDeviceAssignList"
             :send-data="dealReqData(data.formData)"
             @on-handle="handleClick"
         />
@@ -31,13 +31,13 @@
 <script setup lang="ts">
 import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
-import { ref, reactive, computed, toRaw, createVNode } from 'vue';
+import { ref, reactive, computed, toRaw, createVNode, onMounted} from 'vue';
 import type {
     ColumnProps,
     FormListProps,
     TableHandleOptItem,
 } from 'GlobComponentsModule';
-import { fetchServiceRecord } from '@/api/service-records';
+import { fetchDeviceAssignList } from '@/api/device-assign';
 import { getOpsOptions, getNowDate, dealReqData } from '@/utils/tools';
 import { message as $message } from 'ant-design-vue';
 import { Modal } from 'ant-design-vue';
@@ -91,7 +91,7 @@ const $store = useStore(),
                     placeholder: '请选择设备类别',
                     allowClear: true,
                 },
-                option: $store.getters['common/recordTypes'] || [],
+                option: $store.getters['common/deviceClass'] || [],
             },
             {
                 type: 'input',
@@ -128,47 +128,73 @@ const $store = useStore(),
         /** 列表项 */
         columns: [
             {
+                title: '序号',
+                type: 'index',
+                width: 80,
+                dataIndex: 'index',
+            },
+            {
                 title: '设备编号',
-                dataIndex: 'Name',
+                dataIndex: 'Sn',
             },
             {
-                title: '养老院名称',
-                dataIndex: 'Dept',
-                hidden: !isAdmin.value,
+                title: '所属养老院',
+                dataIndex: 'GroupName',
+                // hidden: !isAdmin.value,
                 minWidth: 120,
             },
             {
-                title: '服务内容',
-                dataIndex: 'Name',
+                title: '在线时长',
+                dataIndex: 'OnlineDuration',
             },
             {
-                title: '记录时长',
-                dataIndex: 'Name',
-            },
-            {
-                title: '记录时间',
-                dataIndex: 'RepairTime',
+                title: '最近一次在线时间',
+                dataIndex: 'LastOnlineTime',
                 minWidth: 120,
                 customRender: ({ text }) => {
                     return getNowDate(text)?.date;
                 },
             },
             {
-                title: '上传时间',
-                dataIndex: 'RepairTime',
-                minWidth: 120,
-                customRender: ({ text }) => {
-                    return getNowDate(text)?.date;
-                },
+                title: '维修次数',
+                dataIndex: 'RepairCount',
             },
             {
                 title: '操作',
                 type: 'handle',
                 minWidth: 240,
-                option: getOpsOptions(isAdmin),
+                option: [
+                    {
+                        name: '点击查看',
+                        type: 'view',
+                    },
+                    {
+                        name: '报修',
+                        type: 'edit',
+                    },
+                ],
             },
         ],
     });
+
+onMounted(() => {
+    refreshList();
+});
+
+function refreshList() {
+    sendRequest.value = true;
+}
+
+function handleFormClick(e: any) {
+    const { label } = e;
+    switch (label) {
+        case '查询':
+            refreshList();
+            break;
+        default:
+    }
+}
+
 /**
  * @description: table 项操作
  */
@@ -190,7 +216,7 @@ function handleClick(item: TableHandleOptItem, row: any) {
 }
 function handleToDetail(row: any) {
     console.log(row, '---');
-    $router.push('/device-assign/detail');
+    $router.push(`/device-repair/detail?id=${row.DevId}`);
 }
 
 function handleDelete() {

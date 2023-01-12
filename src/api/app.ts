@@ -1,7 +1,7 @@
 /*
  * @Author: sZhao
  * @Date: 2023-01-08 15:09:43
- * @LastEditTime: 2023-01-10 21:32:24
+ * @LastEditTime: 2023-01-12 00:10:17
  * @LastEditors: sZhao
  * @Description:
  */
@@ -85,6 +85,33 @@ export function fetchCarerWarning2(data: any) {
 export function fetchWarningCount(data: any) {
     return request({
         url: `${prefix}/manage/carer-warning/count`,
+        method: 'post',
+        data,
+    });
+}
+
+/** sos记录列表 */
+export function fetchSosRecord(data: any) {
+    return request({
+        url: `${prefix}/temp/sos/record`,
+        method: 'post',
+        data,
+    });
+}
+
+/** 设备状态 */
+export function fetchDeviceStatus(data: any) {
+    return request({
+        url: `${prefix}/manage/device-status`,
+        method: 'post',
+        data,
+    });
+}
+
+/** 设备状态-设备使用记录 */
+export function fetchDeviceStatusRecord(data: any) {
+    return request({
+        url: `${prefix}/manage/device-status/record`,
         method: 'post',
         data,
     });

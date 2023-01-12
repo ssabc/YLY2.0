@@ -183,7 +183,7 @@ const renderChart1 = (data: any) => {
     };
     let myChart = echarts.init(document.getElementById('chart1'));
     // 绘制图表
-    myChart.setOption(option);
+    myChart.clear();myChart.setOption(option);
 };
 
 const renderChart2 = (data: any) => {
@@ -215,7 +215,7 @@ const renderChart2 = (data: any) => {
     };
     let myChart = echarts.init(document.getElementById('chart2'));
     // 绘制图表
-    myChart.setOption(option);
+    myChart.clear();myChart.setOption(option);
 };
 const renderChart3 = (data: any) => {
     const maxCount = 100,
@@ -285,7 +285,7 @@ const renderChart3 = (data: any) => {
     };
     let myChart = echarts.init(document.getElementById('chart3'));
     // 绘制图表
-    myChart.setOption(option1);
+    myChart.clear();myChart.setOption(option1);
 };
 const renderChart4 = (data: any) => {
     const option = {
@@ -316,7 +316,7 @@ const renderChart4 = (data: any) => {
     };
     let myChart = echarts.init(document.getElementById('chart4'));
     // 绘制图表
-    myChart.setOption(option);
+    myChart.clear();myChart.setOption(option);
 };
 </script>
 

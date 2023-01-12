@@ -61,6 +61,7 @@
 </template>
 
 <script setup lang="ts">
+import { useStore } from 'vuex';
 import { reactive, computed, onMounted } from 'vue';
 import type { FormListProps } from 'GlobComponentsModule';
 import { DiffOutlined } from '@ant-design/icons-vue';
@@ -72,7 +73,7 @@ import { useRouter } from 'vue-router';
 
 interface Data {
     formData: {
-        inputName?: string;
+        serviceType?: string;
         date?: any[];
     };
     list: FormListProps[];
@@ -80,20 +81,21 @@ interface Data {
     chartData?: any;
 }
 
-const data = reactive<Data>({
+const $store = useStore(),
+    data = reactive<Data>({
         /** 表单list */
         list: [
-            // {
-            //     type: 'select',
-            //     name: 'service-type',
-            //     label: '',
-            //     width: 160,
-            //     props: {
-            //         placeholder: '请选择记录类型',
-            //         allowClear: true,
-            //     },
-            //     option: $store.getters['common/recordTypes'] || [],
-            // },
+            {
+                type: 'select',
+                name: 'serviceType',
+                label: '',
+                width: 160,
+                props: {
+                    placeholder: '请选择记录类型',
+                    allowClear: true,
+                },
+                option: $store.getters['common/recordTypes'] || [],
+            },
             {
                 type: 'range-picker',
                 name: 'date',
@@ -171,15 +173,23 @@ function getInfoAjax() {
     const req = getReqData(data.formData);
     fetchServiceRecord(req).then((res: any) => {
         setStatisList(res.data?.TotalDuration || {});
+        console.log('121212', data.formData.serviceType);
         data.chartData = {
             chart1: {
-                legend: data.statisList?.map((_e) => ({
-                    name: _e.aliseName,
-                    color: _e.color,
-                })),
+                legend: data.statisList
+                    ?.filter(
+                        (_e) =>
+                            !data.formData.serviceType ||
+                            _e.aliseName === data.formData.serviceType
+                    )
+                    ?.map((_e) => ({
+                        name: _e.aliseName,
+                        color: _e.color,
+                    })),
                 list: res.data?.DataRecord || [],
             },
         };
+        console.log('121222212', data.chartData);
     });
 }
 

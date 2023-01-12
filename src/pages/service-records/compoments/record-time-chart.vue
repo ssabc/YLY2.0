@@ -116,7 +116,7 @@ const renderChart1 = (list: any) => {
     };
     // 绘制图表
     let myChart = echarts.init(document.getElementById('recordTimeChart'));
-    myChart.setOption(option);
+    myChart.clear();myChart.setOption(option);
 };
 </script>
 

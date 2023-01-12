@@ -145,7 +145,7 @@ const renderChart = (key: string, datas: any) => {
     };
     // 绘制图表
     let myChart = echarts.init(document.getElementById(key));
-    myChart.setOption(option);
+    myChart.clear();myChart.setOption(option);
 };
 </script>
 
@@ -173,6 +173,10 @@ const renderChart = (key: string, datas: any) => {
     .chart-wrap {
         flex: 1;
         position: relative;
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        align-items: center;
         &::after {
             position: absolute;
             background-color: aqua;

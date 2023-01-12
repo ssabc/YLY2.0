@@ -172,8 +172,8 @@ function fetchTableData() {
                     tableData.value = res.data?.DataRecord ?? [];
                     pagination.total = res.data?.DataRecord.length || 0;
                 } else {
-                    tableData.value = [];
-                    pagination.total = 0;
+                    tableData.value = res.data ?? [];
+                    pagination.total = res.data?.length || 0;
                 }
                 $emit('update:sendRequest', false);
                 loading.value = false;

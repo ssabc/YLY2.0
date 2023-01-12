@@ -114,7 +114,7 @@ function getData(isAdmin: boolean, deptId: number) {
     };
 }
 const renderChart1 = (data: any) => {
-    const colorList = ['#46ea91', '#2ba0ff', '#ed593b', '#7357ff', '#f2d750'],
+    const colorList = ['#2984f8', '#67d4fb', '#ff9700', '#7357ff', '#f2d750'],
         option = {
             legend: {
                 icon: 'circle',
@@ -132,7 +132,7 @@ const renderChart1 = (data: any) => {
             },
             grid: {
                 top: '15%',
-                left: '5%',
+                left: '8%',
                 bottom: '15%',
                 right: '5%',
             },
@@ -156,7 +156,7 @@ const renderChart1 = (data: any) => {
                         // 默认x轴字体大小
                         fontSize: 12,
                         // margin:文字到x轴的距离
-                        margin: 10,
+                        margin: 5,
                     },
                     axisPointer: {
                         label: {
@@ -181,12 +181,12 @@ const renderChart1 = (data: any) => {
                     axisLine: {
                         show: true,
                         lineStyle: {
-                            color: '#05D5FF',
+                            color: '#f0f2f5',
                         },
                     },
                     axisLabel: {
                         textStyle: {
-                            color: '#5FBBEB',
+                            color: '#999',
                         },
                     },
                     splitLine: {
@@ -292,7 +292,7 @@ const renderChart1 = (data: any) => {
         };
     // 绘制图表
     let myChart = echarts.init(document.getElementById('visitRecordsChart2'));
-    myChart.setOption(option);
+    myChart.clear();myChart.setOption(option);
 };
 </script>
 

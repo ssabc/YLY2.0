@@ -150,6 +150,7 @@ const renderChart1 = (chartData: any) => {
     };
     // 绘制图表
     let myChart = echarts.init(document.getElementById('servicechart1'));
+    myChart.clear();
     myChart.setOption(option);
 };
 </script>

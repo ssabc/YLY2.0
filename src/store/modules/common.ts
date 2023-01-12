@@ -48,6 +48,58 @@ const getters: Getters = {
     dealTypes: () => {
         return [
             {
+                label: '已处置',
+                value: '1',
+            },
+            {
+                label: '未处置',
+                value: '2',
+            },
+        ];
+    },
+    deviceStatus: () => {
+        return [
+            {
+                label: '在线',
+                value: '1',
+            },
+            {
+                label: '离线',
+                value: '0',
+            },
+        ];
+    },
+    deviceAssignStatus: () => {
+        return [
+            {
+                label: '已分配',
+                value: '1',
+            },
+            {
+                label: '未分配',
+                value: '0',
+            },
+        ];
+    },
+    deviceClass: () => {
+        return [
+            {
+                label: '服务记录仪',
+                value: '1',
+            },
+            {
+                label: '采集柜',
+                value: '0',
+            },
+            {
+                label: '数字哨兵',
+                value: '2',
+            },
+        ];
+    },
+    dealTypes2: () => {
+        return [
+            {
                 label: '已处理',
                 value: '1',
             },

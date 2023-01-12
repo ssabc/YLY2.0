@@ -111,7 +111,7 @@ const $store = useStore(),
                     placeholder: '请选择运行状态',
                     allowClear: true,
                 },
-                option: $store.getters['common/dealTypes'] || [],
+                option: $store.getters['common/deviceStatus'] || [],
             },
             {
                 type: 'range-picker',

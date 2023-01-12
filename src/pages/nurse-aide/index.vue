@@ -1,6 +1,6 @@
 <template>
     <div class="cells">
-        <div v-for="item in statisList" :key="item.name" class="cell">
+        <div v-for="(item, idx) in statisList" :key="item.name" class="cell">
             <div
                 class="lf icon-wrap"
                 :style="{ 'background-color': item.color }"
@@ -15,7 +15,7 @@
                     }}</span>
                     <div class="unit">{{ item.unit }}</div>
                 </div>
-                <div class="bt">查看 〉〉</div>
+                <div class="bt" @click="handleView(idx)">查看 〉〉</div>
             </div>
         </div>
     </div>
@@ -36,7 +36,7 @@
                 v-model:data="data.tableData"
                 v-model:sendRequest="sendRequest"
                 :headers="data.columns"
-                :request-api="fetchServiceRecord"
+                :request-api="fetchSosRecord"
                 :send-data="dealReqData(data.formData)"
                 @on-handle="handleClick"
             />
@@ -57,7 +57,7 @@ import { DiffOutlined } from '@ant-design/icons-vue';
 import Chart1 from './compoments/chart1.vue';
 import Chart2 from './compoments/chart2.vue';
 import { getOpsOptions, getNowDate, dealReqData } from '@/utils/tools';
-import { fetchServiceRecord } from '@/api/service-records';
+import { fetchSosRecord } from '@/api/app';
 import { message as $message } from 'ant-design-vue';
 import { Modal } from 'ant-design-vue';
 import { ExclamationCircleOutlined } from '@ant-design/icons-vue';
@@ -81,6 +81,7 @@ let sendRequest = ref(false);
 const $store = useStore(),
     isAdmin = computed(() => $store.getters['common/isAdmin']),
     $router = useRouter(),
+    typeList = computed(() => $store.getters['common/dealTypes']),
     data = reactive<Data>({
         /** 表单list */
         list: [
@@ -130,43 +131,47 @@ const $store = useStore(),
         columns: [
             {
                 title: '设备编号',
-                dataIndex: 'Name',
+                dataIndex: 'Sn',
             },
             {
                 title: '养老院名称',
-                dataIndex: 'Dept',
+                dataIndex: 'GroupName',
                 hidden: !isAdmin.value,
                 minWidth: 120,
             },
             {
-                title: '服务内容',
+                title: '处置时间',
+                dataIndex: 'DealTime',
+            },
+            {
+                title: '视频时长',
                 dataIndex: 'Name',
             },
             {
-                title: '记录时长',
-                dataIndex: 'Name',
-            },
-            {
-                title: '记录时间',
-                dataIndex: 'RepairTime',
+                title: '视频上传时间',
+                dataIndex: 'UploadTime',
                 minWidth: 120,
-                customRender: ({ text }) => {
-                    return getNowDate(text)?.date;
-                },
             },
             {
                 title: '上传时间',
                 dataIndex: 'RepairTime',
                 minWidth: 120,
-                customRender: ({ text }) => {
-                    return getNowDate(text)?.date;
-                },
             },
             {
                 title: '操作',
                 type: 'handle',
                 minWidth: 240,
-                option: getOpsOptions(isAdmin),
+                optionFn: ({ record }) => {
+                    console.log(record);
+                    return [
+                        {
+                            name: '立即处置',
+                            type: 'deal',
+                            disabled: record?.IsHandled,
+                        },
+                        ...getOpsOptions(isAdmin),
+                    ];
+                },
             },
         ],
     }),
@@ -187,6 +192,7 @@ const $store = useStore(),
         },
         {
             name: '未处置数',
+            aliasName: '未处置',
             value: 100,
             color: '#FDDB78',
             icon: DiffOutlined,
@@ -194,6 +200,7 @@ const $store = useStore(),
         },
         {
             name: '已处置数',
+            aliasName: '已处置',
             value: 100,
             color: '#FDDB78',
             icon: DiffOutlined,
@@ -261,6 +268,22 @@ function handleDownload(row: any) {
         a.click();
     };
     x.send();
+}
+function handleView(idx: number) {
+    console.log(statisList.value?.[idx], typeList.value);
+    const _t = statisList.value?.[idx];
+
+    if (
+        _t?.aliasName &&
+        typeList.value?.map((_e: any) => _e.label).includes(_t?.aliasName)
+    ) {
+        const type = typeList.value?.filter(
+            (_e: any) => _e.label === _t?.aliasName
+        )?.[0]?.value;
+        $router.push(`/nurse-aide/call-record?type=${type}`);
+        return;
+    }
+    $router.push(`/nurse-aide/call-record`);
 }
 </script>
 <style lang="less" scoped>

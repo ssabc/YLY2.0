@@ -1,13 +1,15 @@
 <template>
-    <GmForm
-        v-model:data="data.formData"
-        :list="data.list"
-        layout="inline"
-        @on-handle="sendRequest = true"
-    >
-    </GmForm>
+    <div class="cm-box">
+        <GmForm
+            v-model:data="data.formData"
+            :list="data.list"
+            layout="inline"
+            @on-handle="handleFormClick"
+        >
+        </GmForm>
+    </div>
     <div class="cells">
-        <div v-for="item in statisList" :key="item.name" class="cell">
+        <div v-for="(item, idx) in statisList" :key="item.name" class="cell">
             <div
                 class="lf icon-wrap"
                 :style="{ 'background-color': item.color }"
@@ -22,7 +24,7 @@
                     }}</span>
                     <div class="unit">{{ item.unit }}</div>
                 </div>
-                <div class="bt">查看 〉〉</div>
+                <div class="bt" @click="handleView(idx)">查看 〉〉</div>
             </div>
         </div>
     </div>
@@ -32,7 +34,7 @@
             v-model:data="data.tableData"
             v-model:sendRequest="sendRequest"
             :headers="data.columns"
-            :request-api="fetchServiceRecord"
+            :request-api="fetchDeviceAssignList"
             :send-data="dealReqData(data.formData)"
             @on-handle="handleClick"
         />
@@ -42,11 +44,14 @@
 <script setup lang="ts">
 import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
-import { ref, reactive, computed, toRaw } from 'vue';
+import { ref, reactive, computed, toRaw, onMounted } from 'vue';
 import type { FormListProps } from 'GlobComponentsModule';
 import { DiffOutlined } from '@ant-design/icons-vue';
 import type { ColumnProps, TableHandleOptItem } from 'GlobComponentsModule';
-import { fetchServiceRecord } from '@/api/service-records';
+import {
+    fetchDeviceAssignList,
+    fetchDeviceAssignStat,
+} from '@/api/device-assign';
 import { getNowDate, dealReqData } from '@/utils/tools';
 
 interface Data {
@@ -56,6 +61,7 @@ interface Data {
     list: FormListProps[];
     tableData: Item[];
     columns: ColumnProps[];
+    info: any;
 }
 interface Item {
     deviceId: string;
@@ -68,6 +74,7 @@ let sendRequest = ref(false);
 const $store = useStore(),
     isAdmin = computed(() => $store.getters['common/isAdmin']),
     $router = useRouter(),
+    typeList = computed(() => $store.getters['common/deviceAssignStatus']),
     data = reactive<Data>({
         /** 表单list */
         list: [
@@ -80,7 +87,7 @@ const $store = useStore(),
                     placeholder: '请选择设备类别',
                     allowClear: true,
                 },
-                option: $store.getters['common/recordTypes'] || [],
+                option: $store.getters['common/deviceClass'] || [],
             },
             {
                 type: 'input',
@@ -108,10 +115,10 @@ const $store = useStore(),
                 label: '',
                 width: 160,
                 props: {
-                    placeholder: '请选择设备分配状态',
+                    placeholder: '请选择分配状态',
                     allowClear: true,
                 },
-                option: $store.getters['common/recordTypes'] || [],
+                option: $store.getters['common/deviceAssignStatus'] || [],
             },
             {
                 type: 'handle',
@@ -147,18 +154,21 @@ const $store = useStore(),
             {
                 title: '设备类别',
                 dataIndex: 'Name',
+                customRender: () => {
+                    return '服务记录仪';
+                },
             },
             {
                 title: '设备编号',
-                dataIndex: 'Name',
+                dataIndex: 'Sn',
             },
             {
                 title: '设备分类',
-                dataIndex: 'Name',
+                dataIndex: 'ServiceType',
             },
             {
                 title: '所属养老院',
-                dataIndex: 'Dept',
+                dataIndex: 'GroupName',
                 // hidden: !isAdmin.value,
                 minWidth: 120,
             },
@@ -168,13 +178,15 @@ const $store = useStore(),
             },
             {
                 title: '分配日期',
-                dataIndex: 'Name',
+                dataIndex: 'AllocationTime',
+                customRender: ({ text }) => {
+                    return getNowDate(text)?.date;
+                },
             },
             {
                 title: '操作',
                 type: 'handle',
                 minWidth: 120,
-                hidden: isAdmin.value,
                 option: [
                     {
                         name: '点击查看',
@@ -187,6 +199,10 @@ const $store = useStore(),
                 ],
             },
         ],
+        info: {
+            Total: 0,
+            Allocated: 0,
+        },
     }),
     statisList = computed(() => [
         {
@@ -194,23 +210,48 @@ const $store = useStore(),
             value: 100,
             color: '#1d66d6',
             icon: DiffOutlined,
-            unit: '分钟',
+            unit: '',
         },
         {
             name: '已分配',
-            value: 100,
+            value: data.info?.Allocated,
             color: '#28d094',
             icon: DiffOutlined,
-            unit: '分钟',
+            unit: '',
         },
         {
             name: '未分配',
-            value: 100,
+            value: data.info?.Total - data.info?.Allocated,
             color: '#FDDB78',
             icon: DiffOutlined,
-            unit: '分钟',
+            unit: '',
         },
     ]);
+
+onMounted(() => {
+    refreshList();
+});
+function getInfoAjax() {
+    const req = data.formData;
+    fetchDeviceAssignStat(req).then((res: any) => {
+        data.info = res.data;
+    });
+}
+
+function refreshList() {
+    getInfoAjax();
+    sendRequest.value = true;
+}
+
+function handleFormClick(e: any) {
+    const { label } = e;
+    switch (label) {
+        case '查询':
+            refreshList();
+            break;
+        default:
+    }
+}
 
 /**
  * @description: table 项操作
@@ -229,7 +270,23 @@ function handleClick(item: TableHandleOptItem, row: any) {
 }
 function handleToDetail(row: any) {
     console.log(row, '---');
-    $router.push('/device-assign/detail');
+    $router.push(`/device-assign/detail?id=${row.DevId}`);
+}
+
+function handleView(idx: number) {
+    const _t = statisList.value?.[idx];
+
+    if (
+        _t?.name &&
+        typeList.value?.map((_e: any) => _e.label).includes(_t?.name)
+    ) {
+        const type = typeList.value?.filter(
+            (_e: any) => _e.label === _t?.name
+        )?.[0]?.value;
+        $router.push(`/device-assign/list?type=${type}`);
+        return;
+    }
+    $router.push(`/device-assign/list`);
 }
 </script>
 <style lang="less" scoped>

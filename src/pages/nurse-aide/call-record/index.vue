@@ -64,7 +64,7 @@ let sendRequest = ref(false);
 
 const $store = useStore(),
     isAdmin = computed(() => $store.getters['common/isAdmin']),
-    typeList = computed(() => $store.getters['common/recordTypes'] || []),
+    typeList = computed(() => $store.getters['common/dealTypes'] || []),
     $router = useRouter(),
     $route = useRoute(),
     data = reactive<Data>({
@@ -72,7 +72,7 @@ const $store = useStore(),
         list: [
             {
                 type: 'select',
-                name: 'status',
+                name: 'serviceType',
                 label: '',
                 width: 160,
                 props: {
@@ -169,7 +169,7 @@ const $store = useStore(),
     });
 
 watch(
-    () => $route.params.type,
+    () => $route.query.type,
     (e) => {
         initFn(e);
     },
@@ -179,8 +179,7 @@ watch(
 );
 
 function initFn(_type: any) {
-    const _d = typeList.value?.[_type];
-    data.formData.serviceType = _d?.label;
+    data.formData.serviceType = _type;
     refreshList();
 }
 

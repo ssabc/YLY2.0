@@ -14,7 +14,7 @@
             v-model:data="data.tableData"
             v-model:sendRequest="sendRequest"
             :headers="data.columns"
-            :request-api="fetchServiceFileList"
+            :request-api="fetchDeviceAssignList"
             :send-data="dealReqData(data.formData)"
             @on-handle="handleClick"
         />
@@ -30,7 +30,7 @@ import type {
     FormListProps,
     TableHandleOptItem,
 } from 'GlobComponentsModule';
-import { fetchServiceFileList } from '@/api/service-records';
+import { fetchDeviceAssignList } from '@/api/device-assign';
 import {
     getOpsOptions,
     getNowDate,
@@ -40,6 +40,7 @@ import {
 import { message as $message } from 'ant-design-vue';
 import { Modal } from 'ant-design-vue';
 import { ExclamationCircleOutlined } from '@ant-design/icons-vue';
+
 interface Data {
     formData: {
         serviceType?: string;
@@ -68,14 +69,14 @@ const $store = useStore(),
         list: [
             {
                 type: 'select',
-                name: 'serviceType',
+                name: 'status',
                 label: '',
                 width: 160,
                 props: {
                     placeholder: '请选择设备类别',
                     allowClear: true,
                 },
-                option: $store.getters['common/recordTypes'] || [],
+                option: $store.getters['common/deviceClass'] || [],
             },
             {
                 type: 'input',
@@ -88,7 +89,7 @@ const $store = useStore(),
             },
             {
                 type: 'select',
-                name: 'serviceType',
+                name: 'status',
                 label: '',
                 width: 160,
                 props: {
@@ -99,22 +100,14 @@ const $store = useStore(),
             },
             {
                 type: 'select',
-                name: 'serviceType',
+                name: 'type',
                 label: '',
                 width: 160,
                 props: {
-                    placeholder: '请选择设备分类状态',
+                    placeholder: '请选择分配状态',
                     allowClear: true,
                 },
-                option: $store.getters['common/recordTypes'] || [],
-            },
-            {
-                type: 'range-picker',
-                name: 'date',
-                label: '可用时间',
-                props: {
-                    valueFormat: 'YYYY-MM-DD',
-                },
+                option: $store.getters['common/deviceAssignStatus'] || [],
             },
             {
                 type: 'handle',
@@ -151,7 +144,10 @@ const $store = useStore(),
             },
             {
                 title: '设备类别',
-                dataIndex: 'Sn',
+                dataIndex: 'Name',
+                customRender: () => {
+                    return '服务记录仪';
+                },
             },
             {
                 title: '设备编号',
@@ -159,21 +155,24 @@ const $store = useStore(),
             },
             {
                 title: '设备分类',
-                dataIndex: 'Sn',
+                dataIndex: 'ServiceType',
             },
             {
                 title: '所属养老院',
                 dataIndex: 'GroupName',
-                hidden: !isAdmin.value,
+                // hidden: !isAdmin.value,
                 minWidth: 120,
             },
             {
                 title: '运行状态',
-                dataIndex: 'Sn',
+                dataIndex: 'Name',
             },
             {
                 title: '分配日期',
-                dataIndex: 'Sn',
+                dataIndex: 'AllocationTime',
+                customRender: ({ text }) => {
+                    return getNowDate(text)?.date;
+                },
             },
             {
                 title: '操作',
@@ -195,7 +194,7 @@ const $store = useStore(),
     });
 
 watch(
-    () => $route.params.type,
+    () => $route.query.type,
     (e) => {
         initFn(e);
     },
@@ -205,8 +204,7 @@ watch(
 );
 
 function initFn(_type: any) {
-    const _d = typeList.value?.[_type];
-    data.formData.serviceType = _d?.label;
+    data.formData.type = _type;
     refreshList();
 }
 

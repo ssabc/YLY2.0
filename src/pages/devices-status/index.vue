@@ -1,6 +1,6 @@
 <template>
     <div class="cells">
-        <div v-for="item in statisList" :key="item.name" class="cell">
+        <div v-for="(item, idx) in statisList" :key="item.name" class="cell">
             <div
                 class="lf icon-wrap"
                 :style="{ 'background-color': item.color }"
@@ -15,7 +15,7 @@
                     }}</span>
                     <div class="unit">{{ item.unit }}</div>
                 </div>
-                <div class="bt">查看 〉〉</div>
+                <div class="bt" @click="handleView(idx)">查看 〉〉</div>
             </div>
         </div>
     </div>
@@ -40,12 +40,15 @@
 <script setup lang="ts">
 import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
-import { ref, reactive, computed } from 'vue';
+import { ref, reactive, computed, onMounted } from 'vue';
 import type { FormListProps } from 'GlobComponentsModule';
 import { DiffOutlined } from '@ant-design/icons-vue';
 import Chart1 from './compoments/chart1.vue';
 import Chart2 from './compoments/chart2.vue';
 import Chart3 from './compoments/chart3.vue';
+import {
+    fetchDeviceStatus,
+} from '@/api/app';
 
 interface Data {
     formData: {
@@ -108,30 +111,45 @@ const $store = useStore(),
             value: 100,
             color: '#1d66d6',
             icon: DiffOutlined,
-            unit: '分钟',
+            unit: '',
         },
         {
             name: '服务记录仪',
             value: 100,
             color: '#28d094',
             icon: DiffOutlined,
-            unit: '分钟',
+            unit: '',
         },
         {
             name: '采集柜',
             value: 100,
             color: '#FDDB78',
             icon: DiffOutlined,
-            unit: '分钟',
+            unit: '',
         },
         {
             name: '数字哨兵',
             value: 100,
             color: '#FA746B',
             icon: DiffOutlined,
-            unit: '分钟',
+            unit: '',
         },
     ]);
+
+onMounted(() => {
+    getInfoAjax();
+})
+
+function handleView() {
+    $router.push(`/devices-status/usage-record`);
+}
+
+function getInfoAjax() {
+    const req = data.formData;
+    fetchDeviceStatus(req).then((res: any) => {
+        data.info = res.data;
+    });
+}
 </script>
 <style lang="less" scoped>
 .cells {
