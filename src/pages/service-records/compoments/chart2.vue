@@ -3,7 +3,6 @@
 </template>
 
 <script setup lang="ts">
-import { useStore } from 'vuex';
 import { watchEffect, nextTick } from 'vue';
 import * as echarts from 'echarts';
 import { groupBy } from '@/utils/tools';
@@ -23,9 +22,7 @@ watchEffect(() => {
 
 const renderChart1 = (chartData: any) => {
     const { list, legend } = chartData,
-        _newList = groupBy(list, function (_e: any) {
-            return _e.Date;
-        }),
+        _newList = groupBy(list, 'Date'),
         xAxisData = _newList?.map((_e: any) => _e?.[0]?.Date),
         seriesData: any[] = [];
     legend?.forEach((_e: any) => {

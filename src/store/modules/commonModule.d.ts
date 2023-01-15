@@ -1,7 +1,7 @@
 /*
  * @Author: zhaoshan
  * @Date: 2022-11-30 14:10:30
- * @LastEditTime: 2023-01-10 21:30:43
+ * @LastEditTime: 2023-01-15 18:08:01
  * @LastEditors: sZhao
  * @Description:
  */
@@ -16,11 +16,17 @@ declare module 'CommonModule' {
         account?: UserInfoVO;
         token?: string;
     }
+
+    interface Yly {
+        name?: string;
+        id?: number;
+    }
     interface State {
         menu: RouteItem[];
         userInfo: UserInfo;
         ylyList: any[];
         gisUrl: string;
+        yly: Yly;
     }
 
     interface Getters {
@@ -34,6 +40,7 @@ declare module 'CommonModule' {
         statusTypes2: () => any[];
         statusTypes3: () => any[];
         statusTypes4: () => any[];
+        groupId: ({ yly }: State) => string;
     }
 
     interface Actions {

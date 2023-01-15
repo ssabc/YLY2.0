@@ -128,6 +128,12 @@ function handleClick() {
     fetchLogin(queryParam)
         .then((res) => {
             $store.dispatch('common/updateUserInfo', res.data);
+            const account = res.data?.account,
+                _q = {
+                    name: account?.desc || '',
+                    id: account?.id || '',
+                };
+            $store.commit('common/setYly', _q);
             $router.push('/');
         })
         .catch(() => {

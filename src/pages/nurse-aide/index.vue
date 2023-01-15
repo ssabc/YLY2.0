@@ -25,7 +25,13 @@
             <Chart1></Chart1>
         </div>
         <div class="column c2 cm-box">
-            <div>护工帮数据统计</div>
+            <div class="hgb-head-wrap">
+                <span>护工帮数据统计</span>
+                <div class="rg">
+                    <span class="active">近7天</span>
+                    <span>年度</span>
+                </div>
+            </div>
             <Chart2></Chart2>
         </div>
     </div>
@@ -61,6 +67,7 @@ import { fetchSosRecord } from '@/api/app';
 import { message as $message } from 'ant-design-vue';
 import { Modal } from 'ant-design-vue';
 import { ExclamationCircleOutlined } from '@ant-design/icons-vue';
+import commonMixin from '@/mixins';
 
 interface Data {
     formData: {
@@ -99,7 +106,7 @@ const $store = useStore(),
             {
                 type: 'range-picker',
                 name: 'date',
-                label: '可用时间',
+                label: '记录时间',
                 props: {
                     valueFormat: 'YYYY-MM-DD',
                 },
@@ -214,6 +221,10 @@ const $store = useStore(),
             unit: '',
         },
     ]);
+
+commonMixin(() => {
+    sendRequest.value = true;
+});
 
 /**
  * @description: table 项操作
@@ -354,6 +365,26 @@ function handleView(idx: number) {
         }
         .c2 {
             flex: 1;
+        }
+    }
+}
+
+.hgb-head-wrap {
+    display: flex;
+    justify-content: space-between;
+    .rg {
+        display: flex;
+        align-items: center;
+        span {
+            color: #666;
+
+            &:first-child {
+                margin-right: 10px;
+            }
+            &.active {
+                color: #02a7f0;
+                cursor: pointer;
+            }
         }
     }
 }

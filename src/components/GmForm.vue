@@ -7,6 +7,7 @@
         :rules="rules"
     >
         <a-form-item
+            class="gm-form-item"
             v-for="item of list.filter((_e: any) => !_e.hidden)"
             v-bind="item.itemProps"
             :key="item.name"
@@ -130,6 +131,9 @@
             <template v-if="item.type === 'slot'">
                 <slot :data="item" :name="`${item.name}-label`" />
             </template>
+            <div class="unit" v-if="item.unit">
+                {{ item.unit?.text }}
+            </div>
         </a-form-item>
         <!-- 额外的按钮操作 -->
         <slot name="externalBtns"></slot>
@@ -235,6 +239,14 @@ defineExpose({
         &:last-of-type {
             margin-right: 0;
         }
+    }
+}
+:deep(.gm-form-item .ant-form-item-control-input-content) {
+    display: flex;
+    align-items: flex-end;
+    .unit {
+        color: #666;
+        margin-left: 4px;
     }
 }
 </style>

@@ -1,15 +1,5 @@
 <template>
     <div class="home-wrap">
-        <div v-if="isAdmin" class="label-div">
-            <span>选择养老院：</span>
-            <a-select
-                v-model:value="data.yly"
-                style="width: 200px"
-                :options="ylyList"
-                allow-clear
-                @change="handleChangeYLY"
-            />
-        </div>
         <div class="content">
             <div class="row r1">
                 <div class="column c1 flex1">
@@ -29,17 +19,25 @@
                     <div class="cells">
                         <div class="cell">
                             <div class="label">总时长:</div>
-                            <div class="value">
-                                {{ data.CenterStat.TotalFileDuration }}
-                                <span class="unit">分钟</span>
-                            </div>
+                            <div
+                                class="value"
+                                v-html="
+                                    changeHourMinutestr(
+                                        data.CenterStat.TotalFileDuration
+                                    )?.htmlText
+                                "
+                            ></div>
                         </div>
                         <div class="cell">
                             <div class="label">今日新增时长:</div>
-                            <div class="value">
-                                {{ data.CenterStat.TodayFileDuration }}
-                                <span class="unit">分钟</span>
-                            </div>
+                            <div
+                                class="value"
+                                v-html="
+                                    changeHourMinutestr(
+                                        data.CenterStat.TodayFileDuration
+                                    )?.htmlText
+                                "
+                            ></div>
                         </div>
                         <div class="cell">
                             <div class="label">总访客人数:</div>
@@ -59,7 +57,7 @@
                         <Chart2 :yly-flag="true"></Chart2>
                     </div>
                     <div class="box">
-                        <div class="title">服务记录排名（本月）</div>
+                        <div class="title">最新服务记录</div>
                         <Chart3
                             :p-data="data.info.ServiceDurationRank"
                             :yly-flag="true"
@@ -88,7 +86,7 @@
                 <div class="column flex1">
                     <div class="box">
                         <div class="title">设备状态（今日）</div>
-                        <Chart6></Chart6>
+                        <Chart6 :p-data="data.info.DeviceStatus"></Chart6>
                     </div>
                 </div>
             </div>
@@ -108,14 +106,11 @@ import Chart4 from './components/chart4.vue';
 import Chart5 from './components/chart5.vue';
 import Chart6 from './components/chart6.vue';
 import { BellOutlined } from '@ant-design/icons-vue';
+import { changeHourMinutestr } from '@/utils/tools';
+import commonMixin from '@/mixins';
 
 const $store = useStore(),
-    ylyList = computed(() => {
-        const ylyList = $store.getters['common/ylyList'];
-        return [{ label: '全部', value: '' }, ...ylyList];
-    }),
     isAdmin = computed(() => $store.getters['common/isAdmin']),
-    deptId = computed(() => $store.getters['common/deptId']),
     data = reactive<any>({
         info: {},
         yly: '',
@@ -126,23 +121,18 @@ onMounted(() => {
     getHomeInfo();
 });
 
+commonMixin(getHomeInfo);
+
 /**
  * @description: 获取首页数据
  */
 function getHomeInfo() {
-    const _req = {}
-    if (data.yly) {
-        _req['group-id'] = data.yly;
-    }
+    const _req = {};
     fetchHomeInfo(_req).then((res: any) => {
         console.log(res);
         data.info = res?.data || {};
         data.CenterStat = data.info?.CenterStat || {};
     });
-}
-
-function handleChangeYLY(e) {
-    getHomeInfo();
 }
 </script>
 
@@ -215,7 +205,7 @@ function handleChangeYLY(e) {
                         .value {
                             font-size: 40px;
                             color: #16d4e3;
-                            .unit {
+                            span {
                                 font-size: 14px;
                             }
                         }
@@ -239,14 +229,6 @@ function handleChangeYLY(e) {
 
 .bell-wrap {
     align-items: center;
-}
-.label-div {
-    height: 50px;
-    background-color: rgba(65, 92, 133, 1);
-    display: flex;
-    align-items: center;
-    color: #fff;
-    padding: 0 15px;
 }
 .visit-num {
     display: flex;

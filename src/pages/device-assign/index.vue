@@ -53,6 +53,7 @@ import {
     fetchDeviceAssignStat,
 } from '@/api/device-assign';
 import { getNowDate, dealReqData } from '@/utils/tools';
+import commonMixin from '@/mixins';
 
 interface Data {
     formData: {
@@ -180,7 +181,7 @@ const $store = useStore(),
                 title: '分配日期',
                 dataIndex: 'AllocationTime',
                 customRender: ({ text }) => {
-                    return getNowDate(text)?.date;
+                    return getNowDate(text)?.time;
                 },
             },
             {
@@ -231,6 +232,7 @@ const $store = useStore(),
 onMounted(() => {
     refreshList();
 });
+commonMixin(refreshList);
 function getInfoAjax() {
     const req = data.formData;
     fetchDeviceAssignStat(req).then((res: any) => {

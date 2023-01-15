@@ -1,9 +1,9 @@
 <!--
  * @Author: szhao
  * @Date: 2023-01-10 10:59:12
- * @LastEditTime: 2023-01-12 11:17:02
- * @LastEditors: szhao
- * @Description: 
+ * @LastEditTime: 2023-01-15 19:54:04
+ * @LastEditors: sZhao
+ * @Description:
 -->
 <template>
     <div class="row cm-box">
@@ -115,6 +115,9 @@ const $store = useStore(),
                     placeholder: '',
                     disabled: true,
                 },
+                unit: {
+                    text: 'M',
+                },
             },
             {
                 type: 'input',
@@ -173,10 +176,8 @@ watch(
 
 function initFn(fileId: any) {
     fetchServiceInfo({ fileId }).then((res) => {
-        // const _d = (data.info = res.data ?? {});
         data.formData = res.data ?? {};
-        data.videoUrl = $route.query.baseurl + data.formData.FilePath;
-        console.log($route.query.baseurl + data.formData.FilePath);
+        data.videoUrl = data.formData.FilePath;
     });
 }
 

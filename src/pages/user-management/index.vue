@@ -43,7 +43,7 @@ interface Item {
 }
 let sendRequest = ref(false);
 
-function getTbData(isAdmin, deptId) {
+function getTbData(isAdmin) {
     if (isAdmin) {
         return [
             {
@@ -72,7 +72,6 @@ function getTbData(isAdmin, deptId) {
             },
         ]
     }
-    if (deptId == 4) {
         return [
             {
                 SubmitTime: '2022-12-03 11：12：00',
@@ -91,53 +90,16 @@ function getTbData(isAdmin, deptId) {
                 Type: '869294040155714',
             },
         ]
-    }
-
-    if (deptId == 5) {
-        return [
-            {
-                SubmitTime: '2022-12-03 11：12：00',
-                Dept: '千鹤老年公寓 （乳山路分院）',
-                FileName: '光明',
-                Duration: '1',
-                status: 1,
-                Type: '869294040156977',
-            },
-        ]
-    }
-
-    if (deptId == 6) {
-        return [
-            {
-                SubmitTime: '2022-12-03 11：12：00',
-                Dept: '黄浦老年千鹤老年公寓 （昌里路）公寓',
-                FileName: '吴巡',
-                Duration: '1',
-                status: 1,
-                Type: '869294040156753',
-            },
-            {
-                SubmitTime: '2022-11-30 18：30：00',
-                Dept: '黄浦老年千鹤老年公寓 （昌里路）公寓',
-                FileName: '王五',
-                Duration: '1',
-                status: 1,
-                Type: '869294040156738',
-            },
-        ]
-    }
-    return []
 }
 const $store = useStore(),
     isAdmin = computed(() => $store.getters['common/isAdmin']),
-    deptId = computed(() => $store.getters['common/deptId']),
     data = reactive<Data>({
         /** 表单list */
         list: [
             {
                 type: 'range-picker',
                 name: 'date',
-                label: '可用时间',
+                label: '记录时间',
                 props: {
                     valueFormat: 'YYYY-MM-DD',
                 },
@@ -184,7 +146,7 @@ const $store = useStore(),
         /** 表单数据 */
         formData: {},
         /** 列表数据 */
-        tableData: getTbData(isAdmin.value, deptId.value),
+        tableData: getTbData(isAdmin.value),
         /** 列表项 */
         columns: [
             {

@@ -8,6 +8,8 @@ const state = (): State => ({
     userInfo: {},
     ylyList: [],
     gisUrl: '',
+    /** 系统当前养老院 */
+    yly: {},
 });
 
 const getters: Getters = {
@@ -30,8 +32,11 @@ const getters: Getters = {
         console.log('类型：', _t);
         return _t === 'district';
     },
-    deptId: () => {
-        return getters.userInfo(state)?.account?.id;
+    groupId: (state: State) => {
+        const ylyObj = state.yly?.name
+            ? state.yly
+            : JSON.parse(localStorage.getItem('currentYLY') || '{}');
+        return `${ylyObj?.id}`;
     },
     userInfo: ({ userInfo }: State) =>
         userInfo?.token
@@ -137,6 +142,26 @@ const getters: Getters = {
             },
         ];
     },
+    serviceSeries: () => [
+        {
+            name: '服务提供',
+            color: '#1d66d6',
+        },
+        {
+            name: '服务安全',
+            color: '#28d094',
+        },
+        {
+            name: '服务保障',
+            color: '#FDDB78',
+        },
+    ],
+    serviceSeriesAll: () => [
+        {
+            name: '值班长',
+            color: '#FA746B',
+        },
+    ],
     serviceTypes: () => {
         return [
             {
@@ -238,6 +263,11 @@ const mutations = {
     },
     setGisUrl(state: State, p: string) {
         state.gisUrl = p;
+    },
+    setYly(state: State, p: object) {
+        console.log('setYly', p);
+        localStorage.setItem('currentYLY', JSON.stringify(p));
+        state.yly = p;
     },
 };
 

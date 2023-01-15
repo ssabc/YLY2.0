@@ -1,8 +1,8 @@
 /*
  * @Author: szhao
  * @Date: 2022-12-02 19:32:00
- * @LastEditTime: 2023-01-12 11:01:18
- * @LastEditors: szhao
+ * @LastEditTime: 2023-01-15 20:05:50
+ * @LastEditors: sZhao
  * @Description:
  */
 
@@ -63,13 +63,25 @@ export const getNowDate = function (_t: any) {
     if (seconds >= 0 && seconds <= 9) {
         seconds = '0' + seconds;
     }
+    const sign2 = ':';
     return {
+        time:
+            year +
+            '-' +
+            month +
+            '-' +
+            day +
+            ' ' +
+            hour +
+            sign2 +
+            minutes +
+            sign2 +
+            seconds,
         date: year + '-' + month + '-' + day,
         week,
         day,
         hour,
     };
-    // return year + "-" + month + "-" + day + " " + hour + sign2 + minutes + sign2 + seconds;
 };
 
 export const getReqData = function (_d: any, activeKey: string) {
@@ -95,10 +107,13 @@ export const dealReqData = function (_d: any) {
     return _r;
 };
 
-export const groupBy = function (arr: any, fn: any) {
-    const group: any = {};
+export const groupBy = function (arr: any, key: string) {
+    const group: any = {},
+        _fn = function (_e: any) {
+            return _e[key];
+        };
     arr?.map((item: any) => {
-        const type = JSON.stringify(fn(item));
+        const type = JSON.stringify(_fn(item));
         group[type] = group[type] || [];
         group[type].push(item);
     });
@@ -117,10 +132,41 @@ export const GetNumberOfDays = function (date1: any, date2: any) {
     return day;
 };
 
-export const toLine = function (name) {
+export const toLine = function (name: string) {
     const _t = name.replace(/([A-Z])/g, '-$1').toLowerCase();
     if (_t.substring(0, 1) === '-') {
         return _t.substring(1);
     }
     return _t;
+};
+
+export const changeHourMinutestr = function (str: number) {
+    let _h = '0',
+        _m = '0';
+    if (str) {
+        _h =
+            Math.floor(str / 60).toString().length < 2
+                ? '0' + Math.floor(str / 60).toString()
+                : Math.floor(str / 60).toString();
+        _m =
+            (str % 60).toString().length < 2
+                ? '0' + (str % 60).toString()
+                : (str % 60).toString();
+    }
+    return {
+        h: _h,
+        m: _m,
+        text: +_m > 0 ? `${_h} 小时 ${_m} 分` : `${_h} 小时`,
+        htmlText:
+            +_m > 0
+                ? `${_h} <span style="font-size: 14px">小时</span> ${_m} <span style="font-size: 14px">分</span>`
+                : `${_h} <span style="font-size: 14px">小时</span>`,
+    };
+};
+
+/** 秒转分 分钟（小于1分钟）取整数  */
+export const showFileDurationText = function (_s: number) {
+    _s = +_s;
+    const _m = _s / 60;
+    return _m < 1 ? '小于1分钟' : Math.floor(_m);
 };

@@ -46,7 +46,6 @@ function initFn() {
 
 function getData(isAdmin: boolean, deptId: number) {
     console.log('isAdmin, deptId', isAdmin, deptId);
-    if (deptId == 4) {
         return {
             data0: [{ value: 3, name: '黄浦老年公寓' }],
             data1: [
@@ -65,49 +64,6 @@ function getData(isAdmin: boolean, deptId: number) {
                 { value: 0, name: '' },
             ],
         };
-    }
-
-    if (deptId == 6) {
-        return {
-            data0: [{ value: 2, name: '千鹤昌里' }],
-            data1: [
-                { value: 0, name: '12.1' },
-                { value: 1, name: '12.2' },
-                { value: 1, name: '12.3' },
-                { value: 0, name: '12.4' },
-            ],
-            data2: [
-                { value: 0, name: '' },
-                { value: 0, name: '' },
-                { value: 1, name: '' },
-                { value: 1, name: '' },
-                { value: 0, name: '' },
-                { value: 0, name: '' },
-                { value: 0, name: '' },
-            ],
-        };
-    }
-
-    if (deptId == 5) {
-        return {
-            data0: [{ value: 6, name: '千鹤乳山' }],
-            data1: [
-                { value: 0, name: '12.1' },
-                { value: 1, name: '12.2' },
-                { value: 1, name: '12.3' },
-                { value: 0, name: '12.4' },
-            ],
-            data2: [
-                { value: 0, name: '' },
-                { value: 1, name: '' },
-                { value: 1, name: '' },
-                { value: 0, name: '' },
-                { value: 0, name: '' },
-                { value: 0, name: '' },
-                { value: 0, name: '' },
-            ],
-        };
-    }
 
     return {
         data0: [

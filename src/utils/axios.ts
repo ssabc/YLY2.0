@@ -108,6 +108,7 @@ export function request(config: any, params?: Params) {
 
             config.data = qs.stringify({
                 ...dealwidthReqData(config.data),
+                'group-id': $store.getters['common/groupId'] || '',
                 token: $store.getters['common/userInfo']?.token,
             });
             config.headers['Content-Type'] =

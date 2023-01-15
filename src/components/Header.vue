@@ -39,6 +39,22 @@
             </div>
         </div>
     </a-layout-header>
+    <div v-if="isAdmin" class="label-div">
+        <span>选择养老院：</span>
+        <a-select
+            v-model:value="yly"
+            style="width: 200px"
+            @change="handleChangeYLY"
+        >
+            <a-select-option
+                v-for="ele of ylyList"
+                :key="ele['value']"
+                :value="'' + ele['value']"
+            >
+                {{ ele['label'] }}
+            </a-select-option>
+        </a-select>
+    </div>
 </template>
 
 <script setup lang="ts">
@@ -50,7 +66,6 @@ import { watch } from 'vue';
 import type { UserInfoVO } from 'CommonModule';
 import BellIcon1 from '@/assets/pictures/bell1.png';
 import BellIcon2 from '@/assets/pictures/bell2.png';
-import { fetchWarningCount } from '@/api/app';
 import { UserOutlined } from '@ant-design/icons-vue';
 
 interface Data {
@@ -68,17 +83,27 @@ const data = reactive<Data>({
     $router = useRouter(),
     $route = useRoute(),
     isAdmin = computed(() => $store.getters['common/isAdmin']),
+    ylyList = computed(() => {
+        const ylyList = $store.getters['common/ylyList'];
+        return [{ label: '全部', value: '' }, ...ylyList];
+    }),
     // 路由菜单
     headMenu = computed(() => $store.getters['common/headMenu']);
 
 let userInfo = ref<UserInfoVO>({});
+let yly = ref<string>('');
 userInfo = computed(() => $store.getters['common/userInfo']?.account || {});
 
 onMounted(() => {
     // fetchWarningCount({}).then((res: any) => {
     //     data.bellNum = res.data?.Unhandled;
     // });
+    initFn();
 });
+
+function initFn() {
+    yly.value = `${$store.getters['common/groupId'] || ''}`;
+}
 
 // 更新并高亮路由
 watch(
@@ -105,6 +130,17 @@ function exit() {
 function handleNaviPage() {
     data.bellNum = 0;
     $router.push('/nurse-aide');
+}
+
+function handleChangeYLY(e: string) {
+    const _tmp = ylyList.value.filter((_e) => {
+            return _e.value == e;
+        })?.[0],
+        _q = {
+            name: _tmp?.label || '',
+            id: _tmp?.value || '',
+        };
+    $store.commit('common/setYly', _q);
 }
 </script>
 
@@ -230,5 +266,14 @@ function handleNaviPage() {
     transform-origin: top center;
     -webkit-animation-name: swing;
     animation-name: swing;
+}
+
+.label-div {
+    height: 50px;
+    background-color: rgba(65, 92, 133, 1);
+    display: flex;
+    align-items: center;
+    color: #fff;
+    padding: 10px 15px;
 }
 </style>

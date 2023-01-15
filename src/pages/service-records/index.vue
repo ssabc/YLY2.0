@@ -39,7 +39,7 @@
         </div>
         <div class="column c2">
             <div>
-                <div class="time-desc">24小时新增时长排名</div>
+                <div class="time-desc">24小时新增记录</div>
                 <div class="time-cells">
                     <div
                         v-for="item in timeList"
@@ -70,6 +70,7 @@ import { fetchServiceRecord } from '@/api/service-records';
 import { getReqData, GetNumberOfDays } from '@/utils/tools';
 import { message as $message } from 'ant-design-vue';
 import { useRouter } from 'vue-router';
+import commonMixin from '@/mixins';
 
 interface Data {
     formData: {
@@ -99,7 +100,7 @@ const $store = useStore(),
             {
                 type: 'range-picker',
                 name: 'date',
-                label: '可用时间',
+                label: '记录时间',
                 props: {
                     valueFormat: 'YYYY-MM-DD',
                 },
@@ -160,6 +161,7 @@ const $store = useStore(),
 onMounted(() => {
     getInfoAjax();
 });
+commonMixin(getInfoAjax);
 
 function getInfoAjax() {
     if (

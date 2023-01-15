@@ -42,6 +42,7 @@ import { getOpsOptions, getNowDate, dealReqData } from '@/utils/tools';
 import { message as $message } from 'ant-design-vue';
 import { Modal } from 'ant-design-vue';
 import { ExclamationCircleOutlined } from '@ant-design/icons-vue';
+import commonMixin from '@/mixins';
 
 interface Data {
     activeKey?: string;
@@ -152,7 +153,7 @@ const $store = useStore(),
                 dataIndex: 'LastOnlineTime',
                 minWidth: 120,
                 customRender: ({ text }) => {
-                    return getNowDate(text)?.date;
+                    return getNowDate(text)?.time;
                 },
             },
             {
@@ -180,7 +181,7 @@ const $store = useStore(),
 onMounted(() => {
     refreshList();
 });
-
+commonMixin(refreshList);
 function refreshList() {
     sendRequest.value = true;
 }

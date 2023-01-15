@@ -37,6 +37,7 @@ import { fetchServiceFileList } from '@/api/service-records';
 import { dealReqData } from '@/utils/tools';
 import Chart1 from './compoments/chart1.vue';
 import Chart2 from './compoments/chart2.vue';
+import commonMixin from '@/mixins';
 
 interface Data {
     formData: {
@@ -63,7 +64,7 @@ const $store = useStore(),
             {
                 type: 'range-picker',
                 name: 'date',
-                label: '可用时间',
+                label: '记录时间',
                 props: {
                     valueFormat: 'YYYY-MM-DD',
                 },
@@ -114,6 +115,7 @@ const $store = useStore(),
             },
         ],
     });
+commonMixin(() => (sendRequest.value = true));
 </script>
 <style lang="less" scoped>
 .row {

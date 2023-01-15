@@ -15,16 +15,15 @@ interface Props {
 
 const $store = useStore(),
     $props = defineProps<Props>(),
-    isAdmin = computed(() => $store.getters['common/isAdmin']);
+    isAdmin = computed(() => $store.getters['common/isAdmin']),
+    seriesList = computed(() => $store.getters['common/serviceSeries']);
 
 watchEffect(() => {
     initFn($props.pData);
 });
 
 function initFn(list: any) {
-    let res = groupBy(list, function (_e: any) {
-        return _e.Date;
-    });
+    let res = groupBy(list, 'Date');
     nextTick(() => {
         renderChart1(res);
     });
@@ -46,35 +45,19 @@ const renderChart1 = (_d: any) => {
         yData3 = _fn(_d, '服务安全'),
         borderData = [],
         seriesData = [],
-        legend = ['服务提供', '服务保障', '服务安全'],
-        colorArr = [
-            {
-                start: 'rgba(0, 223, 214,',
-                end: 'rgba(17, 107, 243, 0.6)',
-            },
-            {
-                start: 'rgba(34, 120, 217,',
-                end: 'rgba(83, 60, 236, 0.6)',
-            },
-            {
-                start: 'rgba(27, 208, 207,',
-                end: 'rgba(9, 238, 105, 0.8)',
-            },
-            {
-                color: '#EC6941',
-            },
-        ];
+        legend = seriesList.value?.map((_e: any) => _e.name),
+        colorArr = seriesList.value?.map((_e: any) => _e.color);
     var normalColor = '#DEEBFF';
     var borderHeight = 4;
     xData.forEach(() => {
         borderData.push(borderHeight);
     });
-    [yData1, yData2, yData3].forEach((item, index) => {
+    legend.forEach((name: string, index: number) => {
         const obj1 = {
-            name: legend[index],
+            name,
             type: 'bar',
-            stack: legend[index],
-            data: item,
+            stack: name,
+            data: _fn(_d, name),
             barWidth: '20%',
             itemStyle: {
                 normal: {
@@ -87,15 +70,15 @@ const renderChart1 = (_d: any) => {
                         colorStops: [
                             {
                                 offset: 0,
-                                color: colorArr[index].start + '1)',
+                                color: colorArr[index],
                             },
                             {
                                 offset: 0.2,
-                                color: colorArr[index].start + '1)',
+                                color: colorArr[index],
                             },
                             {
                                 offset: 1,
-                                color: colorArr[index].end,
+                                color: colorArr[index],
                             },
                         ],
                         globalCoord: false,
@@ -108,7 +91,7 @@ const renderChart1 = (_d: any) => {
     const option = {
         grid: {
             left: '3%',
-            top: '5%',
+            top: '12%',
             right: '3%',
             bottom: '5%',
             containLabel: true,
@@ -137,22 +120,6 @@ const renderChart1 = (_d: any) => {
                     color: 'rgba(0, 11, 34, .4)',
                 },
             },
-            // formatter: function (params: any) {
-            //     console.log('params', params);
-            //     var str = '';
-            //     for (var i = 0; i < params.length; i++) {
-            //         if (params[i].seriesName !== '') {
-            //             str +=
-            //                 params[i].name +
-            //                 ':' +
-            //                 params[i].seriesName +
-            //                 '-' +
-            //                 params[i].value +
-            //                 '<br/>';
-            //         }
-            //     }
-            //     return str;
-            // },
         },
         xAxis: [
             {
@@ -184,6 +151,7 @@ const renderChart1 = (_d: any) => {
         ],
         yAxis: [
             {
+                name: '时长（分钟）',
                 type: 'value',
                 axisLabel: {
                     formatter: '{value}',
@@ -209,14 +177,15 @@ const renderChart1 = (_d: any) => {
     };
     // 绘制图表
     let myChart = echarts.init(document.getElementById('ylyChart1'));
-    myChart.clear();myChart.setOption(option);
+    myChart.clear();
+    myChart.setOption(option);
 };
 </script>
 
 <style lang="less" scoped>
 .chart {
     width: 100%;
-    height: 200px;
+    min-height: 200px;
     flex: 1;
     background-color: linear-gradient(
         180deg,
@@ -227,3 +196,4 @@ const renderChart1 = (_d: any) => {
     );
 }
 </style>
+//

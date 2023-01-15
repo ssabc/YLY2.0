@@ -44,6 +44,8 @@ import { message as $message } from 'ant-design-vue';
 import recordTimeChart from '@/pages/service-records/compoments/record-time-chart.vue';
 import { Modal } from 'ant-design-vue';
 import { ExclamationCircleOutlined } from '@ant-design/icons-vue';
+import commonMixin from '@/mixins';
+
 interface Data {
     formData: {
         serviceType?: string;
@@ -73,7 +75,7 @@ const $store = useStore(),
             {
                 type: 'range-picker',
                 name: 'date',
-                label: '可用时间',
+                label: '记录时间',
                 props: {
                     valueFormat: 'YYYY-MM-DD',
                 },
@@ -143,7 +145,7 @@ function initFn(_type: any) {
     data.formData.serviceType = _d?.label;
     refreshList();
 }
-
+commonMixin(refreshList);
 function refreshList() {
     if (
         data.formData.date?.[0] &&

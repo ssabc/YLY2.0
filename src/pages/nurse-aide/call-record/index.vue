@@ -44,6 +44,8 @@ import { message as $message } from 'ant-design-vue';
 import recordTimeChart from '@/pages/service-records/compoments/record-time-chart.vue';
 import { Modal } from 'ant-design-vue';
 import { ExclamationCircleOutlined } from '@ant-design/icons-vue';
+import commonMixin from '@/mixins';
+
 interface Data {
     formData: {
         serviceType?: string;
@@ -84,7 +86,7 @@ const $store = useStore(),
             {
                 type: 'range-picker',
                 name: 'date',
-                label: '可用时间',
+                label: '记录时间',
                 props: {
                     valueFormat: 'YYYY-MM-DD',
                 },
@@ -131,7 +133,7 @@ const $store = useStore(),
                 dataIndex: 'CreateTime',
                 minWidth: 120,
                 customRender: ({ text }) => {
-                    return getNowDate(text)?.date;
+                    return getNowDate(text)?.time;
                 },
             },
             {
@@ -147,7 +149,7 @@ const $store = useStore(),
                 dataIndex: 'CreateTime',
                 minWidth: 120,
                 customRender: ({ text }) => {
-                    return getNowDate(text)?.date;
+                    return getNowDate(text)?.time;
                 },
             },
             {
@@ -155,14 +157,29 @@ const $store = useStore(),
                 dataIndex: 'UploadTime',
                 minWidth: 120,
                 customRender: ({ text }) => {
-                    return getNowDate(text)?.date;
+                    return getNowDate(text)?.time;
                 },
             },
             {
                 title: '操作',
                 type: 'handle',
                 minWidth: 240,
-                option: getOpsOptions(isAdmin),
+                // option: getOpsOptions(isAdmin),
+                optionFn: ({ record }) => [
+                    {
+                        name: '点击查看',
+                        type: 'view',
+                        disabled: !record.FileHref,
+                    },
+                    {
+                        name: '下载',
+                        type: 'download',
+                    },
+                    {
+                        name: '删除',
+                        type: 'delete',
+                    },
+                ],
             },
         ],
         chartData: [],
@@ -177,7 +194,7 @@ watch(
         immediate: true,
     }
 );
-
+commonMixin(refreshList);
 function initFn(_type: any) {
     data.formData.serviceType = _type;
     refreshList();

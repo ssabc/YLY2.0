@@ -9,31 +9,31 @@
             <div class="cells">
                 <div class="cell">
                     <span class="label">值班长</span>
-                    <span class="value">60%</span>
+                    <span class="value">{{ info.Foreman || 0 }}%</span>
                 </div>
                 <div class="cell">
                     <span class="label">服务提供</span>
-                    <span class="value">60%</span>
+                    <span class="value">{{ info.Provision || 0 }}%</span>
                 </div>
                 <div class="cell">
                     <span class="label">服务保障</span>
-                    <span class="value">60%</span>
+                    <span class="value">{{ info.Guarantee || 0 }}%</span>
                 </div>
                 <div class="cell">
                     <span class="label">服务安全</span>
-                    <span class="value">60%</span>
+                    <span class="value">{{ info.Security || 0 }}%</span>
                 </div>
             </div>
             <div class="cells">
                 <div class="cell">
                     <span class="label">采集站</span>
-                    <span class="value">60%</span>
+                    <span class="value">{{ info.StationCount || 0 }}%</span>
                 </div>
             </div>
             <div class="cells">
                 <div class="cell">
                     <span class="label">数字哨兵</span>
-                    <span class="value">60%</span>
+                    <span class="value">{{ info.SentryCount || 0 }}%</span>
                 </div>
             </div>
         </div>
@@ -48,13 +48,15 @@ import 'echarts-liquidfill/src/liquidFill.js';
 
 interface Props {
     ylyFlag?: any;
+    pData?: any;
 }
 const $store = useStore(),
     $props = defineProps<Props>(),
+    info = computed(() => $props.pData || {}),
     isAdmin = computed(() => $store.getters['common/isAdmin']);
 
 watchEffect(() => {
-    initFn();
+    initFn($props.pData);
 });
 
 function initFn() {
@@ -63,9 +65,6 @@ function initFn() {
     });
 }
 const renderChart1 = () => {
-    let angle = 0; // 角度
-    let dataValue = 65;
-
     const option = {
         title: {
             show: true,

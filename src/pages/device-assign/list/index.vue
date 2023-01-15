@@ -40,6 +40,7 @@ import {
 import { message as $message } from 'ant-design-vue';
 import { Modal } from 'ant-design-vue';
 import { ExclamationCircleOutlined } from '@ant-design/icons-vue';
+import commonMixin from '@/mixins';
 
 interface Data {
     formData: {
@@ -171,7 +172,7 @@ const $store = useStore(),
                 title: '分配日期',
                 dataIndex: 'AllocationTime',
                 customRender: ({ text }) => {
-                    return getNowDate(text)?.date;
+                    return getNowDate(text)?.time;
                 },
             },
             {
@@ -207,7 +208,7 @@ function initFn(_type: any) {
     data.formData.type = _type;
     refreshList();
 }
-
+commonMixin(refreshList);
 function refreshList() {
     if (
         data.formData.date?.[0] &&

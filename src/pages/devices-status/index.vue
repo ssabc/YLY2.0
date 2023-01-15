@@ -47,6 +47,7 @@ import Chart1 from './compoments/chart1.vue';
 import Chart2 from './compoments/chart2.vue';
 import Chart3 from './compoments/chart3.vue';
 import { fetchDeviceStatus } from '@/api/app';
+import commonMixin from '@/mixins';
 
 interface Data {
     formData: {
@@ -76,7 +77,7 @@ const $store = useStore(),
             {
                 type: 'range-picker',
                 name: 'date',
-                label: '可用时间',
+                label: '记录时间',
                 props: {
                     valueFormat: 'YYYY-MM-DD',
                 },
@@ -137,7 +138,7 @@ const $store = useStore(),
 onMounted(() => {
     getInfoAjax();
 });
-
+commonMixin(getInfoAjax);
 function handleView() {
     $router.push(`/devices-status/usage-record`);
 }

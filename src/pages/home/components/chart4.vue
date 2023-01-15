@@ -1,6 +1,6 @@
 <template>
     <div class="pie-cells">
-        <div v-for="item in pieList" :key="item.name" class="pie-cell">
+        <div v-for="item in seriesList" :key="item.name" class="pie-cell">
             <span
                 class="square"
                 :style="{ 'background-color': item.color }"
@@ -30,25 +30,7 @@ interface Props {
 const $store = useStore(),
     $props = defineProps<Props>(),
     isAdmin = computed(() => $store.getters['common/isAdmin']),
-    pieList = computed(() => {
-        return [
-            {
-                name: '服务提供',
-                color: '#199ED8',
-                value: 100,
-            },
-            {
-                name: '服务安全',
-                color: '#CCCCCC',
-                value: 300,
-            },
-            {
-                name: '服务保障',
-                color: '#00FF00',
-                value: 600,
-            },
-        ];
-    }),
+    seriesList = computed(() => $store.getters['common/serviceSeries']),
     data = reactive<any>({
         chartList: [],
     });
@@ -58,9 +40,7 @@ watchEffect(() => {
 });
 
 function initFn(_list: any) {
-    const _res = groupBy(_list, function (_e: any) {
-        return _e.GroupName;
-    });
+    const _res = groupBy(_list, 'GroupName');
     data.chartList = _res?.map((_e: any, index: number) => {
         const name = _e?.[0]?.GroupName,
             key = `homeChart4_${index + 1}`;
@@ -70,10 +50,9 @@ function initFn(_list: any) {
             data: _e,
         };
     });
-    console.log($props.pData, data.chartList);
     nextTick(() => {
         const _fn = (_d: any) => {
-            const _tmp = JSON.parse(JSON.stringify(pieList.value));
+            const _tmp = JSON.parse(JSON.stringify(seriesList.value));
             _tmp?.forEach((_e: any) => {
                 _e.value =
                     _d?.filter((_s: any) => _s.ServiceType === _e.name)?.[0]
@@ -88,8 +67,7 @@ function initFn(_list: any) {
 }
 
 const renderChart = (key: string, datas: any) => {
-    // 1212 [{"name":"服务提供","color":"#199ED8","value":11}]
-    const color = ['#199ED8', '#CCCCCC', '#00FF00'];
+    const color = datas?.map((_e: any) => _e.color);
     let sum = 0;
     for (var i of datas) {
         sum += i.value;
@@ -145,7 +123,8 @@ const renderChart = (key: string, datas: any) => {
     };
     // 绘制图表
     let myChart = echarts.init(document.getElementById(key));
-    myChart.clear();myChart.setOption(option);
+    myChart.clear();
+    myChart.setOption(option);
 };
 </script>
 

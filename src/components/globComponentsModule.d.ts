@@ -1,8 +1,8 @@
 /*
  * @Author: zhaoshan
  * @Date: 2022-11-30 14:10:30
- * @LastEditTime: 2023-01-11 11:07:57
- * @LastEditors: szhao
+ * @LastEditTime: 2023-01-15 20:02:35
+ * @LastEditors: sZhao
  * @Description:
  */
 declare module 'GlobComponentsModule' {
@@ -36,6 +36,10 @@ declare module 'GlobComponentsModule' {
         optionFn?: ({ record }) => Array<TableHandleOptItem>;
         customRender?: ({ text, record, index }) => any;
     }
+
+    interface UnitObj {
+        text: string;
+    }
     export interface FormListProps {
         type:
             | 'text'
@@ -62,6 +66,7 @@ declare module 'GlobComponentsModule' {
         width?: string | number;
         colon?: boolean;
         disabledDate?: any;
+        unit?: UnitObj;
     }
 
     export interface ModalData {

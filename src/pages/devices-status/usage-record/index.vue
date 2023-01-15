@@ -53,6 +53,7 @@ import { dealReqData } from '@/utils/tools';
 import Chart1 from '../compoments/chart1.vue';
 import Chart4 from '../compoments/chart4.vue';
 import Chart5 from '../compoments/chart5.vue';
+import commonMixin from '@/mixins';
 
 interface Data {
     activeKey?: string;
@@ -116,7 +117,7 @@ const $store = useStore(),
             {
                 type: 'range-picker',
                 name: 'date',
-                label: '可用时间',
+                label: '记录时间',
                 props: {
                     valueFormat: 'YYYY-MM-DD',
                 },
@@ -175,7 +176,7 @@ const $store = useStore(),
             },
         ],
     });
-
+commonMixin(() => (sendRequest.value = true));
 function handleChangeTab(e) {
     console.log(e);
     if (e != 1) {

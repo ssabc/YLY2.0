@@ -108,7 +108,7 @@ const $store = useStore(),
                 dataIndex: 'RepairTime',
                 minWidth: 120,
                 customRender: ({ text }) => {
-                    return getNowDate(text)?.date;
+                    return getNowDate(text)?.time;
                 },
             },
             {
@@ -116,7 +116,7 @@ const $store = useStore(),
                 dataIndex: 'RepairTime',
                 minWidth: 120,
                 customRender: ({ text }) => {
-                    return getNowDate(text)?.date;
+                    return getNowDate(text)?.time;
                 },
             },
             {
@@ -124,7 +124,7 @@ const $store = useStore(),
                 dataIndex: 'RepairTime',
                 minWidth: 120,
                 customRender: ({ text }) => {
-                    return getNowDate(text)?.date;
+                    return getNowDate(text)?.time;
                 },
             },
             {
@@ -132,7 +132,7 @@ const $store = useStore(),
                 dataIndex: 'RepairTime',
                 minWidth: 120,
                 customRender: ({ text }) => {
-                    return getNowDate(text)?.date;
+                    return getNowDate(text)?.time;
                 },
             },
             {

@@ -36,6 +36,7 @@ import { fetchServiceStat, fetchServiceFileList } from '@/api/service-records';
 import {
     getOpsOptions,
     getNowDate,
+    showFileDurationText,
     dealReqData,
     getReqData,
     GetNumberOfDays,
@@ -44,12 +45,13 @@ import { message as $message } from 'ant-design-vue';
 import recordTimeChart from '@/pages/service-records/compoments/record-time-chart.vue';
 import { Modal } from 'ant-design-vue';
 import { ExclamationCircleOutlined } from '@ant-design/icons-vue';
+import commonMixin from '@/mixins';
+
 interface Data {
     formData: {
         serviceType?: string;
         date?: any[];
     };
-    baseurl?: string;
     list: FormListProps[];
     tableData: Item[];
     columns: ColumnProps[];
@@ -86,7 +88,7 @@ const $store = useStore(),
             {
                 type: 'range-picker',
                 name: 'date',
-                label: '可用时间',
+                label: '记录时间',
                 props: {
                     valueFormat: 'YYYY-MM-DD',
                 },
@@ -135,13 +137,16 @@ const $store = useStore(),
             {
                 title: '记录时长',
                 dataIndex: 'FileDuration',
+                customRender: ({ text }) => {
+                    return showFileDurationText(text);
+                },
             },
             {
                 title: '记录时间',
                 dataIndex: 'CreateTime',
                 minWidth: 120,
                 customRender: ({ text }) => {
-                    return getNowDate(text)?.date;
+                    return getNowDate(text)?.time;
                 },
             },
             {
@@ -149,7 +154,7 @@ const $store = useStore(),
                 dataIndex: 'UploadTime',
                 minWidth: 120,
                 customRender: ({ text }) => {
-                    return getNowDate(text)?.date;
+                    return getNowDate(text)?.time;
                 },
             },
             {
@@ -160,7 +165,6 @@ const $store = useStore(),
             },
         ],
         chartData: [],
-        baseurl: '',
     });
 
 watch(
@@ -172,6 +176,8 @@ watch(
         immediate: true,
     }
 );
+
+commonMixin(refreshList);
 
 function initFn(_type: any) {
     const _d = typeList.value?.[_type];
@@ -207,10 +213,6 @@ function getInfoAjax() {
             list: res.data || [],
         };
     });
-    fetchServiceFileList(req).then((res) => {
-        console.log(23434342, res.data?.Href);
-        data.baseurl = res.data?.Href || '';
-    });
 }
 
 function handleFormClick(e: any) {
@@ -244,7 +246,7 @@ function handleClick(item: TableHandleOptItem, row: any) {
 function handleToDetail(row: any) {
     console.log(row, '---');
     $router.push(
-        `/service-records/video-detail?id=${row.FileId}&baseurl=${data.baseurl}`
+        `/service-records/video-detail?id=${row.FileId}`
     );
 }
 
