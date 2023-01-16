@@ -66,7 +66,7 @@ let sendRequest = ref(false);
 
 const $store = useStore(),
     isAdmin = computed(() => $store.getters['common/isAdmin']),
-    typeList = computed(() => $store.getters['common/dealTypes'] || []),
+    typeList = computed(() => $store.getters['config/dealTypes']),
     $router = useRouter(),
     $route = useRoute(),
     data = reactive<Data>({
@@ -81,7 +81,7 @@ const $store = useStore(),
                     placeholder: '请选择处置状态',
                     allowClear: true,
                 },
-                option: $store.getters['common/dealTypes'] || [],
+                option: $store.getters['config/dealTypes'],
             },
             {
                 type: 'range-picker',

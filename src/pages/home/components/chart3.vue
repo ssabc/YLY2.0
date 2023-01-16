@@ -1,8 +1,8 @@
 <!--
  * @Author: sZhao
  * @Date: 2023-01-08 16:48:43
- * @LastEditTime: 2023-01-15 17:37:03
- * @LastEditors: sZhao
+ * @LastEditTime: 2023-01-16 16:27:52
+ * @LastEditors: szhao
  * @Description:
 -->
 <template>
@@ -79,33 +79,33 @@ const data = reactive<Data>({
     height: 260px;
     width: 100%;
     overflow: hidden;
-}
-.hd {
-    .tr {
-        border: none;
+    .hd {
+        .tr {
+            border: none;
+        }
     }
-}
-.tr {
-    display: flex;
-    padding: 10px;
-    border-bottom: 1px solid #666;
-    & > div {
-        &:first-child {
-            width: 50px;
+    .tr {
+        display: flex;
+        padding: 10px;
+        border-bottom: 1px solid #666;
+        & > div {
+            &:first-child {
+                width: 50px;
+            }
+            &:nth-child(2n) {
+                width: 80px;
+            }
+            &:nth-child(3n) {
+                width: 60px;
+            }
+            &:nth-child(4n) {
+                flex: 1;
+            }
+            &:nth-child(5n) {
+                width: 80px;
+            }
+            // flex: 1;
         }
-        &:nth-child(2n) {
-            width: 80px;
-        }
-        &:nth-child(3n) {
-            width: 60px;
-        }
-        &:nth-child(4n) {
-            flex: 1;
-        }
-        &:nth-child(5n) {
-            width: 80px;
-        }
-        // flex: 1;
     }
 }
 </style>

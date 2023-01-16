@@ -46,24 +46,24 @@ function initFn() {
 
 function getData(isAdmin: boolean, deptId: number) {
     console.log('isAdmin, deptId', isAdmin, deptId);
-        return {
-            data0: [{ value: 3, name: '黄浦老年公寓' }],
-            data1: [
-                { value: 1, name: '12.1' },
-                { value: 0, name: '12.2' },
-                { value: 1, name: '12.3' },
-                { value: 0, name: '12.4' },
-            ],
-            data2: [
-                { value: 0, name: '' },
-                { value: 0, name: '' },
-                { value: 2, name: '' },
-                { value: 0, name: '' },
-                { value: 0, name: '' },
-                { value: 0, name: '' },
-                { value: 0, name: '' },
-            ],
-        };
+    return {
+        data0: [{ value: 3, name: '黄浦老年公寓' }],
+        data1: [
+            { value: 1, name: '12.1' },
+            { value: 0, name: '12.2' },
+            { value: 1, name: '12.3' },
+            { value: 0, name: '12.4' },
+        ],
+        data2: [
+            { value: 0, name: '' },
+            { value: 0, name: '' },
+            { value: 2, name: '' },
+            { value: 0, name: '' },
+            { value: 0, name: '' },
+            { value: 0, name: '' },
+            { value: 0, name: '' },
+        ],
+    };
 
     return {
         data0: [
@@ -156,7 +156,8 @@ const renderChart1 = (data: any) => {
     };
     // 绘制图表
     let myChart = echarts.init(document.getElementById('ylyChart33'));
-    myChart.clear();myChart.setOption(option);
+    myChart.clear();
+    myChart.setOption(option);
 };
 const renderChart4 = (data: any) => {
     const option = {
@@ -215,7 +216,8 @@ const renderChart4 = (data: any) => {
     };
     let myChart = echarts.init(document.getElementById('ylyChart22'));
     // 绘制图表
-    myChart.clear();myChart.setOption(option);
+    myChart.clear();
+    myChart.setOption(option);
 };
 </script>
 

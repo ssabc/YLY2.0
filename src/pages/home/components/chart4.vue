@@ -30,7 +30,7 @@ interface Props {
 const $store = useStore(),
     $props = defineProps<Props>(),
     isAdmin = computed(() => $store.getters['common/isAdmin']),
-    seriesList = computed(() => $store.getters['common/serviceSeries']),
+    seriesList = computed(() => $store.getters['config/serviceSeries']),
     data = reactive<any>({
         chartList: [],
     });

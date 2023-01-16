@@ -51,7 +51,7 @@ const $store = useStore(),
                     placeholder: '养老院选择',
                     allowClear: true,
                 },
-                option: $store.getters['common/ylyList'] || [],
+                option: $store.getters['common/ylyList'],
             },
             {
                 type: 'handle',

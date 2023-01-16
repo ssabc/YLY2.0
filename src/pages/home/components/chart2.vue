@@ -211,7 +211,8 @@ const renderChart1 = (data: any) => {
         };
     // 绘制图表
     let myChart = echarts.init(document.getElementById('ylyChart2'));
-    myChart.clear();myChart.setOption(option);
+    myChart.clear();
+    myChart.setOption(option);
 };
 </script>
 

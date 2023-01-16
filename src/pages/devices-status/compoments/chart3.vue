@@ -26,17 +26,6 @@ function initFn() {
 const renderChart1 = (data: any) => {
     const colorList = ['#2984f8', '#67d4fb', '#ff9700', '#7357ff', '#f2d750'],
         option = {
-            legend: {
-                icon: 'circle',
-                top: '5%',
-                right: '5%',
-                itemWidth: 6,
-                itemGap: 5,
-                textStyle: {
-                    color: '#000',
-                    padding: [3, 0, 0, 0],
-                },
-            },
             tooltip: {
                 trigger: 'axis',
             },
@@ -144,66 +133,25 @@ const renderChart1 = (data: any) => {
                             borderColor: colorList[0],
                         },
                     },
-                },
-                {
-                    name: '养老院2',
-                    type: 'line',
-                    data: [20, 12, 11, 14, 25, 16, 10, 20],
-                    symbolSize: 1,
-                    symbol: 'circle',
-                    smooth: true,
-                    showSymbol: false,
-                    lineStyle: {
-                        width: 2,
-                        color: new echarts.graphic.LinearGradient(1, 1, 0, 0, [
-                            {
-                                offset: 0,
-                                color: '#67bcfc',
-                            },
-                            {
-                                offset: 1,
-                                color: '#2ba0ff',
-                            },
-                        ]),
-                        shadowColor: 'rgba(105, 188, 252,.3)',
-                        shadowBlur: 5,
-                        shadowOffsetY: 5,
-                    },
-                    itemStyle: {
+                    areaStyle: {
                         normal: {
-                            color: colorList[1],
-                            borderColor: colorList[1],
-                        },
-                    },
-                },
-                {
-                    name: '养老院3',
-                    type: 'line',
-                    data: [150, 120, 170, 140, 100, 160, 110, 110],
-                    symbolSize: 1,
-                    symbol: 'circle',
-                    smooth: true,
-                    showSymbol: false,
-                    lineStyle: {
-                        width: 2,
-                        color: new echarts.graphic.LinearGradient(1, 1, 0, 0, [
-                            {
-                                offset: 0,
-                                color: '#fc937e ',
-                            },
-                            {
-                                offset: 1,
-                                color: '#ed593b',
-                            },
-                        ]),
-                        shadowColor: 'rgb(252, 147, 126,.3)',
-                        shadowBlur: 2,
-                        shadowOffsetY: 2,
-                    },
-                    itemStyle: {
-                        normal: {
-                            color: colorList[2],
-                            borderColor: colorList[2],
+                            color: new echarts.graphic.LinearGradient(
+                                0,
+                                0,
+                                0,
+                                1,
+                                [
+                                    {
+                                        offset: 0,
+                                        color: 'rgba(0,150,255,0.8)',
+                                    },
+                                    {
+                                        offset: 1,
+                                        color: 'rgba(56,208,251,0.2)',
+                                    },
+                                ],
+                                false
+                            ),
                         },
                     },
                 },

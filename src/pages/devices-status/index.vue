@@ -20,18 +20,24 @@
         </div>
     </div>
     <div class="row">
-        <div class="column c1 cm-box mr-15">
-            <div>采集柜在线统计</div>
+        <div class="column cm-box mr-15" style="width: 400px">
+            <div>服务记录仪分布情况</div>
             <Chart2 :yly-flag="true"></Chart2>
         </div>
-        <div class="column c1 cm-box">
-            <div>数字哨兵在线统计</div>
+        <div class="column cm-box" style="flex: 1">
+            <div class="hgb-head-wrap">
+                <span>设备在线次数统计</span>
+                <div class="rg">
+                    <span class="active">近7天</span>
+                    <span>年度</span>
+                </div>
+            </div>
             <Chart3 :yly-flag="true"></Chart3>
         </div>
     </div>
     <div class="row">
         <div class="column c1 cm-box">
-            <div>访客数量统计（每周）</div>
+            <div>设备流量统计（单位：T）</div>
             <Chart1 :yly-flag="true"></Chart1>
         </div>
     </div>
@@ -72,7 +78,7 @@ const $store = useStore(),
                     placeholder: '请选择记录类型',
                     allowClear: true,
                 },
-                option: $store.getters['common/recordTypes'] || [],
+                option: $store.getters['config/recordTypes'],
             },
             {
                 type: 'range-picker',
@@ -139,7 +145,8 @@ onMounted(() => {
     getInfoAjax();
 });
 commonMixin(getInfoAjax);
-function handleView() {
+function handleView(idx: number) {
+    console.log('idx=', idx);
     $router.push(`/devices-status/usage-record`);
 }
 
@@ -234,6 +241,25 @@ function getInfoAjax() {
                         border-radius: 50%;
                     }
                 }
+            }
+        }
+    }
+}
+.hgb-head-wrap {
+    display: flex;
+    justify-content: space-between;
+    .rg {
+        display: flex;
+        align-items: center;
+        span {
+            color: #666;
+
+            &:first-child {
+                margin-right: 10px;
+            }
+            &.active {
+                color: #02a7f0;
+                cursor: pointer;
             }
         }
     }

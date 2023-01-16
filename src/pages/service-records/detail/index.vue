@@ -1,8 +1,8 @@
 <!--
  * @Author: szhao
  * @Date: 2023-01-10 10:59:12
- * @LastEditTime: 2023-01-15 19:54:04
- * @LastEditors: sZhao
+ * @LastEditTime: 2023-01-16 15:51:51
+ * @LastEditors: szhao
  * @Description:
 -->
 <template>
@@ -138,7 +138,7 @@ const $store = useStore(),
             //         placeholder: '请选择服务内容',
             //         allowClear: true,
             //     },
-            //     option: $store.getters['common/serviceTypes'] || [],
+            //     option: $store.getters['config/serviceTypes'],
             // },
             {
                 type: 'handle',
@@ -154,7 +154,7 @@ const $store = useStore(),
                     },
                     {
                         label: '取消',
-                        value: 'resetFields',
+                        value: 'cancel',
                     },
                 ],
             },

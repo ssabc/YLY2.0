@@ -67,7 +67,7 @@ let sendRequest = ref(false);
 
 const $store = useStore(),
     isAdmin = computed(() => $store.getters['common/isAdmin']),
-    typeList = computed(() => $store.getters['common/recordTypes'] || []),
+    typeList = computed(() => $store.getters['config/recordTypes']),
     $router = useRouter(),
     $route = useRoute(),
     data = reactive<Data>({
@@ -83,7 +83,7 @@ const $store = useStore(),
                     allowClear: true,
                     disabled: true,
                 },
-                option: $store.getters['common/recordTypes'] || [],
+                option: $store.getters['config/recordTypes'],
             },
             {
                 type: 'range-picker',
@@ -245,9 +245,7 @@ function handleClick(item: TableHandleOptItem, row: any) {
 }
 function handleToDetail(row: any) {
     console.log(row, '---');
-    $router.push(
-        `/service-records/video-detail?id=${row.FileId}`
-    );
+    $router.push(`/service-records/video-detail?id=${row.FileId}`);
 }
 
 function handleDelete() {

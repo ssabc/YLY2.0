@@ -1,8 +1,8 @@
 <!--
  * @Author: szhao
  * @Date: 2023-01-10 10:59:12
- * @LastEditTime: 2023-01-15 20:17:25
- * @LastEditors: sZhao
+ * @LastEditTime: 2023-01-16 16:15:11
+ * @LastEditors: szhao
  * @Description:
 -->
 <template>
@@ -116,7 +116,7 @@ const $store = useStore(),
                     allowClear: true,
                     disabled: true,
                 },
-                option: $store.getters['common/serviceTypes'] || [],
+                option: $store.getters['config/serviceTypes'],
             },
             {
                 type: 'handle',
@@ -132,7 +132,7 @@ const $store = useStore(),
                     },
                     {
                         label: '取消',
-                        value: 'resetFields',
+                        value: 'cancel',
                     },
                 ],
             },
@@ -165,6 +165,7 @@ function handleClick(e: any) {
             min-width: 200px;
             background-color: #efefef;
             margin-right: 15px;
+            max-width: 500px;
         }
         &.c2 {
             width: 400px;

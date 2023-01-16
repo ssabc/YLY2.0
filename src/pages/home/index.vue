@@ -1,6 +1,7 @@
 <template>
     <div class="home-wrap">
         <div class="content">
+            {{ list }}
             <div class="row r1">
                 <div class="column c1 flex1">
                     <div class="box">

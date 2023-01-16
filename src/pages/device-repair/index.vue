@@ -92,7 +92,7 @@ const $store = useStore(),
                     placeholder: '请选择设备类别',
                     allowClear: true,
                 },
-                option: $store.getters['common/deviceClass'] || [],
+                option: $store.getters['config/deviceClass'],
             },
             {
                 type: 'input',

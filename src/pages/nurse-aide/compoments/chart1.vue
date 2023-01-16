@@ -1,17 +1,29 @@
 <!--
  * @Author: szhao
  * @Date: 2023-01-11 09:33:11
- * @LastEditTime: 2023-01-11 21:18:34
- * @LastEditors: sZhao
+ * @LastEditTime: 2023-01-16 16:04:29
+ * @LastEditors: szhao
  * @Description:
 -->
 <template>
-    <div id="servicechart1" class="chart"></div>
+    <div>
+        <div id="servicechart1" class="chart"></div>
+        <div class="cells">
+            <div v-for="item in data.list" :key="item.name" class="cell">
+                <div
+                    class="circle"
+                    :style="{ 'background-color': item.color }"
+                ></div>
+                <div class="label">{{ item.name }}:</div>
+                <div class="value">{{ item.value }}</div>
+            </div>
+        </div>
+    </div>
 </template>
 
 <script setup lang="ts">
 import { useStore } from 'vuex';
-import { computed, watchEffect, nextTick } from 'vue';
+import { computed, watchEffect, nextTick, reactive } from 'vue';
 import * as echarts from 'echarts';
 
 interface Props {
@@ -19,6 +31,13 @@ interface Props {
 }
 const $store = useStore(),
     $props = defineProps<Props>(),
+    data = reactive({
+        list: [
+            { name: '养老院1', color: '#2984f8', value: 70 },
+            { name: '养老院2', color: '#67d4fb', value: 40 },
+            { name: '养老院3', color: '#ff9700', value: 20 },
+        ],
+    }),
     isAdmin = computed(() => $store.getters['common/isAdmin']);
 
 watchEffect(() => {
@@ -26,17 +45,14 @@ watchEffect(() => {
 });
 
 function initFn() {
+    const _d = data.list;
     nextTick(() => {
-        renderChart('servicechart1', [
-            { name: '养老院3', color: '#199ED8', value: 20 },
-            { name: '养老院1', color: '#199ED8', value: 70 },
-            { name: '养老院2', color: '#199ED8', value: 40 },
-        ]);
+        renderChart('servicechart1', _d);
     });
 }
 
 const renderChart = (key: string, datas: any) => {
-    const color = ['#ff275b', '#2799ff', '#27f68f'];
+    const color = datas?.map((_e: any) => _e.color);
     let sum = 0;
     for (var i of datas) {
         sum += i.value;
@@ -58,17 +74,6 @@ const renderChart = (key: string, datas: any) => {
         },
     };
     let option = {
-        legend: {
-            icon: 'circle',
-            bottom: '2%',
-            left: '25%',
-            itemWidth: 6,
-            itemGap: 5,
-            textStyle: {
-                color: '#000',
-                padding: [3, 0, 0, 0],
-            },
-        },
         color,
         tooltip: {
             trigger: 'item',
@@ -103,7 +108,8 @@ const renderChart = (key: string, datas: any) => {
     };
     // 绘制图表
     let myChart = echarts.init(document.getElementById(key));
-    myChart.clear();myChart.setOption(option);
+    myChart.clear();
+    myChart.setOption(option);
 };
 </script>
 
@@ -111,5 +117,22 @@ const renderChart = (key: string, datas: any) => {
 .chart {
     width: 100%;
     height: 260px;
+}
+.cells {
+    .cell {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 160px;
+        .circle {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: #000;
+        }
+        .label {
+            margin: 0 4px;
+        }
+    }
 }
 </style>

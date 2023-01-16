@@ -93,7 +93,10 @@ const renderChart1 = (data: any) => {
             ],
             yAxis: [
                 {
-                    name: '',
+                    name: '统计次数（次）',
+                    nameTextStyle: {
+                        color: '#999',
+                    },
                     axisTick: {
                         show: false,
                     },
@@ -220,5 +223,6 @@ const renderChart1 = (data: any) => {
 .chart {
     width: 100%;
     height: 260px;
+    min-height: 100%;
 }
 </style>

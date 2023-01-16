@@ -1,8 +1,8 @@
 /*
  * @Author: zhaoshan
  * @Date: 2022-11-30 14:10:30
- * @LastEditTime: 2023-01-15 18:08:01
- * @LastEditors: sZhao
+ * @LastEditTime: 2023-01-16 16:42:26
+ * @LastEditors: szhao
  * @Description:
  */
 declare module 'CommonModule' {
@@ -35,11 +35,6 @@ declare module 'CommonModule' {
         isAdmin: ({ userInfo }: State) => boolean;
         userInfo: ({ userInfo }: State) => UserInfo;
         ylyList: ({ ylyList }: State) => any[];
-        dealTypes: () => any[];
-        statusTypes: () => any[];
-        statusTypes2: () => any[];
-        statusTypes3: () => any[];
-        statusTypes4: () => any[];
         groupId: ({ yly }: State) => string;
     }
 

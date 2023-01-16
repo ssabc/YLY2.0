@@ -95,7 +95,7 @@ const $store = useStore(),
                     placeholder: '请选择记录类型',
                     allowClear: true,
                 },
-                option: $store.getters['common/recordTypes'] || [],
+                option: $store.getters['config/recordTypes'],
             },
             {
                 type: 'range-picker',

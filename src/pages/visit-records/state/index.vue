@@ -66,7 +66,7 @@ let sendRequest = ref(false);
 
 const $store = useStore(),
     isAdmin = computed(() => $store.getters['common/isAdmin']),
-    typeList = computed(() => $store.getters['common/recordTypes'] || []),
+    typeList = computed(() => $store.getters['config/recordTypes']),
     $router = useRouter(),
     $route = useRoute(),
     data = reactive<Data>({

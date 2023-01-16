@@ -119,7 +119,8 @@ const renderChart1 = () => {
 
     // 绘制图表
     let myChart = echarts.init(document.getElementById('ylyChart6'));
-    myChart.clear();myChart.setOption(option);
+    myChart.clear();
+    myChart.setOption(option);
 };
 </script>
 

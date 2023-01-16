@@ -88,7 +88,7 @@ let sendRequest = ref(false);
 const $store = useStore(),
     isAdmin = computed(() => $store.getters['common/isAdmin']),
     $router = useRouter(),
-    typeList = computed(() => $store.getters['common/dealTypes']),
+    typeList = computed(() => $store.getters['config/dealTypes']),
     data = reactive<Data>({
         /** 表单list */
         list: [
@@ -101,7 +101,7 @@ const $store = useStore(),
                     placeholder: '请选择记录类型',
                     allowClear: true,
                 },
-                option: $store.getters['common/recordTypes'] || [],
+                option: $store.getters['config/recordTypes'],
             },
             {
                 type: 'range-picker',
@@ -209,7 +209,7 @@ const $store = useStore(),
             name: '已处置数',
             aliasName: '已处置',
             value: 74,
-            color: '#FDDB78',
+            color: 'rgb(132, 0, 255)',
             icon: DiffOutlined,
             unit: '',
         },

@@ -75,7 +75,7 @@ let sendRequest = ref(false);
 const $store = useStore(),
     isAdmin = computed(() => $store.getters['common/isAdmin']),
     $router = useRouter(),
-    typeList = computed(() => $store.getters['common/deviceAssignStatus']),
+    typeList = computed(() => $store.getters['config/deviceAssignStatus']),
     data = reactive<Data>({
         /** 表单list */
         list: [
@@ -88,7 +88,7 @@ const $store = useStore(),
                     placeholder: '请选择设备类别',
                     allowClear: true,
                 },
-                option: $store.getters['common/deviceClass'] || [],
+                option: $store.getters['config/deviceClass'],
             },
             {
                 type: 'input',
@@ -108,7 +108,7 @@ const $store = useStore(),
                     placeholder: '请选择设备分类',
                     allowClear: true,
                 },
-                option: $store.getters['common/recordTypes'] || [],
+                option: $store.getters['config/recordTypes'],
             },
             {
                 type: 'select',
@@ -119,7 +119,7 @@ const $store = useStore(),
                     placeholder: '请选择分配状态',
                     allowClear: true,
                 },
-                option: $store.getters['common/deviceAssignStatus'] || [],
+                option: $store.getters['config/deviceAssignStatus'],
             },
             {
                 type: 'handle',

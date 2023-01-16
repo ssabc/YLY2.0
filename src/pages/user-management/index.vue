@@ -70,26 +70,26 @@ function getTbData(isAdmin) {
                 status: 1,
                 Type: '869294040156753',
             },
-        ]
+        ];
     }
-        return [
-            {
-                SubmitTime: '2022-12-03 11：12：00',
-                Dept: '黄浦老年公寓',
-                FileName: '张院长',
-                Duration: '1',
-                status: 1,
-                Type: '869294040140138',
-            },
-            {
-                SubmitTime: '2022-12-01 18：30：00',
-                Dept: '黄浦老年公寓',
-                FileName: '王医生',
-                Duration: '1',
-                status: 1,
-                Type: '869294040155714',
-            },
-        ]
+    return [
+        {
+            SubmitTime: '2022-12-03 11：12：00',
+            Dept: '黄浦老年公寓',
+            FileName: '张院长',
+            Duration: '1',
+            status: 1,
+            Type: '869294040140138',
+        },
+        {
+            SubmitTime: '2022-12-01 18：30：00',
+            Dept: '黄浦老年公寓',
+            FileName: '王医生',
+            Duration: '1',
+            status: 1,
+            Type: '869294040155714',
+        },
+    ];
 }
 const $store = useStore(),
     isAdmin = computed(() => $store.getters['common/isAdmin']),
@@ -113,7 +113,7 @@ const $store = useStore(),
                     placeholder: '类型选择',
                     allowClear: true,
                 },
-                option: $store.getters['common/statusTypes3'] || [],
+                option: $store.getters['config/statusTypes3'],
             },
             {
                 type: 'input',

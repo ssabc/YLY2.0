@@ -1,5 +1,22 @@
 <template>
-    <div id="deviceStatusChart2" class="chart"></div>
+    <div class="like-table">
+        <div class="hd">
+            <div class="tr">
+                <div class="th">类型</div>
+                <div class="th">数量（单位：台）</div>
+                <div class="th">占比</div>
+            </div>
+        </div>
+        <div class="bd">
+            <div v-for="item in list" :key="item.label" class="tr">
+                <div class="td">{{ item.label }}</div>
+                <div class="td">{{ item.label }}</div>
+                <div class="td">
+                    <a-progress :percent="30" />
+                </div>
+            </div>
+        </div>
+    </div>
 </template>
 
 <script setup lang="ts">
@@ -12,7 +29,8 @@ interface Props {
 }
 const $store = useStore(),
     $props = defineProps<Props>(),
-    isAdmin = computed(() => $store.getters['common/isAdmin']);
+    isAdmin = computed(() => $store.getters['common/isAdmin']),
+    list = $store.getters['config/recordTypes'];
 
 watchEffect(() => {
     initFn();
@@ -218,8 +236,29 @@ const renderChart1 = (data: any) => {
 </script>
 
 <style lang="less" scoped>
-.chart {
-    width: 100%;
+.like-table {
     height: 260px;
+    width: 100%;
+    overflow: hidden;
+    .hd {
+        .tr {
+            border: none;
+        }
+    }
+    .tr {
+        display: flex;
+        padding: 10px;
+        & > div {
+            &:first-child {
+                flex: 1;
+            }
+            &:nth-child(2n) {
+                flex: 1;
+            }
+            &:nth-child(3n) {
+                width: 100px;
+            }
+        }
+    }
 }
 </style>

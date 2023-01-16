@@ -112,7 +112,7 @@ const $store = useStore(),
                     placeholder: '请选择运行状态',
                     allowClear: true,
                 },
-                option: $store.getters['common/deviceStatus'] || [],
+                option: $store.getters['config/deviceStatus'],
             },
             {
                 type: 'range-picker',
