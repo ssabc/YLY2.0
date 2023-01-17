@@ -31,12 +31,16 @@ const renderChart1 = (data: any) => {
             },
             grid: {
                 top: '15%',
-                left: '5%',
+                left: '8%',
                 bottom: '15%',
-                right: '5%',
+                right: '8%',
             },
             xAxis: [
                 {
+                    name: '日期',
+                    nameTextStyle: {
+                        color: '#999',
+                    },
                     type: 'category',
                     data: [
                         '2023年1月4日',
@@ -50,7 +54,7 @@ const renderChart1 = (data: any) => {
                     ],
                     axisLine: {
                         lineStyle: {
-                            color: '#33BBFF',
+                            color: '#999',
                         },
                     },
                     axisTick: {
@@ -59,7 +63,7 @@ const renderChart1 = (data: any) => {
                     axisLabel: {
                         interval: 0,
                         textStyle: {
-                            color: '#000',
+                            color: '#999',
                         },
                         // 默认x轴字体大小
                         fontSize: 12,
@@ -82,7 +86,10 @@ const renderChart1 = (data: any) => {
             ],
             yAxis: [
                 {
-                    name: '(人次)',
+                    name: '次数(人次)',
+                    nameTextStyle: {
+                        color: '#999',
+                    },
                     axisTick: {
                         show: false,
                     },

@@ -42,15 +42,15 @@
                 <div class="time-desc">24小时新增记录</div>
                 <div class="time-cells">
                     <div
-                        v-for="item in timeList"
+                        v-for="item in data.fileRank"
                         :key="item.name"
                         class="time-cell"
                     >
                         <div>
                             <div class="value">
-                                {{ item.name }}{{ item.unit }}
+                                {{ showFileDurationText(item.FileDuration) }}
                             </div>
-                            <div class="label">{{ item.name }}</div>
+                            <div class="label">{{ item.GroupName }}</div>
                         </div>
                         <div class="icon"></div>
                     </div>
@@ -67,7 +67,11 @@ import type { FormListProps } from 'GlobComponentsModule';
 import { DiffOutlined } from '@ant-design/icons-vue';
 import Chart2 from './compoments/chart2.vue';
 import { fetchServiceRecord } from '@/api/service-records';
-import { getReqData, GetNumberOfDays } from '@/utils/tools';
+import {
+    getReqData,
+    GetNumberOfDays,
+    showFileDurationText,
+} from '@/utils/tools';
 import { message as $message } from 'ant-design-vue';
 import { useRouter } from 'vue-router';
 import commonMixin from '@/mixins';
@@ -80,6 +84,7 @@ interface Data {
     list: FormListProps[];
     statisList?: any[];
     chartData?: any;
+    fileRank?: any[];
 }
 
 const $store = useStore(),
@@ -128,6 +133,7 @@ const $store = useStore(),
         formData: {},
         statisList: [],
         chartData: [],
+        fileRank: [],
     }),
     $router = useRouter(),
     timeList = computed(() => [
@@ -175,7 +181,6 @@ function getInfoAjax() {
     const req = getReqData(data.formData);
     fetchServiceRecord(req).then((res: any) => {
         setStatisList(res.data?.TotalDuration || {});
-        console.log('121212', data.formData.serviceType);
         data.chartData = {
             chart1: {
                 legend: data.statisList
@@ -191,7 +196,7 @@ function getInfoAjax() {
                 list: res.data?.DataRecord || [],
             },
         };
-        console.log('121222212', data.chartData);
+        data.fileRank = res.data.FileRank || [];
     });
 }
 
@@ -324,8 +329,8 @@ function handleView(idx: number) {
                         color: #999;
                     }
                     .icon {
-                        width: 6px;
-                        height: 6px;
+                        width: 12px;
+                        height: 12px;
                         background-color: red;
                         border-radius: 50%;
                     }

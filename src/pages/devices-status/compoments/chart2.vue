@@ -48,7 +48,7 @@ const renderChart1 = (data: any) => {
             legend: {
                 icon: 'circle',
                 top: '5%',
-                right: '5%',
+                right: '8%',
                 itemWidth: 6,
                 itemGap: 5,
                 textStyle: {
@@ -61,9 +61,9 @@ const renderChart1 = (data: any) => {
             },
             grid: {
                 top: '15%',
-                left: '5%',
+                left: '8%',
                 bottom: '15%',
-                right: '5%',
+                right: '8%',
             },
             xAxis: [
                 {

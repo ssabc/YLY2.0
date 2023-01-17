@@ -11,7 +11,7 @@
     <div class="row">
         <div class="column c1 cm-box mr-15">
             <div>访客数量统计（每周）</div>
-            <Chart1 :yly-flag="true"></Chart1>
+            <Chart6 :yly-flag="true"></Chart6>
         </div>
         <div class="column c1 c2">
             <div class="cm-box">
@@ -50,7 +50,7 @@ import { ref, reactive, computed } from 'vue';
 import type { ColumnProps, FormListProps } from 'GlobComponentsModule';
 import { fetchDeviceAssignList } from '@/api/device-assign';
 import { dealReqData } from '@/utils/tools';
-import Chart1 from '../compoments/chart1.vue';
+import Chart6 from '../compoments/chart6.vue';
 import Chart4 from '../compoments/chart4.vue';
 import Chart5 from '../compoments/chart5.vue';
 import commonMixin from '@/mixins';

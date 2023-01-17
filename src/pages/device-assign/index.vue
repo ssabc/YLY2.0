@@ -81,7 +81,7 @@ const $store = useStore(),
         list: [
             {
                 type: 'select',
-                name: 'status',
+                name: 'status1',
                 label: '',
                 width: 160,
                 props: {
@@ -101,7 +101,7 @@ const $store = useStore(),
             },
             {
                 type: 'select',
-                name: 'status',
+                name: 'status2',
                 label: '',
                 width: 160,
                 props: {
@@ -112,7 +112,7 @@ const $store = useStore(),
             },
             {
                 type: 'select',
-                name: 'status',
+                name: 'status3',
                 label: '',
                 width: 160,
                 props: {

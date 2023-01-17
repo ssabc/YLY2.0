@@ -3,16 +3,8 @@
 </template>
 
 <script setup lang="ts">
-import { useStore } from 'vuex';
-import { computed, watchEffect, nextTick } from 'vue';
+import { watchEffect, nextTick } from 'vue';
 import * as echarts from 'echarts';
-
-interface Props {
-    ylyFlag?: any;
-}
-const $store = useStore(),
-    $props = defineProps<Props>(),
-    isAdmin = computed(() => $store.getters['common/isAdmin']);
 
 watchEffect(() => {
     initFn();
@@ -24,13 +16,13 @@ function initFn() {
     });
 }
 
-const renderChart1 = (data: any) => {
+const renderChart1 = () => {
     const colorList = ['#2984f8', '#67d4fb', '#ff9700', '#7357ff', '#f2d750'],
         option = {
             legend: {
                 icon: 'circle',
-                top: '5%',
-                right: '5%',
+                top: '0%',
+                right: '8%',
                 itemWidth: 6,
                 itemGap: 5,
                 textStyle: {
@@ -42,13 +34,17 @@ const renderChart1 = (data: any) => {
                 trigger: 'axis',
             },
             grid: {
-                top: '15%',
-                left: '5%',
+                top: '20%',
+                left: '8%',
                 bottom: '15%',
-                right: '5%',
+                right: '8%',
             },
             xAxis: [
                 {
+                    name: '日期',
+                    nameTextStyle: {
+                        color: '#999',
+                    },
                     type: 'category',
                     data: [
                         '2023年1月4日',
@@ -93,7 +89,10 @@ const renderChart1 = (data: any) => {
             ],
             yAxis: [
                 {
-                    name: '',
+                    name: '次数（人次）',
+                    nameTextStyle: {
+                        color: '#999',
+                    },
                     axisTick: {
                         show: false,
                     },
@@ -219,6 +218,6 @@ const renderChart1 = (data: any) => {
 <style lang="less" scoped>
 .chart {
     width: 100%;
-    height: 100px;
+    height: 160px;
 }
 </style>

@@ -1,7 +1,7 @@
 <!--
  * @Author: sZhao
  * @Date: 2023-01-08 16:48:43
- * @LastEditTime: 2023-01-16 16:27:52
+ * @LastEditTime: 2023-01-17 10:19:24
  * @LastEditors: szhao
  * @Description:
 -->
@@ -11,16 +11,23 @@
             <div class="tr">
                 <div class="th">序号</div>
                 <div class="th">养老院</div>
-                <div class="th">记录时长</div>
+                <div class="th" style="width: 80px">记录时长</div>
                 <div class="th">设备号</div>
                 <div class="th">记录类型</div>
             </div>
         </div>
         <div class="bd">
-            <div v-for="(item, index) in scrollList" :key="item.Sn" class="tr">
+            <div
+                v-for="(item, index) in scrollList.slice(0, 5)"
+                :key="item.Sn"
+                class="tr"
+                @click="handleNaviFn(item)"
+            >
                 <div class="td">{{ index + 1 }}</div>
                 <div class="td">{{ item.GroupName }}</div>
-                <div class="td">{{ item.TotalFileDuration }}</div>
+                <div class="td" style="width: 80px">
+                    {{ showFileDurationText(item.TotalFileDuration) }}
+                </div>
                 <div class="td">{{ item.Sn }}</div>
                 <div class="td">{{ item.ServiceType }}</div>
             </div>
@@ -29,56 +36,40 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, computed } from 'vue';
-import type { ColumnProps } from 'GlobComponentsModule';
+import { useStore } from 'vuex';
+import { computed } from 'vue';
+import { showFileDurationText } from '@/utils/tools';
+import { useRouter } from 'vue-router';
 
 interface Props {
     ylyFlag?: any;
     pData?: any;
 }
 
-interface Data {
-    columns: ColumnProps[];
-}
-const data = reactive<Data>({
-        /** 列表项 */
-        columns: [
-            {
-                title: '排名',
-                type: 'index',
-                width: 50,
-                dataIndex: 'index',
-            },
-            {
-                title: '养老院',
-                dataIndex: 'Dept',
-            },
-            {
-                title: '记录时长(小时）',
-                dataIndex: 'Name',
-            },
-            {
-                title: '设备号',
-                dataIndex: 'RepairCount',
-            },
-            {
-                title: '记录类型',
-                dataIndex: 'Mac',
-            },
-        ],
-    }),
+const $router = useRouter(),
     $props = defineProps<Props>(),
+    $store = useStore(),
     scrollList = computed(() => {
         const cardList = $props.pData || [];
         return cardList;
     });
+
+function handleNaviFn(item: any) {
+    if (!item.ServiceType) {
+        return;
+    }
+    const recordTypes = $store.getters['config/recordTypes'],
+        id = recordTypes?.findIndex((_e: any) => _e.label === item.ServiceType);
+    id != undefined && $router.push(`/service-records/list/${id}`);
+}
 </script>
 
 <style lang="less" scoped>
 .like-table {
-    height: 260px;
+    // min-height: 260px;
     width: 100%;
     overflow: hidden;
+    text-align: center;
     .hd {
         .tr {
             border: none;
@@ -93,18 +84,23 @@ const data = reactive<Data>({
                 width: 50px;
             }
             &:nth-child(2n) {
-                width: 80px;
+                flex: 1;
             }
             &:nth-child(3n) {
                 width: 60px;
             }
             &:nth-child(4n) {
-                flex: 1;
+                width: 140px;
             }
             &:nth-child(5n) {
                 width: 80px;
             }
             // flex: 1;
+        }
+    }
+    .bd {
+        .tr {
+            cursor: pointer;
         }
     }
 }

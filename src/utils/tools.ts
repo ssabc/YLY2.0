@@ -1,7 +1,7 @@
 /*
  * @Author: szhao
  * @Date: 2022-12-02 19:32:00
- * @LastEditTime: 2023-01-16 16:35:13
+ * @LastEditTime: 2023-01-17 10:26:49
  * @LastEditors: szhao
  * @Description:
  */
@@ -112,7 +112,7 @@ export const groupBy = function (arr: any, key: string) {
         _fn = function (_e: any) {
             return _e[key];
         };
-    arr?.map((item: any) => {
+    arr?.filter((_e: any) => _e[key])?.map((item: any) => {
         const type = JSON.stringify(_fn(item));
         group[type] = group[type] || [];
         group[type].push(item);
@@ -168,5 +168,5 @@ export const changeHourMinutestr = function (str: number) {
 export const showFileDurationText = function (_s: number) {
     _s = +_s;
     const _m = _s / 60;
-    return _m < 1 ? '小于1分钟' : Math.floor(_m);
+    return _m < 1 ? '小于1分钟' : Math.floor(_m) + ' 分钟';
 };

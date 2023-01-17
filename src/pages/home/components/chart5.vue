@@ -46,7 +46,7 @@ interface Props {
 }
 const $store = useStore(),
     $props = defineProps<Props>(),
-    isAdmin = computed(() => $store.getters['common/isAdmin']),
+    isAdmin = computed(() => $store.getters['config/isAdmin']),
     listData = computed(() => [
         {
             status: 1,

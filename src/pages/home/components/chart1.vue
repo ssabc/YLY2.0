@@ -92,7 +92,7 @@ const renderChart1 = (_d: any) => {
         grid: {
             left: '3%',
             top: '12%',
-            right: '3%',
+            right: '10%',
             bottom: '5%',
             containLabel: true,
         },
@@ -123,6 +123,7 @@ const renderChart1 = (_d: any) => {
         },
         xAxis: [
             {
+                name: '日期',
                 type: 'category',
                 data: xData,
                 axisPointer: {

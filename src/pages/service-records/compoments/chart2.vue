@@ -73,7 +73,7 @@ const renderChart1 = (chartData: any) => {
             itemGap: 5,
             textStyle: {
                 color: '#000',
-                padding: [3, 0, 0, 0],
+                padding: [0, 0, 0, 0],
             },
         },
         tooltip: {
@@ -81,12 +81,16 @@ const renderChart1 = (chartData: any) => {
         },
         grid: {
             top: '15%',
-            left: '5%',
+            left: '8%',
             bottom: '15%',
-            right: '5%',
+            right: '8%',
         },
         xAxis: [
             {
+                name: '日期',
+                nameTextStyle: {
+                    color: '#999',
+                },
                 type: 'category',
                 data: xAxisData,
                 axisLine: {
@@ -123,7 +127,10 @@ const renderChart1 = (chartData: any) => {
         ],
         yAxis: [
             {
-                name: '',
+                name: '次数（人次）',
+                nameTextStyle: {
+                    color: '#999',
+                },
                 axisTick: {
                     show: false,
                 },

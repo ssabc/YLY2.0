@@ -30,7 +30,7 @@ const renderChart1 = (data: any) => {
             legend: {
                 icon: 'circle',
                 top: '5%',
-                right: '5%',
+                right: '8%',
                 itemWidth: 6,
                 itemGap: 5,
                 textStyle: {
@@ -43,12 +43,13 @@ const renderChart1 = (data: any) => {
             },
             grid: {
                 top: '15%',
-                left: '5%',
+                left: '8%',
                 bottom: '15%',
-                right: '5%',
+                right: '8%',
             },
             xAxis: [
                 {
+                    name: '日期',
                     type: 'category',
                     data: [
                         '12/1',
@@ -61,7 +62,7 @@ const renderChart1 = (data: any) => {
                     ],
                     axisLine: {
                         lineStyle: {
-                            color: '#33BBFF',
+                            color: '#fff',
                         },
                     },
                     axisTick: {
@@ -70,9 +71,9 @@ const renderChart1 = (data: any) => {
                     axisLabel: {
                         interval: 0,
                         textStyle: {
-                            color: '#fff',
+                            color: '#999',
                         },
-                        // 默认x轴字体大小
+                        // 默认x轴字体大小）
                         fontSize: 12,
                         // margin:文字到x轴的距离
                         margin: 10,
@@ -100,7 +101,7 @@ const renderChart1 = (data: any) => {
                     axisLine: {
                         show: true,
                         lineStyle: {
-                            color: '#f0f2f5',
+                            color: '#fff',
                         },
                     },
                     axisLabel: {

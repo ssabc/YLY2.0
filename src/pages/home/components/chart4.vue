@@ -36,6 +36,7 @@ const $store = useStore(),
     });
 
 watchEffect(() => {
+    console.log('333333333333', $props.pData);
     initFn($props.pData || []);
 });
 

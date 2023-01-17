@@ -25,10 +25,8 @@ watchEffect(() => {
 
 const renderChart1 = (list: any) => {
     const _newList = list,
-        color = '#1d66d6',
         xAxisData = _newList?.map((_e: any) => _e?.Date),
         seriesData = _newList?.map((_e: any) => _e?.TotalFileDuration);
-    console.log('xAxisData =', xAxisData, seriesData);
     const option = {
         legend: {
             icon: 'circle',
@@ -46,12 +44,16 @@ const renderChart1 = (list: any) => {
         },
         grid: {
             top: '15%',
-            left: '5%',
+            left: '8%',
             bottom: '15%',
-            right: '5%',
+            right: '8%',
         },
         xAxis: [
             {
+                name: '日期',
+                nameTextStyle: {
+                    color: '#999',
+                },
                 type: 'category',
                 data: xAxisData,
                 axisLine: {
@@ -87,7 +89,10 @@ const renderChart1 = (list: any) => {
         ],
         yAxis: [
             {
-                name: '',
+                name: '次数（人次）',
+                nameTextStyle: {
+                    color: '#999',
+                },
                 axisTick: {
                     show: false,
                 },
@@ -116,7 +121,8 @@ const renderChart1 = (list: any) => {
     };
     // 绘制图表
     let myChart = echarts.init(document.getElementById('recordTimeChart'));
-    myChart.clear();myChart.setOption(option);
+    myChart.clear();
+    myChart.setOption(option);
 };
 </script>
 

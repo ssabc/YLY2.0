@@ -1,7 +1,6 @@
 <template>
     <div class="home-wrap">
         <div class="content">
-            {{ list }}
             <div class="row r1">
                 <div class="column c1 flex1">
                     <div class="box">
@@ -57,7 +56,7 @@
                         </div>
                         <Chart2 :yly-flag="true"></Chart2>
                     </div>
-                    <div class="box">
+                    <div class="box" style="min-height: 300px">
                         <div class="title">最新服务记录</div>
                         <Chart3
                             :p-data="data.info.ServiceDurationRank"
