@@ -290,6 +290,8 @@ function handleView(idx: number) {
                 padding: 20px 0;
             }
             .time-cells {
+                max-height: 400px;
+                overflow-y: auto;
                 .time-cell {
                     display: flex;
                     align-items: center;
