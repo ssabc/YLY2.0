@@ -14,6 +14,30 @@ const getters: Getters = {
             },
         ];
     },
+    enabledStatus: () => {
+        return [
+            {
+                label: '启用',
+                value: '1',
+            },
+            {
+                label: '禁用',
+                value: '0',
+            },
+        ];
+    },
+    accountTypes: () => {
+        return [
+            {
+                label: '管理员账号',
+                value: '1',
+            },
+            {
+                label: '普通账号',
+                value: '0',
+            },
+        ];
+    },
     deviceStatus: () => {
         return [
             {

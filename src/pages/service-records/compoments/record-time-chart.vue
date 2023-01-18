@@ -65,7 +65,7 @@ const renderChart1 = (list: any) => {
                     show: false,
                 },
                 axisLabel: {
-                    // interval: 0,
+                    //
                     textStyle: {
                         color: '#999',
                     },

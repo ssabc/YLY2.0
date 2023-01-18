@@ -152,7 +152,8 @@ function getInfoAjax() {
             DeviceOverview,
             NetworkFlowStat,
             DeviceDistribution,
-            OnlineCountStat,
+            OnlineCountStatWeek,
+            OnlineCountStatYear,
         } = res?.data || {};
         data.info = res.data;
 
@@ -194,7 +195,11 @@ function getInfoAjax() {
             list: DeviceDistribution ?? [],
         };
         data.chart3Data = {
-            list: groupBy(OnlineCountStat, 'GroupName'),
+            type: data.chart3Tab,
+            list:
+                data.chart3Tab === 'sevenday'
+                    ? OnlineCountStatWeek
+                    : OnlineCountStatYear, // groupBy(OnlineCountStat, 'GroupName'),
         };
     });
 }

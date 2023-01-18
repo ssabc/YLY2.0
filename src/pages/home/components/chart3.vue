@@ -1,8 +1,8 @@
 <!--
  * @Author: sZhao
  * @Date: 2023-01-08 16:48:43
- * @LastEditTime: 2023-01-17 10:19:24
- * @LastEditors: szhao
+ * @LastEditTime: 2023-01-18 19:47:26
+ * @LastEditors: sZhao
  * @Description:
 -->
 <template>
@@ -26,7 +26,7 @@
                 <div class="td">{{ index + 1 }}</div>
                 <div class="td">{{ item.GroupName }}</div>
                 <div class="td" style="width: 80px">
-                    {{ showFileDurationText(item.TotalFileDuration) }}
+                    {{ showFileDurationText(item.FileDuration) }}
                 </div>
                 <div class="td">{{ item.Sn }}</div>
                 <div class="td">{{ item.ServiceType }}</div>

@@ -3,17 +3,17 @@
         <div class="cells flex">
             <div class="cell">
                 <span class="label">总呼叫数：</span>
-                <span class="value">80</span>
+                <span class="value">{{ totalSosCount }}</span>
                 <span class="unit">次</span>
             </div>
             <div class="cell">
                 <span class="label">记录时长：</span>
-                <span class="value">80</span>
+                <span class="value">{{ recordDuration }}</span>
                 <span class="unit">分钟</span>
             </div>
             <div class="cell">
                 <span class="label">已处置数：</span>
-                <span class="value red">60</span>
+                <span class="value red">{{ handledCount }}</span>
                 <span class="unit">件</span>
             </div>
         </div>
@@ -23,13 +23,13 @@
                 :key="index"
                 class="row flex"
             >
-                <div class="tip" :class="item.status == 1 ? 'red' : ''">
-                    {{ item.status == 1 ? '未处置' : '已处置' }}
+                <div class="tip" :class="!item.IsHandled ? 'red' : ''">
+                    {{ !item.IsHandled ? '未处置' : '已处置' }}
                 </div>
                 <div class="content flex">
-                    <span>养老院{{ index + 1 }}</span>
-                    <span class="date">{{ item.date }}</span>
-                    <span>设备编号：01098654</span>
+                    <span>{{ item.GroupName }}</span>
+                    <span class="date">{{ item.DealTime }}</span>
+                    <span>设备编号：{{ item.DeviceSn }}</span>
                 </div>
             </div>
         </vue3-seamless-scroll>
@@ -38,115 +38,50 @@
 
 <script setup lang="ts">
 import { useStore } from 'vuex';
-import { computed, watchEffect, nextTick } from 'vue';
-import * as echarts from 'echarts';
+import { reactive, watch, ref } from 'vue';
 
 interface Props {
-    ylyFlag?: any;
+    pData?: {
+        SosCount: any;
+        SosIn24h: any;
+    };
+}
+
+interface SosTableItem {
+    IsHandled: boolean;
+    GroupName: string;
+    DealTime: string;
+    DeviceSn: string;
 }
 const $store = useStore(),
     $props = defineProps<Props>(),
-    isAdmin = computed(() => $store.getters['config/isAdmin']),
-    listData = computed(() => [
-        {
-            status: 1,
-            title: '无缝滚动第一行无缝滚动第一行',
-            date: '2017-12-16',
-        },
-        {
-            status: 0,
-            title: '无缝滚动第二行无缝滚动第二行',
-            date: '2017-12-16',
-        },
-        {
-            status: 1,
-            title: '无缝滚动第三行无缝滚动第三行',
-            date: '2017-12-16',
-        },
-        {
-            status: 0,
-            title: '无缝滚动第四行无缝滚动第四行',
-            date: '2017-12-16',
-        },
-    ]);
+    handledCount = ref<number>(0),
+    recordDuration = ref<string>(0),
+    totalSosCount = ref<number>(0);
 
-watchEffect(() => {
-    initFn();
-});
+let listData = reactive<SosTableItem[]>([]);
 
-function initFn() {
-    nextTick(() => {
-        // renderChart1(data1);
-    });
+watch(
+    () => $props.pData,
+    (e: any) => {
+        initFn(e);
+    },
+    {
+        immediate: true,
+    }
+);
+
+function initFn(e: any) {
+    const { SosCount, SosIn24h } = e || {},
+        { HandledCount, RecordDuration, TotalSosCount } = SosCount || {};
+    handledCount.value = HandledCount;
+    recordDuration.value = `${
+        +RecordDuration < 60 ? '< 1' : Math.floor(+RecordDuration / 60)
+    }`;
+    totalSosCount.value = TotalSosCount;
+
+    listData = SosIn24h || [];
 }
-
-const renderChart1 = (data: any) => {
-    const option = {
-        legend: {
-            top: 'bottom',
-        },
-        grid: {
-            containLabel: true,
-            left: 20,
-            right: 20,
-            bottom: 40,
-            top: 40,
-        },
-        tooltip: {
-            trigger: 'axis',
-            backgroundColor: 'rgba(0,0,0,0.7)',
-            borderColor: 'rgba(0,0,0,0.7)',
-            textStyle: {
-                color: '#fff',
-            },
-        },
-        xAxis: {
-            data: data?.map((_e) => _e.name),
-            splitLine: {
-                show: true,
-                lineStyle: {
-                    width: 2,
-                },
-            },
-            axisLabel: {
-                show: true,
-                margin: 14,
-                fontSize: 12,
-            },
-        },
-        yAxis: [
-            {
-                name: '人次',
-                type: 'value',
-                splitNumber: 5,
-                splitLine: {
-                    show: true,
-                    lineStyle: {
-                        color: ['#fff'],
-                        opacity: 0.06,
-                    },
-                },
-            },
-        ],
-        series: [
-            {
-                name: '访客数量(人次)',
-                type: 'line',
-                data: data?.map((_e) => _e.value),
-                lineStyle: {
-                    color: '#7E2DFF',
-                },
-                itemStyle: {
-                    color: '#7E2DFF',
-                },
-            },
-        ],
-    };
-    // 绘制图表
-    let myChart = echarts.init(document.getElementById('ylyChart1'));
-    myChart.clear();
-    myChart.setOption(option);
-};
 </script>
 
 <style lang="less" scoped>

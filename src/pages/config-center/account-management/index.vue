@@ -8,14 +8,16 @@
         >
         </GmForm>
     </div>
-    <GmTable
-        v-model:data="data.tableData"
-        v-model:sendRequest="sendRequest"
-        :headers="data.columns"
-        :request-api="fetchServiceRecord"
-        :send-data="dealReqData(data.formData)"
-        @on-handle="handleClick"
-    />
+    <div class="cm-box">
+        <GmTable
+            v-model:data="data.tableData"
+            v-model:sendRequest="sendRequest"
+            :headers="data.columns"
+            :request-api="fetchConfigAccount"
+            :send-data="dealReqData(data.formData)"
+            @on-handle="handleClick"
+        />
+    </div>
 </template>
 
 <script setup lang="ts">
@@ -27,7 +29,7 @@ import type {
     FormListProps,
     TableHandleOptItem,
 } from 'GlobComponentsModule';
-import { fetchServiceRecord } from '@/api/service-records';
+import { fetchConfigAccount } from '@/api/config-center';
 import { dealReqData } from '@/utils/tools';
 import { Modal } from 'ant-design-vue';
 import { ExclamationCircleOutlined } from '@ant-design/icons-vue';
@@ -56,7 +58,7 @@ const $store = useStore(),
         list: [
             {
                 type: 'input',
-                name: 'name',
+                name: 'groupName',
                 label: '所属机构：',
                 props: {
                     placeholder: '请输入机构名称',
@@ -65,25 +67,25 @@ const $store = useStore(),
             },
             {
                 type: 'select',
-                name: 'status',
+                name: 'accountType',
                 label: '账户类型：',
                 width: 160,
                 props: {
                     placeholder: '请选择账户类型',
                     allowClear: true,
                 },
-                option: $store.getters['config/recordTypes'],
+                option: $store.getters['config/accountTypes'],
             },
             {
                 type: 'select',
-                name: 'status',
+                name: 'isValid',
                 label: '启用状态：',
                 width: 160,
                 props: {
                     placeholder: '请选择启用状态',
                     allowClear: true,
                 },
-                option: $store.getters['config/recordTypes'],
+                option: $store.getters['config/enabledStatus'],
             },
             {
                 type: 'handle',
@@ -112,16 +114,19 @@ const $store = useStore(),
         columns: [
             {
                 title: '所属机构',
-                dataIndex: 'Dept',
+                dataIndex: 'Account',
                 minWidth: 120,
             },
             {
                 title: '账户类型',
-                dataIndex: 'Name',
+                dataIndex: 'AccountType',
             },
             {
                 title: '启用状态',
-                dataIndex: 'Name',
+                dataIndex: 'IsValid',
+                customRender: ({ text }) => {
+                    return text ? '启用' : '禁用';
+                },
             },
             {
                 title: '设置者账号',
@@ -129,11 +134,11 @@ const $store = useStore(),
             },
             {
                 title: '联系人',
-                dataIndex: 'Name',
+                dataIndex: 'Contact',
             },
             {
                 title: '联系电话',
-                dataIndex: 'Name',
+                dataIndex: 'Telephone',
             },
             {
                 title: '操作',

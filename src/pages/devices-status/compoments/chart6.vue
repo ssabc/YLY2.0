@@ -66,7 +66,7 @@ const renderChart = () => {
                     show: false,
                 },
                 axisLabel: {
-                    interval: 0,
+                    
                     textStyle: {
                         color: '#000',
                     },

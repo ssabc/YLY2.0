@@ -1,8 +1,8 @@
 <!--
  * @Author: szhao
  * @Date: 2023-01-07 16:18:32
- * @LastEditTime: 2023-01-12 09:32:47
- * @LastEditors: szhao
+ * @LastEditTime: 2023-01-18 21:05:28
+ * @LastEditors: sZhao
  * @Description:
 -->
 <template>
@@ -54,7 +54,7 @@
                                 </a-select>
                             </a-form-item>
                             <a-form-item label="养老院：" prop="groupId">
-                                <a-select v-model:value="data.formData.groupId">
+                                <a-select v-model:value="data.formData.groupId" disabled>
                                     <a-select-option
                                         v-for="ele of ylyList"
                                         :key="ele['value']"

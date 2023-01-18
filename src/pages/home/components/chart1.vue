@@ -130,7 +130,7 @@ const renderChart1 = (_d: any) => {
                     type: 'shadow',
                 },
                 axisLabel: {
-                    interval: 0,
+                    
                     align: 'center',
                     textStyle: {
                         color: normalColor,

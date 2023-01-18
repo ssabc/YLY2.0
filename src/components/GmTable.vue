@@ -27,8 +27,16 @@
                             : item.option"
                         :key="ele.name"
                     >
+                        <a
+                            v-if="!ele.hidden && ele.name === '立即处置'"
+                            target="_blank"
+                            class="text-blue-500"
+                            :href="gisUrl"
+                            :src="gisUrl"
+                            >立即处置</a
+                        >
                         <button
-                            v-if="!ele.hidden"
+                            v-else-if="!ele.hidden"
                             class="text-blue-500"
                             :disabled="ele.disabled"
                             :class="{
@@ -69,6 +77,7 @@
 </template>
 
 <script setup lang="ts">
+import { useStore } from 'vuex';
 import type { ColumnProps, TableHandleOptItem } from 'GlobComponentsModule';
 import {
     computed,
@@ -97,6 +106,8 @@ interface Props {
 }
 
 const $props = defineProps<Props>(),
+    $store = useStore(),
+    gisUrl = computed(() => $store.getters['common/gisMapUrl']),
     $emit = defineEmits<{
         (event: 'update:data', v: Array<object>): void;
         (

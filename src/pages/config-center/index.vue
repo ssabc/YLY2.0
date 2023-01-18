@@ -8,31 +8,31 @@
         >
         </GmForm>
     </div>
-    <GmTable
-        v-model:data="data.tableData"
-        v-model:sendRequest="sendRequest"
-        :headers="data.columns"
-        :request-api="fetchServiceRecord"
-        :send-data="dealReqData(data.formData)"
-        @on-handle="handleClick"
-    />
+    <div class="cm-box">
+        <GmTable
+            v-model:data="data.tableData"
+            v-model:sendRequest="sendRequest"
+            :headers="data.columns"
+            :request-api="fetchConfigNursingHome"
+            :send-data="dealReqData(data.formData)"
+            @on-handle="handleClick"
+        />
+    </div>
 </template>
 
 <script setup lang="ts">
 import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
-import { ref, reactive, computed, toRaw, createVNode } from 'vue';
+import { ref, reactive, toRaw, createVNode } from 'vue';
 import type {
     ColumnProps,
     FormListProps,
     TableHandleOptItem,
 } from 'GlobComponentsModule';
-import { fetchServiceRecord } from '@/api/service-records';
-import { getOpsOptions, getNowDate, dealReqData } from '@/utils/tools';
-import { message as $message } from 'ant-design-vue';
+import { fetchConfigNursingHome } from '@/api/config-center';
+import { getNowDate, dealReqData, handleDownload } from '@/utils/tools';
 import { Modal } from 'ant-design-vue';
 import { ExclamationCircleOutlined } from '@ant-design/icons-vue';
-
 interface Data {
     formData: {
         inputName?: string;
@@ -50,14 +50,13 @@ interface Item {
 let sendRequest = ref(false);
 
 const $store = useStore(),
-    isAdmin = computed(() => $store.getters['common/isAdmin']),
     $router = useRouter(),
     data = reactive<Data>({
         /** 表单list */
         list: [
             {
                 type: 'input',
-                name: 'name',
+                name: 'groupName',
                 label: '养老院名称：',
                 props: {
                     placeholder: '养老院名称',
@@ -91,20 +90,20 @@ const $store = useStore(),
         columns: [
             {
                 title: '养老院名称',
-                dataIndex: 'Dept',
+                dataIndex: 'GroupName',
                 minWidth: 120,
             },
             {
                 title: '地址',
-                dataIndex: 'Name',
+                dataIndex: 'Address',
             },
             {
                 title: '院长/负责人',
-                dataIndex: 'Name',
+                dataIndex: 'Dean',
             },
             {
                 title: '联系电话',
-                dataIndex: 'RepairTime',
+                dataIndex: 'Telephone',
                 minWidth: 120,
                 customRender: ({ text }) => {
                     return getNowDate(text)?.time;
@@ -112,7 +111,7 @@ const $store = useStore(),
             },
             {
                 title: '记录仪启用时间',
-                dataIndex: 'RepairTime',
+                dataIndex: 'time',
                 minWidth: 120,
                 customRender: ({ text }) => {
                     return getNowDate(text)?.time;
@@ -120,7 +119,7 @@ const $store = useStore(),
             },
             {
                 title: '采集柜启用时间',
-                dataIndex: 'RepairTime',
+                dataIndex: 'time',
                 minWidth: 120,
                 customRender: ({ text }) => {
                     return getNowDate(text)?.time;
@@ -128,7 +127,7 @@ const $store = useStore(),
             },
             {
                 title: '数字哨兵启用时间',
-                dataIndex: 'RepairTime',
+                dataIndex: 'time',
                 minWidth: 120,
                 customRender: ({ text }) => {
                     return getNowDate(text)?.time;
@@ -162,7 +161,7 @@ function handleClick(item: TableHandleOptItem, row: any) {
             handleToDetail(rowData);
             break;
         case '下载':
-            handleDownload(rowData);
+            handleDownload(rowData.GroupName, rowData.FileHref);
             break;
         case '删除':
             handleDelete();
@@ -183,25 +182,5 @@ function handleDelete() {
             Modal.destroyAll();
         },
     });
-}
-
-// 浏览器下载
-function handleDownload(row: any) {
-    let fileName = row.FileName;
-    let x = new XMLHttpRequest();
-    $message.loading('视频下载中，请稍后...', 0);
-    x.open('GET', row.Video, true);
-    x.responseType = 'blob';
-    x.onload = () => {
-        console.log('link', row.Video);
-        $message.destroy();
-        $message.success('下载完成');
-        let url = window.URL.createObjectURL(x.response);
-        let a = document.createElement('a');
-        a.href = url;
-        a.download = fileName;
-        a.click();
-    };
-    x.send();
 }
 </script>

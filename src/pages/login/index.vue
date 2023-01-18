@@ -13,7 +13,7 @@
                 @press-enter="submit"
             >
                 <template #verifyCode>
-                    <div class="flex items-center justify-center">
+                    <div class="flex items-center justify-center verify-code-wrap">
                         <a-input
                             v-model:value="data.formData.verifyCode"
                             allow-clear
@@ -168,6 +168,9 @@ function validateVerifyCode(rule: RuleObject, value: string) {
 </script>
 
 <style lang="less" scoped>
+.verify-code-wrap {
+    width: 100%;
+}
 .login-title {
     color: #fff;
     font-size: 40px;

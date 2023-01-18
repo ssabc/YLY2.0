@@ -8,6 +8,8 @@
 declare module 'ConfigModule' {
     interface Getters {
         colors?: () => any[];
+        enabledStatus?: () => any[];
+        accountTypes?: () => any[];
         dealTypes?: () => any[];
         statusTypes?: () => any[];
         statusTypes2?: () => any[];

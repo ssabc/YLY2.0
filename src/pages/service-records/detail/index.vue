@@ -1,8 +1,8 @@
 <!--
  * @Author: szhao
  * @Date: 2023-01-10 10:59:12
- * @LastEditTime: 2023-01-16 15:51:51
- * @LastEditors: szhao
+ * @LastEditTime: 2023-01-18 22:37:58
+ * @LastEditors: sZhao
  * @Description:
 -->
 <template>
@@ -74,7 +74,7 @@ const $store = useStore(),
             {
                 type: 'input',
                 name: 'FileDuration',
-                label: '记录时长：',
+                label: '记录时长(分钟)：',
                 props: {
                     placeholder: '',
                     disabled: true,
@@ -120,14 +120,15 @@ const $store = useStore(),
                 },
             },
             {
-                type: 'input',
+                type: 'select',
                 name: 'FileTag',
                 label: '服务内容：',
+                width: 300,
                 props: {
-                    placeholder: '请输入服务内容',
+                    placeholder: '请选择服务内容',
                     allowClear: true,
-                    // disabled: true,
                 },
+                option: $store.getters['common/fileTags'],
             },
             // {
             //     type: 'select',
@@ -200,6 +201,10 @@ function handleClick(e: any) {
  * @description: table 项操作
  */
 const onSubmit = () => {
+    if (!data.formData?.FileTag) {
+        $message.error('服务内容必填！');
+        return;
+    }
     serviceFileSave({
         fileId: data.formData?.FileId,
         fileTag: data.formData?.FileTag,

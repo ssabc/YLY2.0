@@ -8,28 +8,24 @@
         >
         </GmForm>
     </div>
-    <GmTable
-        v-model:data="data.tableData"
-        v-model:sendRequest="sendRequest"
-        :headers="data.columns"
-        :request-api="fetchServiceRecord"
-        :send-data="dealReqData(data.formData)"
-    />
+    <div class="cm-box">
+        <GmTable
+            v-model:data="data.tableData"
+            v-model:sendRequest="sendRequest"
+            :headers="data.columns"
+            :request-api="fetchConfigSystemLog"
+            :send-data="dealReqData(data.formData)"
+        />
+    </div>
 </template>
 
 <script setup lang="ts">
 import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
-import { ref, reactive, computed, toRaw, createVNode } from 'vue';
-import type {
-    ColumnProps,
-    FormListProps,
-    TableHandleOptItem,
-} from 'GlobComponentsModule';
-import { fetchServiceRecord } from '@/api/service-records';
+import { ref, reactive, computed } from 'vue';
+import type { ColumnProps, FormListProps } from 'GlobComponentsModule';
+import { fetchConfigSystemLog } from '@/api/config-center';
 import { dealReqData } from '@/utils/tools';
-import { Modal } from 'ant-design-vue';
-import { ExclamationCircleOutlined } from '@ant-design/icons-vue';
 
 interface Data {
     formData: {
@@ -94,23 +90,23 @@ const $store = useStore(),
             },
             {
                 title: '操作类型',
-                dataIndex: 'Name',
+                dataIndex: 'OperateType',
             },
             {
                 title: '操作账户',
-                dataIndex: 'Name',
+                dataIndex: 'Account',
             },
             {
                 title: '请求IP',
-                dataIndex: 'Name',
+                dataIndex: 'RemoteIp',
             },
             {
                 title: '操作账户类型',
-                dataIndex: 'Name',
+                dataIndex: 'AccountType',
             },
             {
                 title: '操作时间',
-                dataIndex: 'Name',
+                dataIndex: 'OperateTime',
             },
         ],
     });

@@ -20,16 +20,13 @@
             <div class="simple-info flex" style="height: 100%">
                 <div
                     class="bell-wrap flex"
-                    :class="data.bellNum > 0 ? 'animated swing' : ''"
+                    :class="isBellHight ? 'animated swing' : ''"
                     @click="handleNaviPage"
                 >
                     <img
                         class="bell"
-                        :src="data.bellNum > 0 ? BellIcon2 : BellIcon1"
+                        :src="isBellHight ? BellIcon2 : BellIcon1"
                     />
-                    <span v-show="data.bellNum > 0" style="color: #f82607">{{
-                        data.bellNum
-                    }}</span>
                 </div>
                 <div>
                     <UserOutlined style="font-size: 20px" />
@@ -59,7 +56,7 @@
 
 <script setup lang="ts">
 import { useStore } from 'vuex';
-import { computed, reactive, ref, onMounted } from 'vue';
+import { computed, reactive, ref, onMounted, onUnmounted } from 'vue';
 import { MenuItem } from 'ant-design-vue';
 import { useRouter, useRoute } from 'vue-router';
 import { watch } from 'vue';
@@ -93,17 +90,33 @@ const data = reactive<Data>({
 
 let userInfo = ref<UserInfoVO>({});
 let yly = ref<string>('');
+// 铃铛是否动
+let isBellHight = ref<boolean>(false);
 userInfo = computed(() => $store.getters['common/userInfo']?.account || {});
 
+/** 轮询铃铛 */
+let bellInterval: any = null;
 onMounted(() => {
-    fetchWarningCount({}).then((res: any) => {
-        data.bellNum = res.data || 0;
-    });
+    getBellNum();
+    bellInterval = setInterval(() => {
+        getBellNum();
+    }, 10 * 1000);
     initFn();
+});
+onUnmounted(() => {
+    clearInterval(bellInterval);
 });
 
 function initFn() {
     yly.value = `${$store.getters['common/groupId'] || ''}`;
+}
+
+function getBellNum() {
+    fetchWarningCount({}).then((res: any) => {
+        data.bellNum = res.data || 0;
+        const _oldBellNum = localStorage.getItem('bellNum');
+        isBellHight.value = data.bellNum > 0 && _oldBellNum != data.bellNum;
+    });
 }
 
 // 更新并高亮路由
@@ -129,7 +142,10 @@ function exit() {
 }
 
 function handleNaviPage() {
+    localStorage.setItem('bellNum', `${data.bellNum}`);
     data.bellNum = 0;
+    isBellHight.value = false;
+
     $router.push('/nurse-aide');
 }
 
@@ -142,6 +158,7 @@ function handleChangeYLY(e: string) {
             id: _tmp?.value || '',
         };
     $store.commit('common/setYly', _q);
+    $store.dispatch('common/getDefineFileTag');
 }
 </script>
 

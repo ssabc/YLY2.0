@@ -109,7 +109,7 @@ const renderChart1 = (data: any, _colors: Array<string>) => {
                     show: false,
                 },
                 axisLabel: {
-                    interval: 0,
+
                     textStyle: {
                         color: '#000',
                     },
@@ -168,7 +168,8 @@ const renderChart1 = (data: any, _colors: Array<string>) => {
 <style lang="less" scoped>
 .chart {
     width: 100%;
-    height: 260px;
+    height: 100%;
+    flex: 1;
     min-height: 100%;
 }
 </style>

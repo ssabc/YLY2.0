@@ -35,7 +35,6 @@
     "axios": "^0.26.1",
     "echarts": "^5.4.0",
     "echarts-liquidfill": "^3.1.0",
-    "flv.js": "^1.6.2",
     "js-md5": "^0.7.3",
     "mathjs": "^11.4.0",
     "qs": "^6.11.0",

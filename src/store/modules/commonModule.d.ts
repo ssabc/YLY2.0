@@ -1,8 +1,8 @@
 /*
  * @Author: zhaoshan
  * @Date: 2022-11-30 14:10:30
- * @LastEditTime: 2023-01-16 16:42:26
- * @LastEditors: szhao
+ * @LastEditTime: 2023-01-18 22:28:40
+ * @LastEditors: sZhao
  * @Description:
  */
 declare module 'CommonModule' {
@@ -25,17 +25,20 @@ declare module 'CommonModule' {
         menu: RouteItem[];
         userInfo: UserInfo;
         ylyList: any[];
+        fileTags: any[];
         gisUrl: string;
         yly: Yly;
     }
 
     interface Getters {
+        gisMapUrl: ({ gisUrl }: State) => string;
         menu: ({ menu }: State) => RouteItem[];
         headMenu: ({ menu }: State) => RouteItem[];
         isAdmin: ({ userInfo }: State) => boolean;
         userInfo: ({ userInfo }: State) => UserInfo;
         ylyList: ({ ylyList }: State) => any[];
         groupId: ({ yly }: State) => string;
+        fileTags: ({ fileTags }: State) => any[];
     }
 
     interface Actions {
@@ -45,6 +48,8 @@ declare module 'CommonModule' {
             payload: object
         ) => void;
         getGisUrl: (context: ActionContext<State, any>) => void;
+        fetchNursingMap: (context: ActionContext<State, any>) => void;
+        getDefineFileTag: (context: ActionContext<State, any>) => void;
     }
 
     interface Mutations {

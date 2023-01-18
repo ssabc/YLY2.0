@@ -229,23 +229,4 @@ function handleDelete() {
     });
 }
 
-// 浏览器下载
-function handleDownload(row: any) {
-    let fileName = row.FileName;
-    let x = new XMLHttpRequest();
-    $message.loading('视频下载中，请稍后...', 0);
-    x.open('GET', row.Video, true);
-    x.responseType = 'blob';
-    x.onload = () => {
-        console.log('link', row.Video);
-        $message.destroy();
-        $message.success('下载完成');
-        let url = window.URL.createObjectURL(x.response);
-        let a = document.createElement('a');
-        a.href = url;
-        a.download = fileName;
-        a.click();
-    };
-    x.send();
-}
 </script>

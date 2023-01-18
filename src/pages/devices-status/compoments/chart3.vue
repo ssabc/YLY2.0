@@ -8,6 +8,7 @@ import { computed, watch, nextTick } from 'vue';
 import * as echarts from 'echarts';
 
 interface PData {
+    type?: string;
     list?: Array<any>;
 }
 interface Props {
@@ -29,70 +30,68 @@ watch(
 
 function initFn(e: PData) {
     nextTick(() => {
-        renderChart1(e?.list, colors.value);
+        renderChart1(e?.list, colors.value, e?.type === 'sevenday');
     });
 }
-const renderChart1 = (data: any, _colors: Array<string>) => {
+const renderChart1 = (data: any, _colors: Array<string>, isSeven: boolean) => {
     const colorList = _colors,
         seriesData: any[] = [],
-        xAxisData: string[] = data?.[0]?.map((_e: any) => `${_e.Month}月`);
-    data?.forEach((_e: any, index: number) => {
-        const name = _e?.[0]?.GroupName || '',
-            data = _e?.map((_s: any) => _s.TotalFileSize),
-            _t = {
-                name,
-                type: 'line',
-                data,
-                symbolSize: 1,
-                symbol: 'circle',
-                smooth: true,
-                showSymbol: false,
-                lineStyle: {
-                    width: 2,
-                    color: new echarts.graphic.LinearGradient(1, 1, 0, 0, [
+        xAxisData: string[] = data?.map((_e: any) =>
+            isSeven ? `${_e.Date}` : `${_e.Month}月`
+        );
+    seriesData.push({
+        name: '设备在线次数',
+        type: 'line',
+        data: data?.map((_e: any) => `${_e.Count}`) || [],
+        symbolSize: 1,
+        symbol: 'circle',
+        smooth: true,
+        showSymbol: false,
+        lineStyle: {
+            width: 2,
+            color: new echarts.graphic.LinearGradient(1, 1, 0, 0, [
+                {
+                    offset: 0,
+                    color: '#90ffc6',
+                },
+                {
+                    offset: 1,
+                    color: '#46ea91',
+                },
+            ]),
+            shadowColor: 'rgba(144, 255, 198, .3)',
+            shadowBlur: 5,
+            shadowOffsetY: 5,
+        },
+        itemStyle: {
+            normal: {
+                color: colorList[0],
+                borderColor: colorList[0],
+            },
+        },
+        areaStyle: {
+            normal: {
+                color: new echarts.graphic.LinearGradient(
+                    0,
+                    0,
+                    0,
+                    1,
+                    [
                         {
                             offset: 0,
-                            color: '#90ffc6',
+                            color: 'rgba(0,150,255,0.8)',
                         },
                         {
                             offset: 1,
-                            color: '#46ea91',
+                            color: 'rgba(56,208,251,0.2)',
                         },
-                    ]),
-                    shadowColor: 'rgba(144, 255, 198, .3)',
-                    shadowBlur: 5,
-                    shadowOffsetY: 5,
-                },
-                itemStyle: {
-                    normal: {
-                        color: colorList[index],
-                        borderColor: colorList[index],
-                    },
-                },
-                areaStyle: {
-                    normal: {
-                        color: new echarts.graphic.LinearGradient(
-                            0,
-                            0,
-                            0,
-                            1,
-                            [
-                                {
-                                    offset: 0,
-                                    color: 'rgba(0,150,255,0.8)',
-                                },
-                                {
-                                    offset: 1,
-                                    color: 'rgba(56,208,251,0.2)',
-                                },
-                            ],
-                            false
-                        ),
-                    },
-                },
-            };
-        seriesData.push(_t);
+                    ],
+                    false
+                ),
+            },
+        },
     });
+    console.log(seriesData, xAxisData);
     const option = {
         tooltip: {
             trigger: 'axis',
@@ -105,7 +104,7 @@ const renderChart1 = (data: any, _colors: Array<string>) => {
         },
         xAxis: [
             {
-                name: '日期',
+                name: isSeven ? '日期' : '月份',
                 nameTextStyle: {
                     color: '#999',
                 },
@@ -120,7 +119,6 @@ const renderChart1 = (data: any, _colors: Array<string>) => {
                     show: false,
                 },
                 axisLabel: {
-                    interval: 0,
                     textStyle: {
                         color: '#999',
                     },

@@ -62,7 +62,7 @@
 
 <script setup lang="ts">
 import { useStore } from 'vuex';
-import { reactive, computed, onMounted } from 'vue';
+import { reactive, onMounted } from 'vue';
 import type { FormListProps } from 'GlobComponentsModule';
 import { DiffOutlined } from '@ant-design/icons-vue';
 import Chart2 from './compoments/chart2.vue';
@@ -135,34 +135,7 @@ const $store = useStore(),
         chartData: [],
         fileRank: [],
     }),
-    $router = useRouter(),
-    timeList = computed(() => [
-        {
-            name: '养老院1',
-            value: 56,
-            unit: '分钟',
-        },
-        {
-            name: '养老院2',
-            value: 56,
-            unit: '分钟',
-        },
-        {
-            name: '养老院3',
-            value: 56,
-            unit: '分钟',
-        },
-        {
-            name: '养老院14',
-            value: 56,
-            unit: '分钟',
-        },
-        {
-            name: '养老院5',
-            value: 56,
-            unit: '分钟',
-        },
-    ]);
+    $router = useRouter();
 
 onMounted(() => {
     getInfoAjax();

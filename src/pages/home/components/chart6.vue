@@ -42,29 +42,44 @@
 
 <script setup lang="ts">
 import { useStore } from 'vuex';
-import { computed, watchEffect, nextTick } from 'vue';
+import { computed, watch, nextTick } from 'vue';
 import * as echarts from 'echarts';
 import 'echarts-liquidfill/src/liquidFill.js';
 
 interface Props {
-    ylyFlag?: any;
-    pData?: any;
+    pData?: {
+        OnlineStatus: any;
+        DeviceStatus: any;
+    };
 }
+
+function _fn(_arr: any[], _name: string) {
+    return _arr?.filter((_e: any) => _e.Name === _name)?.[0]?.OnlineRate || 0;
+}
+
 const $store = useStore(),
     $props = defineProps<Props>(),
-    info = computed(() => $props.pData || {}),
-    isAdmin = computed(() => $store.getters['common/isAdmin']);
+    info = computed(() => $props.pData?.DeviceStatus || {});
 
-watchEffect(() => {
-    initFn($props.pData);
-});
+watch(
+    () => $props.pData,
+    (e: any) => {
+        const _d = {
+            toralOnlineRate: _fn(e?.OnlineStatus, '总在线率'),
+        };
+        initFn(_d);
+    },
+    {
+        immediate: true,
+    }
+);
 
-function initFn() {
+function initFn(_d: any) {
     nextTick(() => {
-        renderChart1();
+        renderChart1(_d?.toralOnlineRate);
     });
 }
-const renderChart1 = () => {
+const renderChart1 = (_rate: any) => {
     const option = {
         title: {
             show: true,
@@ -96,7 +111,7 @@ const renderChart1 = () => {
                     //标签设置
                     normal: {
                         position: ['50%', '30%'],
-                        formatter: '50%', //显示文本,
+                        formatter: `${_rate}%`, //显示文本,
                         textStyle: {
                             fontSize: '26px', //文本字号,
                             color: '#fff',

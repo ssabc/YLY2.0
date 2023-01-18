@@ -73,7 +73,7 @@ const renderChart1 = (data: any) => {
                         show: false,
                     },
                     axisLabel: {
-                        interval: 0,
+
                         textStyle: {
                             color: '#000',
                         },

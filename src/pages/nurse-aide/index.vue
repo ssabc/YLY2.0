@@ -1,5 +1,5 @@
 <template>
-    <a target="_blank" :href="data.url" :src="data.url">警佳平台地图</a>
+    <a target="_blank" :href="gisUrl">实时调度</a>
     <div class="cells">
         <div
             v-for="(item, idx) in data.statisList"
@@ -76,12 +76,12 @@ import { DiffOutlined } from '@ant-design/icons-vue';
 import Chart1 from './compoments/chart1.vue';
 import Chart2 from './compoments/chart2.vue';
 import {
-    getOpsOptions,
     dealReqData,
     groupBy,
     showFileDurationText,
+    handleDownload,
 } from '@/utils/tools';
-import { fetchNursingRecord, fetchNursingMap } from '@/api/nurse';
+import { fetchNursingRecord } from '@/api/nurse';
 import { message as $message, Modal } from 'ant-design-vue';
 import { ExclamationCircleOutlined } from '@ant-design/icons-vue';
 import commonMixin from '@/mixins';
@@ -109,9 +109,9 @@ interface Item {
 let sendRequest = ref(false);
 
 const $store = useStore(),
-    isAdmin = computed(() => $store.getters['common/isAdmin']),
     $router = useRouter(),
     typeList = computed(() => $store.getters['config/dealTypes']),
+    gisUrl = computed(() => $store.getters['common/gisMapUrl']),
     data = reactive<Data>({
         /** 表单list */
         list: [
@@ -192,7 +192,20 @@ const $store = useStore(),
                             type: 'deal',
                             disabled: record?.IsHandled,
                         },
-                        ...getOpsOptions(isAdmin),
+                        {
+                            name: '点击查看',
+                            type: 'view',
+                            disabled: !record.FileHref,
+                        },
+                        {
+                            name: '下载',
+                            type: 'download',
+                            disabled: !record.FileHref,
+                        },
+                        {
+                            name: '删除',
+                            type: 'delete',
+                        },
                     ];
                 },
             },
@@ -207,7 +220,6 @@ const $store = useStore(),
     });
 
 onMounted(() => {
-    getMapUrl();
     getInfo();
 });
 
@@ -217,7 +229,6 @@ commonMixin(() => {
 
 function initFn() {
     sendRequest.value = true;
-    getMapUrl();
     getInfo();
 }
 
@@ -285,12 +296,6 @@ function getChart2Data(key: string | undefined, _info: any) {
         list: groupBy(_list, 'GroupName'),
     };
 }
-
-function getMapUrl() {
-    fetchNursingMap({}).then((_res: any) => {
-        data.url = _res.data;
-    });
-}
 /**
  * @description: table 项操作
  */
@@ -305,7 +310,7 @@ function handleClick(item: TableHandleOptItem, row: any, index: number) {
             handleToDetail(rowData);
             break;
         case '下载':
-            handleDownload(rowData);
+            handleDownload(rowData.GroupName, rowData.FileHref);
             break;
         case '删除':
             handleDelete();
@@ -337,25 +342,6 @@ function handleDelete() {
     });
 }
 
-// 浏览器下载
-function handleDownload(row: any) {
-    let fileName = row.FileName;
-    let x = new XMLHttpRequest();
-    $message.loading('视频下载中，请稍后...', 0);
-    x.open('GET', row.Video, true);
-    x.responseType = 'blob';
-    x.onload = () => {
-        console.log('link', row.Video);
-        $message.destroy();
-        $message.success('下载完成');
-        let url = window.URL.createObjectURL(x.response);
-        let a = document.createElement('a');
-        a.href = url;
-        a.download = fileName;
-        a.click();
-    };
-    x.send();
-}
 function handleView(idx: number) {
     console.log(statisList.value?.[idx], typeList.value);
     const _t = statisList.value?.[idx];

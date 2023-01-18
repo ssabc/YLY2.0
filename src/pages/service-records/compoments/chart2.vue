@@ -68,7 +68,7 @@ const renderChart1 = (chartData: any) => {
         legend: {
             icon: 'circle',
             top: '5%',
-            left: '10%',
+            right: '5%',
             itemWidth: 6,
             itemGap: 5,
             textStyle: {
@@ -102,7 +102,7 @@ const renderChart1 = (chartData: any) => {
                     show: false,
                 },
                 axisLabel: {
-                    interval: 0,
+
                     textStyle: {
                         color: '#999',
                     },

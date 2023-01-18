@@ -40,14 +40,6 @@ export function fetchNursingRecordList(query: any) {
     });
 }
 
-export function fetchNursingMap(data: any) {
-    return request({
-        url: `${prefix}/manage/nursing/map`,
-        method: 'post',
-        data,
-    });
-}
-
 export function fetchNursingRecordStat(data: any) {
     return request({
         url: `${prefix}/manage/nursing/record/stat`,

@@ -108,7 +108,7 @@ const renderChart = (data: any, _colors: Array<string>) => {
                     show: false,
                 },
                 axisLabel: {
-                    interval: 0,
+                    
                     textStyle: {
                         color: '#000',
                     },

@@ -1,8 +1,8 @@
 /*
  * @Author: sZhao
  * @Date: 2023-01-08 15:09:43
- * @LastEditTime: 2023-01-18 15:14:19
- * @LastEditors: szhao
+ * @LastEditTime: 2023-01-18 21:47:42
+ * @LastEditors: sZhao
  * @Description:
  */
 import { request } from '@/utils/axios';
@@ -112,6 +112,23 @@ export function fetchDeviceStatus(data: any) {
 export function fetchDeviceStatusRecord(data: any) {
     return request({
         url: `${prefix}/manage/device-status/record`,
+        method: 'post',
+        data,
+    });
+}
+
+/** 服务内容list */
+export function fetchDefineFileTag(data: any) {
+    return request({
+        url: `${prefix}/manage/define/file-tag`,
+        method: 'post',
+        data,
+    });
+}
+
+export function fetchNursingMap(data: any) {
+    return request({
+        url: `${prefix}/manage/nursing/map`,
         method: 'post',
         data,
     });

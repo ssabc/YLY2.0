@@ -25,7 +25,7 @@
 <script setup lang="ts">
 import { useStore } from 'vuex';
 import { useRoute } from 'vue-router';
-import { ref, reactive, computed, watch } from 'vue';
+import { ref, reactive, computed, onMounted } from 'vue';
 import type { ColumnProps, FormListProps } from 'GlobComponentsModule';
 import { fetchServiceStat, fetchServiceFileList } from '@/api/service-records';
 import { dealReqData, getReqData, GetNumberOfDays } from '@/utils/tools';
@@ -115,17 +115,12 @@ const $store = useStore(),
         chartData: [],
     });
 
-watch(
-    () => $route.params.type,
-    (e) => {
-        initFn(e);
-    },
-    {
-        immediate: true,
-    }
-);
+onMounted(() => {
+    initFn();
+});
 
-function initFn(_type: any) {
+function initFn() {
+    const _type = 0;
     const _d = typeList.value?.[_type];
     data.formData.serviceType = _d?.label;
     refreshList();

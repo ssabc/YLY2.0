@@ -1,25 +1,43 @@
 /*
  * @Author: szhao
  * @Date: 2023-01-16 15:42:21
- * @LastEditTime: 2023-01-16 16:49:32
- * @LastEditors: szhao
+ * @LastEditTime: 2023-01-18 22:39:19
+ * @LastEditors: sZhao
  * @Description:
  */
 import { routes, r as $router } from '@/routes';
 import type { State, Getters, Actions, Common } from 'CommonModule';
 import type { ActionContext } from 'vuex';
-import { fetchCommunication } from '@/api/app';
+import { fetchNursingMap, fetchDefineFileTag } from '@/api/app';
 
 const state = (): State => ({
     menu: routes,
     userInfo: {},
     ylyList: [],
     gisUrl: '',
+    fileTags: [],
     /** 系统当前养老院 */
     yly: {},
 });
 
 const getters: Getters = {
+    gisMapUrl: (state: State) => {
+        return (
+            JSON.parse(localStorage.getItem('gisUrl') || '""') ||
+            state?.gisUrl ||
+            ''
+        );
+    },
+    fileTags: (state: State) => {
+        const _t =
+            JSON.parse(localStorage.getItem('fileTags') || '[]') ||
+            state?.fileTags ||
+            [];
+        return _t.map((_e: string) => ({
+            label: _e,
+            value: _e,
+        }));
+    },
     menu: (state: State) => {
         const _m = JSON.parse(JSON.stringify(state.menu)),
             isAdmin = getters.isAdmin(state);
@@ -69,9 +87,15 @@ const actions: Actions = {
         $router.push('/login');
     },
     async getGisUrl({ commit }: ActionContext<State, any>) {
-        return fetchCommunication({}).then((res: any) => {
-            console.log('gis: ', res?.data?.url);
-            commit('setGisUrl', res?.data?.url || '');
+        return fetchNursingMap({}).then((res: any) => {
+            console.log('gis: ', res?.data);
+            commit('setGisUrl', res?.data);
+        });
+    },
+    async getDefineFileTag({ commit }: ActionContext<State, any>) {
+        return fetchDefineFileTag({}).then((res: any) => {
+            console.log('fetchDefineFileTag: ', res?.data);
+            commit('setFileTags', res?.data);
         });
     },
     updateUserInfo({ commit }: ActionContext<State, any>, p: object) {
@@ -85,7 +109,12 @@ const mutations = {
         state.userInfo = p;
     },
     setGisUrl(state: State, p: string) {
+        localStorage.setItem('gisUrl', JSON.stringify(p));
         state.gisUrl = p;
+    },
+    setFileTags(state: State, p: any[]) {
+        localStorage.setItem('fileTags', JSON.stringify(p));
+        state.fileTags = p;
     },
     setYly(state: State, p: object) {
         console.log('setYly', p);

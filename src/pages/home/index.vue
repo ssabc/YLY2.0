@@ -23,7 +23,7 @@
                                 class="value"
                                 v-html="
                                     changeHourMinutestr(
-                                        data.CenterStat.TotalFileDuration
+                                        data.CenterStatistic.TotalFileDuration
                                     )?.htmlText
                                 "
                             ></div>
@@ -34,7 +34,7 @@
                                 class="value"
                                 v-html="
                                     changeHourMinutestr(
-                                        data.CenterStat.TodayFileDuration
+                                        data.CenterStatistic.TodayFileDuration
                                     )?.htmlText
                                 "
                             ></div>
@@ -42,7 +42,7 @@
                         <div class="cell">
                             <div class="label">总访客人数:</div>
                             <div class="value">
-                                {{ data.CenterStat.TotalVisitor }}
+                                {{ data.CenterStatistic.TotalVisitor }}
                                 <span class="unit">人次</span>
                             </div>
                         </div>
@@ -59,7 +59,7 @@
                     <div class="box" style="min-height: 300px">
                         <div class="title">最新服务记录</div>
                         <Chart3
-                            :p-data="data.info.ServiceDurationRank"
+                            :p-data="data.info.ServiceLastFile"
                             :yly-flag="true"
                         ></Chart3>
                     </div>
@@ -70,7 +70,7 @@
                     <div class="box">
                         <div class="title">记录总时长统计</div>
                         <Chart4
-                            :p-data="data.info.ServiceDurationRank"
+                            :p-data="data.info.FileDurationTotalStat"
                         ></Chart4>
                     </div>
                 </div>
@@ -80,13 +80,13 @@
                             护工帮
                             <BellOutlined style="color: #16d4e3" />
                         </div>
-                        <Chart5></Chart5>
+                        <Chart5 :p-data="data.sosInfo"></Chart5>
                     </div>
                 </div>
                 <div class="column flex1">
                     <div class="box">
                         <div class="title">设备状态（今日）</div>
-                        <Chart6 :p-data="data.info.DeviceStatus"></Chart6>
+                        <Chart6 :p-data="data.deviceInfo"></Chart6>
                     </div>
                 </div>
             </div>
@@ -110,15 +110,17 @@ import { changeHourMinutestr } from '@/utils/tools';
 import commonMixin from '@/mixins';
 
 const $store = useStore(),
-    isAdmin = computed(() => $store.getters['common/isAdmin']),
     data = reactive<any>({
         info: {},
         yly: '',
-        CenterStat: {},
+        CenterStatistic: {},
+        deviceInfo: {},
+        sosInfo: {},
     });
 
 onMounted(() => {
     getHomeInfo();
+    $store.dispatch('common/getDefineFileTag');
 });
 
 commonMixin(getHomeInfo);
@@ -127,11 +129,20 @@ commonMixin(getHomeInfo);
  * @description: 获取首页数据
  */
 function getHomeInfo() {
+    $store.dispatch('common/getGisUrl');
     const _req = {};
     fetchHomeInfo(_req).then((res: any) => {
-        console.log(res);
         data.info = res?.data || {};
-        data.CenterStat = data.info?.CenterStat || {};
+        data.CenterStatistic = data.info?.CenterStatistic || {};
+        const { DeviceStatus, OnlineStatus, SosCount, SosIn24h } = data.info;
+        data.deviceInfo = {
+            DeviceStatus,
+            OnlineStatus,
+        };
+        data.sosInfo = {
+            SosCount,
+            SosIn24h,
+        };
     });
 }
 </script>

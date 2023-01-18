@@ -1,8 +1,8 @@
 <!--
  * @Author: szhao
  * @Date: 2023-01-10 10:59:12
- * @LastEditTime: 2023-01-18 14:08:01
- * @LastEditors: szhao
+ * @LastEditTime: 2023-01-18 20:41:41
+ * @LastEditors: sZhao
  * @Description:
 -->
 <template>
@@ -66,7 +66,7 @@ const $store = useStore(),
             {
                 type: 'input',
                 name: 'name',
-                label: '记录时长：',
+                label: '记录时长(分钟)：',
                 props: {
                     placeholder: '',
                     disabled: true,

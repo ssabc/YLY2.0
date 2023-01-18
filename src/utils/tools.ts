@@ -1,10 +1,11 @@
 /*
  * @Author: szhao
  * @Date: 2022-12-02 19:32:00
- * @LastEditTime: 2023-01-17 10:26:49
- * @LastEditors: szhao
+ * @LastEditTime: 2023-01-18 20:53:21
+ * @LastEditors: sZhao
  * @Description:
  */
+import { message as $message } from 'ant-design-vue';
 
 export const getOpsOptions = function (_v: any) {
     const _b = [
@@ -169,4 +170,22 @@ export const showFileDurationText = function (_s: number) {
     _s = +_s;
     const _m = _s / 60;
     return _m < 1 ? '小于1分钟' : Math.floor(_m) + ' 分钟';
+};
+
+export const handleDownload = function (fileName: string, videoUrl: string) {
+    const x = new XMLHttpRequest();
+    $message.loading('视频下载中，请稍后...', 0);
+    x.open('GET', videoUrl, true);
+    x.responseType = 'blob';
+    x.onload = () => {
+        console.log('link', videoUrl);
+        $message.destroy();
+        $message.success('下载完成');
+        const url = window.URL.createObjectURL(x.response);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = fileName;
+        a.click();
+    };
+    x.send();
 };

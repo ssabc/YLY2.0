@@ -40,6 +40,7 @@ import {
     dealReqData,
     getReqData,
     GetNumberOfDays,
+    handleDownload,
 } from '@/utils/tools';
 import { message as $message } from 'ant-design-vue';
 import recordTimeChart from '@/pages/service-records/compoments/record-time-chart.vue';
@@ -134,7 +135,7 @@ const $store = useStore(),
                 dataIndex: 'FileTag',
             },
             {
-                title: '记录时长',
+                title: '记录时长(分钟)',
                 dataIndex: 'FileDuration',
                 customRender: ({ text }) => {
                     return showFileDurationText(text);
@@ -160,7 +161,22 @@ const $store = useStore(),
                 title: '操作',
                 type: 'handle',
                 minWidth: 240,
-                option: getOpsOptions(isAdmin),
+                optionFn: ({ record }) => [
+                    {
+                        name: '点击查看',
+                        type: 'view',
+                        disabled: !record.FileHref,
+                    },
+                    {
+                        name: '下载',
+                        type: 'download',
+                        disabled: !record.FileHref,
+                    },
+                    {
+                        name: '删除',
+                        type: 'delete',
+                    },
+                ],
             },
         ],
         chartData: [],
@@ -234,7 +250,7 @@ function handleClick(item: TableHandleOptItem, row: any) {
             handleToDetail(rowData);
             break;
         case '下载':
-            handleDownload(rowData);
+            handleDownload(rowData.GroupName, rowData.FileHref);
             break;
         case '删除':
             handleDelete();
@@ -255,25 +271,5 @@ function handleDelete() {
             Modal.destroyAll();
         },
     });
-}
-
-// 浏览器下载
-function handleDownload(row: any) {
-    let fileName = row.FileName;
-    let x = new XMLHttpRequest();
-    $message.loading('视频下载中，请稍后...', 0);
-    x.open('GET', row.Video, true);
-    x.responseType = 'blob';
-    x.onload = () => {
-        console.log('link', row.Video);
-        $message.destroy();
-        $message.success('下载完成');
-        let url = window.URL.createObjectURL(x.response);
-        let a = document.createElement('a');
-        a.href = url;
-        a.download = fileName;
-        a.click();
-    };
-    x.send();
 }
 </script>
