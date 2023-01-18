@@ -1,7 +1,7 @@
 <!--
  * @Author: szhao
  * @Date: 2023-01-07 16:18:32
- * @LastEditTime: 2023-01-18 21:05:28
+ * @LastEditTime: 2023-01-19 01:28:49
  * @LastEditors: sZhao
  * @Description:
 -->
@@ -25,9 +25,9 @@
                                     disabled
                                 ></a-input>
                             </a-form-item>
-                            <a-form-item label="设备编号：" prop="Sn">
+                            <a-form-item label="设备编号：" prop="DeviceSn">
                                 <a-input
-                                    v-model:value="data.formData.Sn"
+                                    v-model:value="data.formData.DeviceSn"
                                     disabled
                                 ></a-input>
                             </a-form-item>
@@ -264,7 +264,7 @@ function initFn(devId: any) {
             devId: _d.DevId,
             groupId: _d.GroupId,
             serviceType: _d.ServiceType,
-            Sn: _d.Sn,
+            DeviceSn: _d.DeviceSn,
         };
     });
 

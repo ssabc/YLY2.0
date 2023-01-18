@@ -1,7 +1,7 @@
 <!--
  * @Author: sZhao
  * @Date: 2023-01-08 16:48:43
- * @LastEditTime: 2023-01-18 19:47:26
+ * @LastEditTime: 2023-01-19 01:29:05
  * @LastEditors: sZhao
  * @Description:
 -->
@@ -19,7 +19,7 @@
         <div class="bd">
             <div
                 v-for="(item, index) in scrollList.slice(0, 5)"
-                :key="item.Sn"
+                :key="item.DeviceSn"
                 class="tr"
                 @click="handleNaviFn(item)"
             >
@@ -28,7 +28,7 @@
                 <div class="td" style="width: 80px">
                     {{ showFileDurationText(item.FileDuration) }}
                 </div>
-                <div class="td">{{ item.Sn }}</div>
+                <div class="td">{{ item.DeviceSn }}</div>
                 <div class="td">{{ item.ServiceType }}</div>
             </div>
         </div>

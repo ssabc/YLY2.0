@@ -1,8 +1,8 @@
 <!--
  * @Author: szhao
  * @Date: 2023-01-07 16:18:32
- * @LastEditTime: 2023-01-12 09:31:59
- * @LastEditors: szhao
+ * @LastEditTime: 2023-01-19 01:28:58
+ * @LastEditors: sZhao
  * @Description:
 -->
 <template>
@@ -251,7 +251,7 @@ function initFn(devId: any) {
             devId: _d.DevId,
             groupId: _d.GroupId,
             serviceType: _d.ServiceType,
-            Sn: _d.Sn,
+            DeviceSn: _d.DeviceSn,
         };
     });
 
