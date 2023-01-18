@@ -179,6 +179,9 @@ watch(
     background-color: rgb(240, 242, 245);
     padding: 0 1rem;
 }
+:deep(.main-content.ant-card) {
+    background-color: #f0f2f5;
+}
 .base-layout {
     .ant-layout-sider {
         // background: #fafafa;

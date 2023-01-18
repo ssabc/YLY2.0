@@ -49,7 +49,7 @@ const renderChart1 = (data: any) => {
             },
             xAxis: [
                 {
-                    name: '日期',
+                    name: '日期', nameLocation: 'start', nameGap: 20,
                     nameTextStyle: {
                         color: '#999',
                     },

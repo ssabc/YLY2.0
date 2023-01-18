@@ -38,7 +38,7 @@ import type {
     TableHandleOptItem,
 } from 'GlobComponentsModule';
 import { fetchDeviceAssignList } from '@/api/device';
-import { getOpsOptions, getNowDate, dealReqData } from '@/utils/tools';
+import { getOpsOptions, getNowDate, dealReqData, showFileDurationText } from '@/utils/tools';
 import { message as $message } from 'ant-design-vue';
 import { Modal } from 'ant-design-vue';
 import { ExclamationCircleOutlined } from '@ant-design/icons-vue';
@@ -146,6 +146,9 @@ const $store = useStore(),
             {
                 title: '在线时长',
                 dataIndex: 'OnlineDuration',
+                customRender: ({ text }) => {
+                    return showFileDurationText(text);
+                },
             },
             {
                 title: '最近一次在线时间',

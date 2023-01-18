@@ -1,7 +1,7 @@
 /*
  * @Author: szhao
  * @Date: 2022-12-02 19:32:00
- * @LastEditTime: 2023-01-18 20:53:21
+ * @LastEditTime: 2023-01-19 01:01:38
  * @LastEditors: sZhao
  * @Description:
  */
@@ -168,8 +168,15 @@ export const changeHourMinutestr = function (str: number) {
 /** 秒转分 分钟（小于1分钟）取整数  */
 export const showFileDurationText = function (_s: number) {
     _s = +_s;
+    if (!_s) {
+        return '';
+    }
     const _m = _s / 60;
-    return _m < 1 ? '小于1分钟' : Math.floor(_m) + ' 分钟';
+    return _m < 1 ? '< 1分钟' : Math.floor(_m) + ' 分钟';
+};
+
+export const second2minutes = function (_s: number) {
+    return Math.floor(_s / 60);
 };
 
 export const handleDownload = function (fileName: string, videoUrl: string) {
@@ -184,6 +191,7 @@ export const handleDownload = function (fileName: string, videoUrl: string) {
         const url = window.URL.createObjectURL(x.response);
         const a = document.createElement('a');
         a.href = url;
+        a.target = '_blank';
         a.download = fileName;
         a.click();
     };

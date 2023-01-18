@@ -105,6 +105,8 @@ const renderChart1 = (data: any, _colors: Array<string>, isSeven: boolean) => {
         xAxis: [
             {
                 name: isSeven ? '日期' : '月份',
+                nameLocation: 'start',
+                nameGap: 20,
                 nameTextStyle: {
                     color: '#999',
                 },
@@ -143,7 +145,7 @@ const renderChart1 = (data: any, _colors: Array<string>, isSeven: boolean) => {
         ],
         yAxis: [
             {
-                name: '次数(人次)',
+                name: '次数(次)',
                 nameTextStyle: {
                     color: '#999',
                 },

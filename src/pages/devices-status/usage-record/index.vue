@@ -49,7 +49,7 @@ import { useRouter } from 'vue-router';
 import { ref, reactive, computed } from 'vue';
 import type { ColumnProps, FormListProps } from 'GlobComponentsModule';
 import { fetchDeviceStatusOnline } from '@/api/device';
-import { dealReqData } from '@/utils/tools';
+import { dealReqData, showFileDurationText } from '@/utils/tools';
 import Chart6 from '../compoments/chart6.vue';
 import Chart4 from '../compoments/chart4.vue';
 import Chart5 from '../compoments/chart5.vue';
@@ -96,7 +96,7 @@ const $store = useStore(),
         list: [
             {
                 type: 'input',
-                name: 'name',
+                name: 'deviceSn',
                 label: '',
                 props: {
                     placeholder: '请输入设备编号',
@@ -173,6 +173,9 @@ const $store = useStore(),
             {
                 title: '在线时长',
                 dataIndex: 'OnlineDuration',
+                customRender: ({ text }) => {
+                    return showFileDurationText(text);
+                },
             },
         ],
     });

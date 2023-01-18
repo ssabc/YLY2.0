@@ -9,31 +9,39 @@
             <div class="cells">
                 <div class="cell">
                     <span class="label">值班长</span>
-                    <span class="value">{{ info.Foreman || 0 }}%</span>
+                    <span class="value"
+                        >{{ info.ForemanOnlineRate || 0 }}%</span
+                    >
                 </div>
                 <div class="cell">
                     <span class="label">服务提供</span>
-                    <span class="value">{{ info.Provision || 0 }}%</span>
+                    <span class="value"
+                        >{{ info.ProvisionOnlineRate || 0 }}%</span
+                    >
                 </div>
                 <div class="cell">
                     <span class="label">服务保障</span>
-                    <span class="value">{{ info.Guarantee || 0 }}%</span>
+                    <span class="value"
+                        >{{ info.GuaranteeOnlineRate || 0 }}%</span
+                    >
                 </div>
                 <div class="cell">
                     <span class="label">服务安全</span>
-                    <span class="value">{{ info.Security || 0 }}%</span>
+                    <span class="value"
+                        >{{ info.SecurityOnlineRate || 0 }}%</span
+                    >
                 </div>
             </div>
             <div class="cells">
                 <div class="cell">
                     <span class="label">采集站</span>
-                    <span class="value">{{ info.StationCount || 0 }}%</span>
+                    <span class="value">{{ 0 }}%</span>
                 </div>
             </div>
             <div class="cells">
                 <div class="cell">
                     <span class="label">数字哨兵</span>
-                    <span class="value">{{ info.SentryCount || 0 }}%</span>
+                    <span class="value">{{ 0 }}%</span>
                 </div>
             </div>
         </div>
@@ -42,7 +50,7 @@
 
 <script setup lang="ts">
 import { useStore } from 'vuex';
-import { computed, watch, nextTick } from 'vue';
+import { reactive, watch, nextTick } from 'vue';
 import * as echarts from 'echarts';
 import 'echarts-liquidfill/src/liquidFill.js';
 
@@ -58,14 +66,22 @@ function _fn(_arr: any[], _name: string) {
 }
 
 const $store = useStore(),
-    $props = defineProps<Props>(),
-    info = computed(() => $props.pData?.DeviceStatus || {});
+    $props = defineProps<Props>();
+
+let info = reactive<any>({});
+// info = computed(() => $props.pData?.DeviceStatus || {});
 
 watch(
     () => $props.pData,
     (e: any) => {
         const _d = {
             toralOnlineRate: _fn(e?.OnlineStatus, '总在线率'),
+        };
+        info = {
+            ForemanOnlineRate: _fn(e?.OnlineStatus, '值班长'),
+            ProvisionOnlineRate: _fn(e?.OnlineStatus, '服务提供'),
+            GuaranteeOnlineRate: _fn(e?.OnlineStatus, '服务保障'),
+            SecurityOnlineRate: _fn(e?.OnlineStatus, '服务安全'),
         };
         initFn(_d);
     },

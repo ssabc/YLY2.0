@@ -94,7 +94,9 @@ const renderChart1 = (data: any, _colors: Array<string>) => {
         },
         xAxis: [
             {
-                name: '日期',
+                name: xAxisData.length == 7 ? '日期' : '月份',
+                nameLocation: 'start',
+                nameGap: 20,
                 nameTextStyle: {
                     color: '#999',
                 },
@@ -109,7 +111,6 @@ const renderChart1 = (data: any, _colors: Array<string>) => {
                     show: false,
                 },
                 axisLabel: {
-
                     textStyle: {
                         color: '#000',
                     },
@@ -168,8 +169,7 @@ const renderChart1 = (data: any, _colors: Array<string>) => {
 <style lang="less" scoped>
 .chart {
     width: 100%;
-    height: 100%;
-    flex: 1;
-    min-height: 100%;
+    height: 300px;
+    // flex: 1;
 }
 </style>

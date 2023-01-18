@@ -6,7 +6,7 @@
 import { useStore } from 'vuex';
 import { computed, watchEffect, nextTick } from 'vue';
 import * as echarts from 'echarts';
-import { groupBy } from '@/utils/tools';
+import { groupBy, second2minutes } from '@/utils/tools';
 
 interface Props {
     ylyFlag?: any;
@@ -31,18 +31,14 @@ function initFn(list: any) {
 const renderChart1 = (_d: any) => {
     const xData = _d?.map((_e: any) => _e?.[0]?.Date),
         _fn = (_d: any, type: string) => {
-            return _d?.map(
-                (_e: any) =>
-                    _e?.filter((_s: any) => _s?.ServiceType === type)?.[0]
-                        ?.TotalFileDuration
-            );
+            return _d
+                ?.map(
+                    (_e: any) =>
+                        _e?.filter((_s: any) => _s?.ServiceType === type)?.[0]
+                            ?.TotalFileDuration
+                )
+                .map((_e: number) => second2minutes(_e));
         },
-        // 服务提供
-        yData1 = _fn(_d, '服务提供'),
-        // 服务保障
-        yData2 = _fn(_d, '服务保障'),
-        // 服务安全
-        yData3 = _fn(_d, '服务安全'),
         borderData = [],
         seriesData = [],
         legend = seriesList.value?.map((_e: any) => _e.name),
@@ -124,13 +120,14 @@ const renderChart1 = (_d: any) => {
         xAxis: [
             {
                 name: '日期',
+                nameLocation: 'start',
+                nameGap: 20,
                 type: 'category',
                 data: xData,
                 axisPointer: {
                     type: 'shadow',
                 },
                 axisLabel: {
-                    
                     align: 'center',
                     textStyle: {
                         color: normalColor,

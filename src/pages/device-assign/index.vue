@@ -170,8 +170,11 @@ const $store = useStore(),
                 minWidth: 120,
             },
             {
-                title: '运行状态',
-                dataIndex: 'Name',
+                title: '分配状态',
+                dataIndex: 'ServiceType',
+                customRender: ({ text }) => {
+                    return text ? '已分配' : '未分配';
+                },
             },
             {
                 title: '分配日期',

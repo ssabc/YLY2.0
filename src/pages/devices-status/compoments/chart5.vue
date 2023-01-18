@@ -41,7 +41,7 @@ const renderChart1 = () => {
             },
             xAxis: [
                 {
-                    name: '日期',
+                    name: '日期', nameLocation: 'start', nameGap: 20,
                     nameTextStyle: {
                         color: '#999',
                     },
@@ -65,7 +65,7 @@ const renderChart1 = () => {
                         show: false,
                     },
                     axisLabel: {
-                        
+
                         textStyle: {
                             color: '#000',
                         },
@@ -89,7 +89,7 @@ const renderChart1 = () => {
             ],
             yAxis: [
                 {
-                    name: '次数（人次）',
+                    name: '次数（次）',
                     nameTextStyle: {
                         color: '#999',
                     },

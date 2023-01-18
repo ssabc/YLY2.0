@@ -105,12 +105,15 @@ export function request(config: any, params?: Params) {
             //     : changeRecordReq('add', config);
 
             params && params.showLoading && $message.loading('加载中...', 0);
-
-            config.data = qs.stringify({
-                ...dealwidthReqData(config.data),
-                'group-id': $store.getters['common/groupId'] || null,
-                token: $store.getters['common/userInfo']?.token,
-            });
+            const _q = {
+                    token: $store.getters['common/userInfo']?.token,
+                    ...dealwidthReqData(config.data),
+                },
+                groupId = $store.getters['common/groupId'] || null;
+            if (groupId) {
+                _q['group-id'] = groupId;
+            }
+            config.data = qs.stringify(_q);
             config.headers['Content-Type'] =
                 'application/x-www-form-urlencoded';
 

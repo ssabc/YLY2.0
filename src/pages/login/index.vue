@@ -134,6 +134,7 @@ function handleClick() {
                     id: account?.id || '',
                 };
             $store.commit('common/setYly', _q);
+            $store.dispatch('common/getGisUrl');
             $router.push('/');
         })
         .catch(() => {

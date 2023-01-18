@@ -1,7 +1,7 @@
 <!--
  * @Author: szhao
  * @Date: 2023-01-10 10:59:12
- * @LastEditTime: 2023-01-18 22:37:58
+ * @LastEditTime: 2023-01-19 00:19:13
  * @LastEditors: sZhao
  * @Description:
 -->
@@ -36,6 +36,7 @@ import { useRoute, useRouter } from 'vue-router';
 import type { FormListProps } from 'GlobComponentsModule';
 import { fetchServiceInfo, serviceFileSave } from '@/api/service-records';
 import { message as $message } from 'ant-design-vue';
+import { showFileDurationText } from '@/utils/tools';
 
 interface Data {
     formData: any;
@@ -177,6 +178,7 @@ watch(
 
 function initFn(fileId: any) {
     fetchServiceInfo({ fileId }).then((res) => {
+        res.data.FileDuration = showFileDurationText(+res.data.FileDuration);
         data.formData = res.data ?? {};
         data.videoUrl = data.formData.FilePath;
     });

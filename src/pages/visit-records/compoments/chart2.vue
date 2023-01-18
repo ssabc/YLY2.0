@@ -49,7 +49,7 @@ const renderChart1 = (data: any) => {
             },
             xAxis: [
                 {
-                    name: '日期',
+                    name: '日期', nameLocation: 'start', nameGap: 20,
                     nameTextStyle: {
                         color: '#999',
                     },
@@ -80,7 +80,7 @@ const renderChart1 = (data: any) => {
                         // 默认x轴字体大小
                         fontSize: 12,
                         // margin:文字到x轴的距离
-                        margin: 5,
+                        margin: 15,
                     },
                     axisPointer: {
                         label: {

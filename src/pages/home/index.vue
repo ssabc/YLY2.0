@@ -43,7 +43,7 @@
                             <div class="label">总访客人数:</div>
                             <div class="value">
                                 {{ data.CenterStatistic.TotalVisitor }}
-                                <span class="unit">人次</span>
+                                <span class="unit">次</span>
                             </div>
                         </div>
                     </div>
@@ -52,7 +52,7 @@
                     <div class="box">
                         <div class="title">访客情况监测（本周）</div>
                         <div class="visit-num">
-                            访问人次： <span class="value">{{ 65 }}</span>
+                            访问次： <span class="value">{{ 65 }}</span>
                         </div>
                         <Chart2 :yly-flag="true"></Chart2>
                     </div>
@@ -129,7 +129,6 @@ commonMixin(getHomeInfo);
  * @description: 获取首页数据
  */
 function getHomeInfo() {
-    $store.dispatch('common/getGisUrl');
     const _req = {};
     fetchHomeInfo(_req).then((res: any) => {
         data.info = res?.data || {};

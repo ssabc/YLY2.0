@@ -175,6 +175,9 @@ const $store = useStore(),
             {
                 title: '视频时长',
                 dataIndex: 'FileDuration',
+                customRender: ({ text }) => {
+                    return showFileDurationText(text);
+                },
             },
             {
                 title: '视频上传时间',
@@ -329,7 +332,7 @@ function changeTab(key: string) {
 
 function handleToDetail(row: any) {
     console.log(row, '---');
-    $router.push('/nurse-aide/video-detail');
+    $router.push(`/nurse-aide/video-detail?id=${row.FileId}`);
 }
 
 function handleDelete() {
@@ -343,8 +346,7 @@ function handleDelete() {
 }
 
 function handleView(idx: number) {
-    console.log(statisList.value?.[idx], typeList.value);
-    const _t = statisList.value?.[idx];
+    const _t = data.statisList?.[idx];
 
     if (
         _t?.aliasName &&

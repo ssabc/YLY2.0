@@ -20,7 +20,7 @@
 import { useStore } from 'vuex';
 import { reactive, computed, watchEffect, nextTick } from 'vue';
 import * as echarts from 'echarts';
-import { groupBy } from '@/utils/tools';
+import { groupBy, second2minutes } from '@/utils/tools';
 
 interface Props {
     ylyFlag?: any;
@@ -29,14 +29,12 @@ interface Props {
 
 const $store = useStore(),
     $props = defineProps<Props>(),
-    isAdmin = computed(() => $store.getters['common/isAdmin']),
     seriesList = computed(() => $store.getters['config/serviceSeries']),
     data = reactive<any>({
         chartList: [],
     });
 
 watchEffect(() => {
-    console.log('333333333333', $props.pData);
     initFn($props.pData || []);
 });
 
@@ -55,13 +53,15 @@ function initFn(_list: any) {
         const _fn = (_d: any) => {
             const _tmp = JSON.parse(JSON.stringify(seriesList.value));
             _tmp?.forEach((_e: any) => {
-                _e.value =
+                _e.value = second2minutes(
                     _d?.filter((_s: any) => _s.ServiceType === _e.name)?.[0]
-                        ?.TotalFileDuration || 0;
+                        ?.TotalFileDuration || 0
+                );
             });
             return _tmp?.filter((_e: any) => _e.value > 0);
         };
         data.chartList?.map((_e: any) => {
+            console.log('333333333333', _fn(_e.data));
             renderChart(_e.key, _fn(_e.data));
         });
     });

@@ -50,7 +50,7 @@ const renderChart1 = (list: any) => {
         },
         xAxis: [
             {
-                name: '日期',
+                name: '日期', nameLocation: 'start', nameGap: 20,
                 nameTextStyle: {
                     color: '#999',
                 },
@@ -89,7 +89,7 @@ const renderChart1 = (list: any) => {
         ],
         yAxis: [
             {
-                name: '次数（人次）',
+                name: '次数（次）',
                 nameTextStyle: {
                     color: '#999',
                 },

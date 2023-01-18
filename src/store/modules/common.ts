@@ -1,7 +1,7 @@
 /*
  * @Author: szhao
  * @Date: 2023-01-16 15:42:21
- * @LastEditTime: 2023-01-18 22:39:19
+ * @LastEditTime: 2023-01-19 00:49:10
  * @LastEditors: sZhao
  * @Description:
  */
@@ -22,11 +22,11 @@ const state = (): State => ({
 
 const getters: Getters = {
     gisMapUrl: (state: State) => {
-        return (
-            JSON.parse(localStorage.getItem('gisUrl') || '""') ||
-            state?.gisUrl ||
-            ''
-        );
+        const _t = JSON.parse(localStorage.getItem('gisUrl') || '""') ||
+        state?.gisUrl ||
+        '';
+        console.log('2342434234', _t)
+        return _t;
     },
     fileTags: (state: State) => {
         const _t =

@@ -71,6 +71,7 @@ import {
     getReqData,
     GetNumberOfDays,
     showFileDurationText,
+    second2minutes
 } from '@/utils/tools';
 import { message as $message } from 'ant-design-vue';
 import { useRouter } from 'vue-router';
@@ -169,14 +170,14 @@ function getInfoAjax() {
                 list: res.data?.DataRecord || [],
             },
         };
-        data.fileRank = res.data.FileRank || [];
+        data.fileRank = res.data.LastFile || [];
     });
 }
 
 function setStatisList(_t: any) {
     const _fn1 = (_d: any) => {
         const _fn = (_e: any, _key: string) => {
-            return (
+            return second2minutes(
                 _e?.filter((_s: any) => _s?.ServiceType === _key)?.[0]
                     ?.TotalFileDuration || 0
             );

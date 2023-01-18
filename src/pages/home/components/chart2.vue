@@ -49,7 +49,7 @@ const renderChart1 = (data: any) => {
             },
             xAxis: [
                 {
-                    name: '日期',
+                    name: '日期', nameLocation: 'start', nameGap: 20,
                     type: 'category',
                     data: [
                         '12/1',
@@ -69,7 +69,7 @@ const renderChart1 = (data: any) => {
                         show: false,
                     },
                     axisLabel: {
-                        
+
                         textStyle: {
                             color: '#999',
                         },
@@ -94,7 +94,7 @@ const renderChart1 = (data: any) => {
             ],
             yAxis: [
                 {
-                    name: '(人次)',
+                    name: '(次)',
                     axisTick: {
                         show: false,
                     },

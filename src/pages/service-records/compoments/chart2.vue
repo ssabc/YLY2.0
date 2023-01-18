@@ -5,7 +5,7 @@
 <script setup lang="ts">
 import { watchEffect, nextTick } from 'vue';
 import * as echarts from 'echarts';
-import { groupBy } from '@/utils/tools';
+import { groupBy, second2minutes } from '@/utils/tools';
 
 interface Props {
     ylyFlag?: any;
@@ -30,11 +30,14 @@ const renderChart1 = (chartData: any) => {
             obj = {
                 name,
                 type: 'line',
-                data: _newList?.map(
-                    (_e: any) =>
-                        _e?.filter((_s: any) => _s.ServiceType === name)?.[0]
-                            ?.TotalFileDuration || 0
-                ),
+                data: _newList
+                    ?.map(
+                        (_e: any) =>
+                            _e?.filter(
+                                (_s: any) => _s.ServiceType === name
+                            )?.[0]?.TotalFileDuration || 0
+                    )
+                    .map((_e) => second2minutes(_e)),
                 symbolSize: 1,
                 symbol: 'circle',
                 smooth: true,
@@ -88,6 +91,8 @@ const renderChart1 = (chartData: any) => {
         xAxis: [
             {
                 name: '日期',
+                nameLocation: 'start',
+                nameGap: 20,
                 nameTextStyle: {
                     color: '#999',
                 },
@@ -102,7 +107,6 @@ const renderChart1 = (chartData: any) => {
                     show: false,
                 },
                 axisLabel: {
-
                     textStyle: {
                         color: '#999',
                     },
@@ -127,7 +131,7 @@ const renderChart1 = (chartData: any) => {
         ],
         yAxis: [
             {
-                name: '次数（人次）',
+                name: '记录时长（分钟）',
                 nameTextStyle: {
                     color: '#999',
                 },
@@ -162,6 +166,8 @@ const renderChart1 = (chartData: any) => {
 <style lang="less" scoped>
 .chart {
     width: 100%;
-    height: 260px;
+    min-height: 260px;
+    max-height: 500px;
+    height: calc(110vh - 457px);
 }
 </style>

@@ -41,7 +41,7 @@ import commonMixin from '@/mixins';
 
 interface Data {
     formData: {
-        inputName?: string;
+        serviceType?: string;
     };
     list: FormListProps[];
     tableData: Item[];

@@ -34,7 +34,6 @@ import type {
 } from 'GlobComponentsModule';
 import { fetchServiceStat, fetchServiceFileList } from '@/api/service-records';
 import {
-    getOpsOptions,
     getNowDate,
     showFileDurationText,
     dealReqData,
@@ -67,7 +66,6 @@ interface Item {
 let sendRequest = ref(false);
 
 const $store = useStore(),
-    isAdmin = computed(() => $store.getters['common/isAdmin']),
     typeList = computed(() => $store.getters['config/recordTypes']),
     $router = useRouter(),
     $route = useRoute(),
@@ -222,6 +220,7 @@ function getInfoAjax() {
         // $message.error('日期区间不能超过7天');
         return;
     }
+    !data.formData.serviceType && (data.formData.serviceType = '服务提供');
     const req = getReqData(data.formData);
     fetchServiceStat(req).then((res: any) => {
         data.chartData = {
