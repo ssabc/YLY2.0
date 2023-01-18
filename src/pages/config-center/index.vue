@@ -92,7 +92,6 @@ const $store = useStore(),
             {
                 title: '养老院名称',
                 dataIndex: 'Dept',
-                // hidden: !isAdmin.value,
                 minWidth: 120,
             },
             {

@@ -122,12 +122,11 @@ const $store = useStore(),
         columns: [
             {
                 title: '设备编号',
-                dataIndex: 'Sn',
+                dataIndex: 'DeviceSn',
             },
             {
                 title: '养老院名称',
                 dataIndex: 'GroupName',
-                hidden: !isAdmin.value,
                 minWidth: 120,
             },
             {

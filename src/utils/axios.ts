@@ -73,7 +73,7 @@ function showMessage(msg: string) {
     }
 }
 
-function dealwidthReqData(_d) {
+function dealwidthReqData(_d: any) {
     const _r = {};
     Object.keys(_d).forEach((_k: any) => {
         _r[toLine(_k)] = _d[_k];
@@ -108,7 +108,7 @@ export function request(config: any, params?: Params) {
 
             config.data = qs.stringify({
                 ...dealwidthReqData(config.data),
-                'group-id': $store.getters['common/groupId'] || '',
+                'group-id': $store.getters['common/groupId'] || null,
                 token: $store.getters['common/userInfo']?.token,
             });
             config.headers['Content-Type'] =

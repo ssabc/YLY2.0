@@ -16,7 +16,7 @@
             v-model:data="data.tableData"
             v-model:sendRequest="sendRequest"
             :headers="data.columns"
-            :request-api="fetchServiceFileList"
+            :request-api="fetchNursingRecordList"
             :send-data="dealReqData(data.formData)"
             @on-handle="handleClick"
         />
@@ -26,15 +26,14 @@
 <script setup lang="ts">
 import { useStore } from 'vuex';
 import { useRoute, useRouter } from 'vue-router';
-import { ref, reactive, computed, toRaw, createVNode, watch } from 'vue';
+import { ref, reactive, toRaw, createVNode, watch } from 'vue';
 import type {
     ColumnProps,
     FormListProps,
     TableHandleOptItem,
 } from 'GlobComponentsModule';
-import { fetchServiceStat, fetchServiceFileList } from '@/api/service-records';
+import { fetchNursingRecordList, fetchNursingRecordStat } from '@/api/nurse';
 import {
-    getOpsOptions,
     getNowDate,
     dealReqData,
     getReqData,
@@ -65,8 +64,6 @@ interface Item {
 let sendRequest = ref(false);
 
 const $store = useStore(),
-    isAdmin = computed(() => $store.getters['common/isAdmin']),
-    typeList = computed(() => $store.getters['config/dealTypes']),
     $router = useRouter(),
     $route = useRoute(),
     data = reactive<Data>({
@@ -74,7 +71,7 @@ const $store = useStore(),
         list: [
             {
                 type: 'select',
-                name: 'serviceType',
+                name: 'isHandled',
                 label: '',
                 width: 160,
                 props: {
@@ -111,26 +108,23 @@ const $store = useStore(),
             },
         ],
         /** 表单数据 */
-        formData: {
-            serviceType: '值班长',
-        },
+        formData: {},
         /** 列表数据 */
         tableData: [],
         /** 列表项 */
         columns: [
             {
                 title: '设备编号',
-                dataIndex: 'Sn',
+                dataIndex: 'DeviceSn',
             },
             {
                 title: '养老院名称',
                 dataIndex: 'GroupName',
-                hidden: !isAdmin.value,
                 minWidth: 120,
             },
             {
                 title: '呼叫时间',
-                dataIndex: 'CreateTime',
+                dataIndex: 'DealTime',
                 minWidth: 120,
                 customRender: ({ text }) => {
                     return getNowDate(text)?.time;
@@ -142,7 +136,10 @@ const $store = useStore(),
             },
             {
                 title: '处置状态',
-                dataIndex: 'Name',
+                dataIndex: 'IsHandled',
+                customRender: ({ text }) => {
+                    return text ? '已处置' : '未处置';
+                },
             },
             {
                 title: '记录时间',
@@ -182,7 +179,7 @@ const $store = useStore(),
                 ],
             },
         ],
-        chartData: [],
+        chartData: {},
     });
 
 watch(
@@ -223,7 +220,7 @@ function getInfoAjax() {
         return;
     }
     const req = getReqData(data.formData);
-    fetchServiceStat(req).then((res: any) => {
+    fetchNursingRecordStat(req).then((res: any) => {
         data.chartData = {
             list: res.data || [],
         };

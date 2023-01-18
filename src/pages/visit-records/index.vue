@@ -89,7 +89,9 @@ const $store = useStore(),
             },
         ],
         /** 表单数据 */
-        formData: {},
+        formData: {
+            serviceType: '服务提供',
+        },
         /** 列表数据 */
         tableData: [],
         /** 列表项 */

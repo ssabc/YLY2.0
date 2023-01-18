@@ -1,6 +1,7 @@
 import type { Getters, Common } from 'ConfigModule';
 
 const getters: Getters = {
+    colors: () => ['#2984f8', '#67d4fb', '#ff9700', '#7357ff', '#f2d750'],
     dealTypes: () => {
         return [
             {
@@ -9,7 +10,7 @@ const getters: Getters = {
             },
             {
                 label: '未处置',
-                value: '2',
+                value: '0',
             },
         ];
     },

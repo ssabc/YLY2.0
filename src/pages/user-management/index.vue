@@ -165,7 +165,6 @@ const $store = useStore(),
             },
             {
                 title: '养老院名称',
-                hidden: !isAdmin.value,
                 dataIndex: 'Dept',
                 width: 120,
             },
@@ -182,7 +181,6 @@ const $store = useStore(),
             },
             {
                 title: '领取状态',
-                hidden: !isAdmin.value,
                 dataIndex: 'status',
                 width: 120,
                 customRender: ({ text }) => {
@@ -207,7 +205,6 @@ const $store = useStore(),
             {
                 title: '操作',
                 type: 'handle',
-                hidden: !isAdmin.value,
                 width: 100,
                 optionFn: ({ record }) => [
                     {

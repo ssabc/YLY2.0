@@ -48,10 +48,7 @@ import { ref, reactive, computed, toRaw, onMounted } from 'vue';
 import type { FormListProps } from 'GlobComponentsModule';
 import { DiffOutlined } from '@ant-design/icons-vue';
 import type { ColumnProps, TableHandleOptItem } from 'GlobComponentsModule';
-import {
-    fetchDeviceAssignList,
-    fetchDeviceAssignStat,
-} from '@/api/device-assign';
+import { fetchDeviceAssignList, fetchDeviceAssignStat } from '@/api/device';
 import { getNowDate, dealReqData } from '@/utils/tools';
 import commonMixin from '@/mixins';
 
@@ -112,7 +109,7 @@ const $store = useStore(),
             },
             {
                 type: 'select',
-                name: 'status3',
+                name: 'isAllocated',
                 label: '',
                 width: 160,
                 props: {
@@ -161,7 +158,7 @@ const $store = useStore(),
             },
             {
                 title: '设备编号',
-                dataIndex: 'Sn',
+                dataIndex: 'DeviceSn',
             },
             {
                 title: '设备分类',
@@ -170,7 +167,6 @@ const $store = useStore(),
             {
                 title: '所属养老院',
                 dataIndex: 'GroupName',
-                // hidden: !isAdmin.value,
                 minWidth: 120,
             },
             {

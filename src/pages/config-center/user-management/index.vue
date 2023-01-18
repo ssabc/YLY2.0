@@ -91,7 +91,6 @@ const $store = useStore(),
             {
                 title: '用户类型',
                 dataIndex: 'Dept',
-                // hidden: !isAdmin.value,
                 minWidth: 120,
             },
             {

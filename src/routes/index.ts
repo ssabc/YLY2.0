@@ -1,7 +1,7 @@
 /*
  * @Author: szhao
  * @Date: 2022-11-30 14:10:30
- * @LastEditTime: 2023-01-10 13:50:26
+ * @LastEditTime: 2023-01-18 15:08:32
  * @LastEditors: szhao
  * @Description:
  */
@@ -24,6 +24,12 @@ export const routes: RouteItem[] = [
         meta: { title: '登录', hidden: true, layout: false },
         component: lazyImportPagesRootVueFile('login'),
     },
+    // {
+    //     name: 'FlvView',
+    //     path: '/flv-view',
+    //     meta: { title: 'flv-view', hidden: true, layout: false },
+    //     component: lazyImportPagesRootVueFile('flv-view'),
+    // },
     {
         name: 'Home',
         path: '/',

@@ -1,7 +1,7 @@
 <!--
  * @Author: szhao
  * @Date: 2023-01-10 10:59:12
- * @LastEditTime: 2023-01-16 16:15:11
+ * @LastEditTime: 2023-01-18 14:08:01
  * @LastEditors: szhao
  * @Description:
 -->
@@ -27,9 +27,10 @@
 
 <script setup lang="ts">
 import { useStore } from 'vuex';
-import { reactive } from 'vue';
+import { reactive, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import type { FormListProps } from 'GlobComponentsModule';
+import { fetchServiceInfo } from '@/api/service-records';
 
 interface Data {
     formData: any;
@@ -38,6 +39,7 @@ interface Data {
 }
 
 const $store = useStore(),
+    $route = useRoute(),
     $router = useRouter(),
     data = reactive<Data>({
         formData: {},
@@ -140,6 +142,23 @@ const $store = useStore(),
         videoUrl: `http://119.3.126.12:8064/streams
 /001000101/20230106/20230106205039-00N.MP4`,
     });
+
+watch(
+    () => $route.query.id,
+    (e) => {
+        e && getFileInfo(e);
+    },
+    {
+        immediate: true,
+    }
+);
+
+function getFileInfo(fileId: any) {
+    fetchServiceInfo({ fileId }).then((res) => {
+        // data.formData = res.data ?? {};
+        // data.videoUrl = data.formData.FilePath;
+    });
+}
 
 function handleClick(e: any) {
     const { label } = e;

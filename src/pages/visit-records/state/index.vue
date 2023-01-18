@@ -18,32 +18,19 @@
             :headers="data.columns"
             :request-api="fetchServiceFileList"
             :send-data="dealReqData(data.formData)"
-            @on-handle="handleClick"
         />
     </div>
 </template>
 
 <script setup lang="ts">
 import { useStore } from 'vuex';
-import { useRoute, useRouter } from 'vue-router';
-import { ref, reactive, computed, toRaw, createVNode, watch } from 'vue';
-import type {
-    ColumnProps,
-    FormListProps,
-    TableHandleOptItem,
-} from 'GlobComponentsModule';
+import { useRoute } from 'vue-router';
+import { ref, reactive, computed, watch } from 'vue';
+import type { ColumnProps, FormListProps } from 'GlobComponentsModule';
 import { fetchServiceStat, fetchServiceFileList } from '@/api/service-records';
-import {
-    getOpsOptions,
-    getNowDate,
-    dealReqData,
-    getReqData,
-    GetNumberOfDays,
-} from '@/utils/tools';
+import { dealReqData, getReqData, GetNumberOfDays } from '@/utils/tools';
 import { message as $message } from 'ant-design-vue';
 import recordTimeChart from '@/pages/service-records/compoments/record-time-chart.vue';
-import { Modal } from 'ant-design-vue';
-import { ExclamationCircleOutlined } from '@ant-design/icons-vue';
 import commonMixin from '@/mixins';
 
 interface Data {
@@ -65,9 +52,7 @@ interface Item {
 let sendRequest = ref(false);
 
 const $store = useStore(),
-    isAdmin = computed(() => $store.getters['common/isAdmin']),
     typeList = computed(() => $store.getters['config/recordTypes']),
-    $router = useRouter(),
     $route = useRoute(),
     data = reactive<Data>({
         /** 表单list */
@@ -101,7 +86,7 @@ const $store = useStore(),
         ],
         /** 表单数据 */
         formData: {
-            serviceType: '值班长',
+            serviceType: '服务提供',
         },
         /** 列表数据 */
         tableData: [],
@@ -165,7 +150,7 @@ function getInfoAjax() {
         data.formData.date?.[1] &&
         GetNumberOfDays(data.formData.date[0], data.formData.date[1]) > 7
     ) {
-        // $message.error('日期区间不能超过7天');
+        $message.error('日期区间不能超过7天');
         return;
     }
     const req = getReqData(data.formData);

@@ -67,6 +67,7 @@ import type { UserInfoVO } from 'CommonModule';
 import BellIcon1 from '@/assets/pictures/bell1.png';
 import BellIcon2 from '@/assets/pictures/bell2.png';
 import { UserOutlined } from '@ant-design/icons-vue';
+import { fetchWarningCount } from '@/api/app';
 
 interface Data {
     openKeys: Array<string>; // 当前展开的 SubMenu 菜单项 key 数组
@@ -95,9 +96,9 @@ let yly = ref<string>('');
 userInfo = computed(() => $store.getters['common/userInfo']?.account || {});
 
 onMounted(() => {
-    // fetchWarningCount({}).then((res: any) => {
-    //     data.bellNum = res.data?.Unhandled;
-    // });
+    fetchWarningCount({}).then((res: any) => {
+        data.bellNum = res.data || 0;
+    });
     initFn();
 });
 

@@ -37,7 +37,7 @@ import type {
     FormListProps,
     TableHandleOptItem,
 } from 'GlobComponentsModule';
-import { fetchDeviceAssignList } from '@/api/device-assign';
+import { fetchDeviceAssignList } from '@/api/device';
 import { getOpsOptions, getNowDate, dealReqData } from '@/utils/tools';
 import { message as $message } from 'ant-design-vue';
 import { Modal } from 'ant-design-vue';
@@ -136,12 +136,11 @@ const $store = useStore(),
             },
             {
                 title: '设备编号',
-                dataIndex: 'Sn',
+                dataIndex: 'DeviceSn',
             },
             {
                 title: '所属养老院',
                 dataIndex: 'GroupName',
-                // hidden: !isAdmin.value,
                 minWidth: 120,
             },
             {

@@ -52,7 +52,7 @@ const $store = useStore(),
         list: [
             {
                 type: 'input',
-                name: 'Sn',
+                name: 'DeviceSn',
                 label: '设备编号：',
                 props: {
                     placeholder: '',

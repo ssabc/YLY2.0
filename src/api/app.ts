@@ -1,8 +1,8 @@
 /*
  * @Author: sZhao
  * @Date: 2023-01-08 15:09:43
- * @LastEditTime: 2023-01-12 00:10:17
- * @LastEditors: sZhao
+ * @LastEditTime: 2023-01-18 15:14:19
+ * @LastEditors: szhao
  * @Description:
  */
 import { request } from '@/utils/axios';
@@ -84,7 +84,7 @@ export function fetchCarerWarning2(data: any) {
 
 export function fetchWarningCount(data: any) {
     return request({
-        url: `${prefix}/manage/carer-warning/count`,
+        url: `${prefix}/manage/nursing/alarm`,
         method: 'post',
         data,
     });

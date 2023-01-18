@@ -90,7 +90,6 @@ const $store = useStore(),
             {
                 title: '系统菜单',
                 dataIndex: 'Dept',
-                // hidden: !isAdmin.value,
                 minWidth: 120,
             },
             {

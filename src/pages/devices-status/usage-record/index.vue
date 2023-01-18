@@ -37,7 +37,7 @@
             v-model:data="data.tableData"
             v-model:sendRequest="sendRequest"
             :headers="data.columns"
-            :request-api="fetchDeviceAssignList"
+            :request-api="fetchDeviceStatusOnline"
             :send-data="dealReqData(data.formData)"
         />
     </div>
@@ -48,7 +48,7 @@ import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
 import { ref, reactive, computed } from 'vue';
 import type { ColumnProps, FormListProps } from 'GlobComponentsModule';
-import { fetchDeviceAssignList } from '@/api/device-assign';
+import { fetchDeviceStatusOnline } from '@/api/device';
 import { dealReqData } from '@/utils/tools';
 import Chart6 from '../compoments/chart6.vue';
 import Chart4 from '../compoments/chart4.vue';
@@ -155,7 +155,7 @@ const $store = useStore(),
             },
             {
                 title: '设备编号',
-                dataIndex: 'Sn',
+                dataIndex: 'DeviceSn',
             },
             {
                 title: '养老院名称',

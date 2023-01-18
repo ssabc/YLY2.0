@@ -30,7 +30,7 @@ import type {
     FormListProps,
     TableHandleOptItem,
 } from 'GlobComponentsModule';
-import { fetchDeviceAssignList } from '@/api/device-assign';
+import { fetchDeviceAssignList } from '@/api/device';
 import {
     getOpsOptions,
     getNowDate,
@@ -101,7 +101,7 @@ const $store = useStore(),
             },
             {
                 type: 'select',
-                name: 'type',
+                name: 'isAllocated',
                 label: '',
                 width: 160,
                 props: {
@@ -152,7 +152,7 @@ const $store = useStore(),
             },
             {
                 title: '设备编号',
-                dataIndex: 'Sn',
+                dataIndex: 'DeviceSn',
             },
             {
                 title: '设备分类',
@@ -161,7 +161,6 @@ const $store = useStore(),
             {
                 title: '所属养老院',
                 dataIndex: 'GroupName',
-                // hidden: !isAdmin.value,
                 minWidth: 120,
             },
             {

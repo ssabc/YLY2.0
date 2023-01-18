@@ -24,7 +24,7 @@ watchEffect(() => {
 });
 
 const renderChart1 = (list: any) => {
-    const _newList = list,
+    const _newList = list || [],
         xAxisData = _newList?.map((_e: any) => _e?.Date),
         seriesData = _newList?.map((_e: any) => _e?.TotalFileDuration);
     const option = {

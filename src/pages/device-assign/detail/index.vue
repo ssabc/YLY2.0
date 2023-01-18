@@ -105,7 +105,7 @@ import {
     fetchDeviceDetailById,
     fetchDeviceAssignAllocation,
     fetchDeviceAssignAllocationHistory,
-} from '@/api/device-assign';
+} from '@/api/device';
 
 interface Data {
     formData: {
@@ -229,7 +229,7 @@ const $store = useStore(),
         columns: [
             {
                 title: '设备编号',
-                dataIndex: 'Sn',
+                dataIndex: 'DeviceSn',
             },
             {
                 title: '分配类型',

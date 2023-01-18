@@ -1,6 +1,11 @@
 <template>
+    <a target="_blank" :href="data.url" :src="data.url">警佳平台地图</a>
     <div class="cells">
-        <div v-for="(item, idx) in statisList" :key="item.name" class="cell">
+        <div
+            v-for="(item, idx) in data.statisList"
+            :key="item.name"
+            class="cell"
+        >
             <div
                 class="lf icon-wrap"
                 :style="{ 'background-color': item.color }"
@@ -22,17 +27,27 @@
     <div class="row chart">
         <div class="column c1 cm-box" style="margin-right: 10px">
             <div>护工帮使用情况</div>
-            <Chart1></Chart1>
+            <Chart1 :p-data="data.chart1Data"></Chart1>
         </div>
         <div class="column c2 cm-box">
             <div class="hgb-head-wrap">
                 <span>护工帮数据统计</span>
                 <div class="rg">
-                    <span class="active">近7天</span>
-                    <span>年度</span>
+                    <span
+                        key="sevenday"
+                        :class="data.chart2Tab === 'sevenday' ? 'active' : ''"
+                        @click="changeTab('sevenday')"
+                        >近7天</span
+                    >
+                    <span
+                        key="year"
+                        :class="data.chart2Tab === 'year' ? 'active' : ''"
+                        @click="changeTab('year')"
+                        >年度</span
+                    >
                 </div>
             </div>
-            <Chart2></Chart2>
+            <Chart2 :p-data="data.chart2Data"></Chart2>
         </div>
     </div>
     <div class="row cm-box">
@@ -40,9 +55,7 @@
             <div class="table-title">24小时呼叫记录</div>
             <GmTable
                 v-model:data="data.tableData"
-                v-model:sendRequest="sendRequest"
                 :headers="data.columns"
-                :request-api="fetchSosRecord"
                 :send-data="dealReqData(data.formData)"
                 @on-handle="handleClick"
             />
@@ -53,7 +66,7 @@
 <script setup lang="ts">
 import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
-import { ref, reactive, computed, toRaw, createVNode } from 'vue';
+import { ref, reactive, computed, toRaw, createVNode, onMounted } from 'vue';
 import type {
     ColumnProps,
     FormListProps,
@@ -62,10 +75,14 @@ import type {
 import { DiffOutlined } from '@ant-design/icons-vue';
 import Chart1 from './compoments/chart1.vue';
 import Chart2 from './compoments/chart2.vue';
-import { getOpsOptions, getNowDate, dealReqData } from '@/utils/tools';
-import { fetchSosRecord } from '@/api/app';
-import { message as $message } from 'ant-design-vue';
-import { Modal } from 'ant-design-vue';
+import {
+    getOpsOptions,
+    dealReqData,
+    groupBy,
+    showFileDurationText,
+} from '@/utils/tools';
+import { fetchNursingRecord, fetchNursingMap } from '@/api/nurse';
+import { message as $message, Modal } from 'ant-design-vue';
 import { ExclamationCircleOutlined } from '@ant-design/icons-vue';
 import commonMixin from '@/mixins';
 
@@ -76,6 +93,12 @@ interface Data {
     list: FormListProps[];
     tableData: Item[];
     columns: ColumnProps[];
+    statisList: Array<any>;
+    url?: string;
+    chart1Data?: any;
+    chart2Data?: any;
+    chart2Tab?: string;
+    info?: any;
 }
 interface Item {
     deviceId: string;
@@ -138,12 +161,11 @@ const $store = useStore(),
         columns: [
             {
                 title: '设备编号',
-                dataIndex: 'Sn',
+                dataIndex: 'DeviceSn',
             },
             {
                 title: '养老院名称',
                 dataIndex: 'GroupName',
-                hidden: !isAdmin.value,
                 minWidth: 120,
             },
             {
@@ -152,7 +174,7 @@ const $store = useStore(),
             },
             {
                 title: '视频时长',
-                dataIndex: 'Name',
+                dataIndex: 'FileDuration',
             },
             {
                 title: '视频上传时间',
@@ -160,16 +182,10 @@ const $store = useStore(),
                 minWidth: 120,
             },
             {
-                title: '上传时间',
-                dataIndex: 'RepairTime',
-                minWidth: 120,
-            },
-            {
                 title: '操作',
                 type: 'handle',
                 minWidth: 240,
                 optionFn: ({ record }) => {
-                    console.log(record);
                     return [
                         {
                             name: '立即处置',
@@ -181,51 +197,100 @@ const $store = useStore(),
                 },
             },
         ],
-    }),
-    statisList = computed(() => [
-        {
-            name: '总呼叫数',
-            value: 135,
-            color: '#1d66d6',
-            icon: DiffOutlined,
-            unit: '',
-        },
-        {
-            name: '记录时长',
-            value: 536,
-            color: '#28d094',
-            icon: DiffOutlined,
-            unit: '',
-        },
-        {
-            name: '未处置数',
-            aliasName: '未处置',
-            value: 69,
-            color: '#FDDB78',
-            icon: DiffOutlined,
-            unit: '',
-        },
-        {
-            name: '已处置数',
-            aliasName: '已处置',
-            value: 74,
-            color: 'rgb(132, 0, 255)',
-            icon: DiffOutlined,
-            unit: '',
-        },
-        {
-            name: '24小时呼叫数',
-            value: 1,
-            color: '#FA746B',
-            icon: DiffOutlined,
-            unit: '',
-        },
-    ]);
+        statisList: [],
+        /** 警佳平台地图嵌入url */
+        url: '',
+        info: {},
+        chart2Tab: 'sevenday',
+        chart1Data: {},
+        chart2Data: {},
+    });
 
-commonMixin(() => {
-    sendRequest.value = true;
+onMounted(() => {
+    getMapUrl();
+    getInfo();
 });
 
+commonMixin(() => {
+    initFn();
+});
+
+function initFn() {
+    sendRequest.value = true;
+    getMapUrl();
+    getInfo();
+}
+
+function getInfo() {
+    fetchNursingRecord({}).then((_res: any) => {
+        console.log(_res.data);
+        data.info = _res.data;
+        const { Overview, SosGroupCount, SosIn24h } = _res.data || {},
+            _values = Overview;
+
+        data.statisList = [
+            {
+                name: '总呼叫数',
+                value: _values?.TotalSosCount,
+                color: '#1d66d6',
+                icon: DiffOutlined,
+                unit: '',
+            },
+            {
+                name: '记录时长',
+                value: showFileDurationText(_values?.RecordDuration),
+                color: '#28d094',
+                icon: DiffOutlined,
+                unit: '',
+            },
+            {
+                name: '未处置数',
+                aliasName: '未处置',
+                value: _values?.UnhandledCount,
+                color: '#FDDB78',
+                icon: DiffOutlined,
+                unit: '',
+            },
+            {
+                name: '已处置数',
+                aliasName: '已处置',
+                value: _values?.HandledCount,
+                color: 'rgb(132, 0, 255)',
+                icon: DiffOutlined,
+                unit: '',
+            },
+            {
+                name: '24小时呼叫数',
+                value: _values?.SosCountIn24h,
+                color: '#FA746B',
+                icon: DiffOutlined,
+                unit: '',
+            },
+        ];
+        data.chart1Data = {
+            list: SosGroupCount,
+        };
+        data.chart2Data = getChart2Data(data.chart2Tab, data.info);
+        data.tableData = SosIn24h || [];
+    });
+}
+
+function getChart2Data(key: string | undefined, _info: any) {
+    if (!key) {
+        return {};
+    }
+    const { SosDailyStatWeek, SosDailyStatYear } = _info || {},
+        _list = key === 'sevenday' ? SosDailyStatWeek : SosDailyStatYear;
+    return {
+        list: groupBy(_list, 'GroupName'),
+    };
+}
+
+function getMapUrl() {
+    fetchNursingMap({}).then((_res: any) => {
+        data.url = _res.data;
+    });
+}
 /**
  * @description: table 项操作
  */
@@ -248,8 +313,13 @@ function handleClick(item: TableHandleOptItem, row: any, index: number) {
         default:
     }
 }
-function handleDeal(index) {
+function handleDeal(index: number) {
     data.tableData[index].IsHandled = !data.tableData[index].IsHandled;
+}
+
+function changeTab(key: string) {
+    data.chart2Tab = key;
+    data.chart2Data = getChart2Data(key, data.info);
 }
 
 function handleToDetail(row: any) {
@@ -377,13 +447,13 @@ function handleView(idx: number) {
         align-items: center;
         span {
             color: #666;
+            cursor: pointer;
 
             &:first-child {
                 margin-right: 10px;
             }
             &.active {
                 color: #02a7f0;
-                cursor: pointer;
             }
         }
     }

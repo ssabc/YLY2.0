@@ -1,36 +1,48 @@
 /*
  * @Author: sZhao
  * @Date: 2023-01-10 23:19:43
- * @LastEditTime: 2023-01-12 10:45:56
+ * @LastEditTime: 2023-01-18 10:25:18
  * @LastEditors: szhao
  * @Description:
  */
 import { request } from '@/utils/axios';
 const prefix = '/api';
+
 /**
- * @description: 服务记录-服务记录
+ * @description:
  */
-export function fetchDeviceAssignRecord(query: any) {
+export function fetchDeviceStatus(query: any) {
     return request({
-        url: `${prefix}/manage/service-record`,
+        url: `${prefix}/manage/device-status`,
         method: 'post',
         data: query,
     });
 }
 
 /**
- * @description: 服务记录-分类的记录统计
+ * @description:
  */
-export function fetchDeviceAssignStat(query: any) {
+export function fetchDeviceStatusRecords(query: any) {
     return request({
-        url: `${prefix}/manage/device-details/allocation/count`,
+        url: `${prefix}/manage/device-status/record`,
         method: 'post',
         data: query,
     });
 }
 
 /**
- * @description: 服务记录-分类下的文件列表
+ * @description:
+ */
+export function fetchDeviceStatusOnline(query: any) {
+    return request({
+        url: `${prefix}/manage/device-status/online`,
+        method: 'post',
+        data: query,
+    });
+}
+
+/**
+ * @description:分类下的文件列表
  */
 export function fetchDeviceAssignList(query: any) {
     return request({
@@ -41,7 +53,18 @@ export function fetchDeviceAssignList(query: any) {
 }
 
 /**
- * @description: 服务记录-分配设备
+ * @description:分类的记录统计
+ */
+export function fetchDeviceAssignStat(query: any) {
+    return request({
+        url: `${prefix}/manage/device-details/allocation/count`,
+        method: 'post',
+        data: query,
+    });
+}
+
+/**
+ * @description:分配设备
  */
 export function fetchDeviceAssignAllocation(query: any) {
     return request({
@@ -52,7 +75,7 @@ export function fetchDeviceAssignAllocation(query: any) {
 }
 
 /**
- * @description: 服务记录-设备分配历史信息表
+ * @description:设备分配历史信息表
  */
 export function fetchDeviceAssignAllocationHistory(query: any) {
     return request({
@@ -63,7 +86,7 @@ export function fetchDeviceAssignAllocationHistory(query: any) {
 }
 
 /**
- * @description: 服务记录-维修设备接口
+ * @description:维修设备接口
  */
 export function fetchDeviceAssignRepair(query: any) {
     return request({
@@ -74,7 +97,7 @@ export function fetchDeviceAssignRepair(query: any) {
 }
 
 /**
- * @description: 服务记录-设备维修历史
+ * @description:设备维修历史
  */
 export function fetchDeviceAssignRepairHistory(query: any) {
     return request({
@@ -85,7 +108,7 @@ export function fetchDeviceAssignRepairHistory(query: any) {
 }
 
 /**
- * @description: 服务记录-详情
+ * @description:详情
  */
 export function fetchDeviceDetailById(query: any) {
     return request({

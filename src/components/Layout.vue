@@ -77,7 +77,6 @@ interface Data {
     selectedKeys: Array<string>; // 当前选中的菜单项 key 数组
     currentMenu: RouteItem; // 当激活菜单
     currentRoute: RouteItem; // 当前激活路由
-    bellNum: number; // 铃铛数
 }
 
 const data = reactive<Data>({
@@ -86,7 +85,6 @@ const data = reactive<Data>({
         modulesMenu: [],
         currentMenu: {} as RouteItem,
         currentRoute: {} as RouteItem,
-        bellNum: 0,
     }),
     $store = useStore(),
     $router = useRouter(),
@@ -98,9 +96,6 @@ const data = reactive<Data>({
 
 onMounted(() => {
     console.log($route, '---$route');
-    // fetchWarningCount({}).then((res: any) => {
-    //     data.bellNum = res.data?.Unhandled;
-    // });
 });
 
 /**
