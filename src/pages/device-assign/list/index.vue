@@ -23,20 +23,15 @@
 
 <script setup lang="ts">
 import { useStore } from 'vuex';
-import { useRoute, useRouter } from 'vue-router';
-import { ref, reactive, computed, toRaw, createVNode, watch } from 'vue';
+import { useRouter } from 'vue-router';
+import { ref, reactive, toRaw, createVNode, onMounted, onActivated } from 'vue';
 import type {
     ColumnProps,
     FormListProps,
     TableHandleOptItem,
 } from 'GlobComponentsModule';
 import { fetchDeviceAssignList } from '@/api/device';
-import {
-    getOpsOptions,
-    getNowDate,
-    dealReqData,
-    GetNumberOfDays,
-} from '@/utils/tools';
+import { getNowDate, dealReqData, GetNumberOfDays } from '@/utils/tools';
 import { message as $message } from 'ant-design-vue';
 import { Modal } from 'ant-design-vue';
 import { ExclamationCircleOutlined } from '@ant-design/icons-vue';
@@ -61,10 +56,7 @@ interface Item {
 let sendRequest = ref(false);
 
 const $store = useStore(),
-    isAdmin = computed(() => $store.getters['common/isAdmin']),
-    typeList = computed(() => $store.getters['config/recordTypes']),
     $router = useRouter(),
-    $route = useRoute(),
     data = reactive<Data>({
         /** 表单list */
         list: [
@@ -164,8 +156,11 @@ const $store = useStore(),
                 minWidth: 120,
             },
             {
-                title: '运行状态',
-                dataIndex: 'Name',
+                title: '分配状态',
+                dataIndex: 'ServiceType',
+                customRender: ({ text }) => {
+                    return text ? '已分配' : '未分配';
+                },
             },
             {
                 title: '分配日期',
@@ -193,20 +188,12 @@ const $store = useStore(),
         chartData: [],
     });
 
-watch(
-    () => $route.query.type,
-    (e) => {
-        initFn(e);
-    },
-    {
-        immediate: true,
-    }
-);
-
-function initFn(_type: any) {
-    data.formData.type = _type;
+onActivated(() => {
     refreshList();
-}
+});
+onMounted(() => {
+    refreshList();
+});
 commonMixin(refreshList);
 function refreshList() {
     if (
@@ -240,23 +227,15 @@ function handleClick(item: TableHandleOptItem, row: any) {
             handleToDetail(rowData);
             break;
         case '编辑':
-            handleDelete();
+            handleToEdit(rowData);
             break;
         default:
     }
 }
 function handleToDetail(row: any) {
-    console.log(row, '---');
-    $router.push('/device-assign/detail');
+    $router.push(`/device-assign/detail?id=${row.DevId}`);
 }
-
-function handleDelete() {
-    Modal.confirm({
-        content: '确定删除吗？',
-        icon: createVNode(ExclamationCircleOutlined),
-        onCancel() {
-            Modal.destroyAll();
-        },
-    });
+function handleToEdit(row: any) {
+    $router.push(`/device-assign/edit?id=${row.DevId}&type=1`);
 }
 </script>

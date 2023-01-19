@@ -10,7 +10,7 @@
     </div>
     <div class="cm-box">
         <div class="table-title">在线记录</div>
-        <a-tabs v-model:active-key="data.activeKey">
+        <a-tabs v-model:active-key="data.activeKey" @change="handleChangeTab">
             <a-tab-pane
                 v-for="item in data.tabs"
                 :key="item.key"
@@ -20,6 +20,7 @@
         <GmTable
             v-model:data="data.tableData"
             v-model:sendRequest="sendRequest"
+            :is-set-null="data.activeKey != '1'"
             :headers="data.columns"
             :request-api="fetchDeviceAssignList"
             :send-data="dealReqData(data.formData)"
@@ -31,15 +32,14 @@
 <script setup lang="ts">
 import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
-import { ref, reactive, computed, toRaw, createVNode, onMounted } from 'vue';
+import { ref, reactive, toRaw, createVNode, onMounted, onActivated } from 'vue';
 import type {
     ColumnProps,
     FormListProps,
     TableHandleOptItem,
 } from 'GlobComponentsModule';
 import { fetchDeviceAssignList } from '@/api/device';
-import { getOpsOptions, getNowDate, dealReqData, showFileDurationText } from '@/utils/tools';
-import { message as $message } from 'ant-design-vue';
+import { getNowDate, dealReqData, showFileDurationText } from '@/utils/tools';
 import { Modal } from 'ant-design-vue';
 import { ExclamationCircleOutlined } from '@ant-design/icons-vue';
 import commonMixin from '@/mixins';
@@ -63,7 +63,6 @@ interface Item {
 let sendRequest = ref(false);
 
 const $store = useStore(),
-    isAdmin = computed(() => $store.getters['common/isAdmin']),
     $router = useRouter(),
     data = reactive<Data>({
         activeKey: '1',
@@ -179,7 +178,9 @@ const $store = useStore(),
             },
         ],
     });
-
+onActivated(() => {
+    refreshList();
+});
 onMounted(() => {
     refreshList();
 });
@@ -198,6 +199,10 @@ function handleFormClick(e: any) {
     }
 }
 
+function handleChangeTab() {
+    sendRequest.value = true;
+}
+
 /**
  * @description: table 项操作
  */
@@ -209,7 +214,7 @@ function handleClick(item: TableHandleOptItem, row: any) {
             handleToDetail(rowData);
             break;
         case '报修':
-            handleToDetail(rowData);
+            handleToEdit(rowData);
             break;
         case '删除':
             handleDelete();
@@ -221,6 +226,9 @@ function handleToDetail(row: any) {
     console.log(row, '---');
     $router.push(`/device-repair/detail?id=${row.DevId}`);
 }
+function handleToEdit(row: any) {
+    $router.push(`/device-repair/edit?id=${row.DevId}&type=1`);
+}
 
 function handleDelete() {
     Modal.confirm({
@@ -231,5 +239,4 @@ function handleDelete() {
         },
     });
 }
-
 </script>

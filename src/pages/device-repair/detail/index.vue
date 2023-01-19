@@ -1,8 +1,8 @@
 <!--
  * @Author: szhao
  * @Date: 2023-01-07 16:18:32
- * @LastEditTime: 2023-01-19 01:28:58
- * @LastEditors: sZhao
+ * @LastEditTime: 2023-01-19 11:02:32
+ * @LastEditors: szhao
  * @Description:
 -->
 <template>
@@ -80,7 +80,9 @@
             </div>
             <div style="padding: 20px 0">
                 <a-form-item :wrapper-col="{ span: 14, offset: 10 }">
-                    <a-button type="primary" @click="onSubmit">保存</a-button>
+                    <a-button v-show="isEdit" type="primary" @click="onSubmit"
+                        >保存</a-button
+                    >
                     <a-button style="margin-left: 10px" @click="handleBack"
                         >返回</a-button
                     >
@@ -92,7 +94,7 @@
 
 <script setup lang="ts">
 import { useStore } from 'vuex';
-import { reactive, toRaw, computed, watch } from 'vue';
+import { ref, reactive, toRaw, computed, watch } from 'vue';
 import { message as $message } from 'ant-design-vue';
 import type { FormListProps } from 'GlobComponentsModule';
 import type { ColumnProps } from 'GlobComponentsModule';
@@ -162,7 +164,7 @@ const $store = useStore(),
             },
             {
                 type: 'select',
-                name: 'status',
+                name: 'isAllocated',
                 label: '',
                 width: 160,
                 props: {
@@ -232,9 +234,11 @@ const $store = useStore(),
         historyList: [],
     });
 
+let isEdit = ref<boolean>(false);
 watch(
     () => $route.query.id,
     (e) => {
+        isEdit.value = $route.query.type == 1;
         e && initFn(e);
     },
     {
@@ -264,6 +268,11 @@ function initFn(devId: any) {
  * @description: table 项操作
  */
 const onSubmit = () => {
+    const { serviceType } = data.formData;
+    if (!serviceType) {
+        $message.error('存在必填项未填');
+        return;
+    }
     console.log('submit!', toRaw(data.formData));
     fetchDeviceAssignRepair(data.formData).then((res) => {
         $message.success('提交成功');

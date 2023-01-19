@@ -1,7 +1,7 @@
 /*
  * @Author: sZhao
  * @Date: 2023-01-10 23:19:43
- * @LastEditTime: 2023-01-18 10:25:18
+ * @LastEditTime: 2023-01-19 11:09:50
  * @LastEditors: szhao
  * @Description:
  */
@@ -112,7 +112,7 @@ export function fetchDeviceAssignRepairHistory(query: any) {
  */
 export function fetchDeviceDetailById(query: any) {
     return request({
-        url: `${prefix}//manage/device-details/info`,
+        url: `${prefix}/manage/device-details/info`,
         method: 'post',
         data: query,
     });

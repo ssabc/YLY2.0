@@ -1,8 +1,8 @@
 <!--
  * @Author: szhao
  * @Date: 2023-01-07 16:18:32
- * @LastEditTime: 2023-01-19 01:28:49
- * @LastEditors: sZhao
+ * @LastEditTime: 2023-01-19 11:11:23
+ * @LastEditors: szhao
  * @Description:
 -->
 <template>
@@ -12,6 +12,7 @@
             class="gm-form"
             :label-col="{ style: { width: '80px' } }"
             :model="data.formData"
+            :disabled="true"
             :rules="rules"
         >
             <div class="row flex">
@@ -54,7 +55,10 @@
                                 </a-select>
                             </a-form-item>
                             <a-form-item label="养老院：" prop="groupId">
-                                <a-select v-model:value="data.formData.groupId" disabled>
+                                <a-select
+                                    v-model:value="data.formData.groupId"
+                                    disabled
+                                >
                                     <a-select-option
                                         v-for="ele of ylyList"
                                         :key="ele['value']"
@@ -64,16 +68,18 @@
                                     </a-select-option>
                                 </a-select>
                             </a-form-item>
-                            <a-form-item label="开始时间：" prop="startTime">
+                            <!-- <a-form-item label="开始时间：" prop="startTime">
                                 <a-date-picker
-                                    v-model:value="data.formData.c"
+                                    v-model:value="data.formData.startTime"
+                                    :format="'YYYY-MM-DD'"
                                 />
                             </a-form-item>
                             <a-form-item label="结束时间：" prop="endTime">
                                 <a-date-picker
                                     v-model:value="data.formData.endTime"
+                                    :format="'YYYY-MM-DD'"
                                 />
-                            </a-form-item>
+                            </a-form-item> -->
                         </div>
                         <a-table
                             :data-source="data.tableData"
@@ -84,7 +90,9 @@
             </div>
             <div style="padding: 20px 0">
                 <a-form-item :wrapper-col="{ span: 14, offset: 10 }">
-                    <a-button type="primary" @click="onSubmit">保存</a-button>
+                    <a-button v-show="isEdit" type="primary" @click="onSubmit"
+                        >保存</a-button
+                    >
                     <a-button style="margin-left: 10px" @click="handleBack"
                         >返回</a-button
                     >
@@ -96,9 +104,8 @@
 
 <script setup lang="ts">
 import { useStore } from 'vuex';
-import { reactive, toRaw, computed, watch } from 'vue';
+import { ref, reactive, toRaw, computed, watch } from 'vue';
 import { message as $message } from 'ant-design-vue';
-import type { FormListProps } from 'GlobComponentsModule';
 import type { ColumnProps } from 'GlobComponentsModule';
 import { useRouter, useRoute } from 'vue-router';
 import {
@@ -106,12 +113,12 @@ import {
     fetchDeviceAssignAllocation,
     fetchDeviceAssignAllocationHistory,
 } from '@/api/device';
+import { getNowDate } from '@/utils/tools';
 
 interface Data {
     formData: {
         inputName?: string;
     };
-    list: FormListProps[];
     tableData: Item[];
     columns: ColumnProps[];
     rules: object;
@@ -131,69 +138,6 @@ const $store = useStore(),
     ylyList = computed(() => $store.getters['common/ylyList']),
     typeList = computed(() => $store.getters['config/recordTypes']),
     data = reactive<Data>({
-        /** 表单list */
-        list: [
-            {
-                type: 'select',
-                name: 'status',
-                label: '',
-                width: 160,
-                props: {
-                    placeholder: '请选择设备类别',
-                    allowClear: true,
-                },
-                option: $store.getters['config/recordTypes'],
-            },
-            {
-                type: 'input',
-                name: 'name',
-                label: '',
-                props: {
-                    placeholder: '请输入设备编号',
-                    allowClear: true,
-                },
-            },
-            {
-                type: 'select',
-                name: 'status',
-                label: '',
-                width: 160,
-                props: {
-                    placeholder: '请选择设备分类',
-                    allowClear: true,
-                },
-                option: $store.getters['config/recordTypes'],
-            },
-            {
-                type: 'select',
-                name: 'status',
-                label: '',
-                width: 160,
-                props: {
-                    placeholder: '请选择设备分配状态',
-                    allowClear: true,
-                },
-                option: $store.getters['config/recordTypes'],
-            },
-            {
-                type: 'handle',
-                name: 'handle',
-                label: '',
-                option: [
-                    {
-                        label: '查询',
-                        value: 'submit',
-                        props: {
-                            type: 'primary',
-                        },
-                    },
-                    {
-                        label: '重置',
-                        value: 'resetFields',
-                    },
-                ],
-            },
-        ],
         /** 表单数据 */
         formData: {},
         rules: {
@@ -245,9 +189,11 @@ const $store = useStore(),
         historyList: [],
     });
 
+let isEdit = ref<boolean>(false);
 watch(
     () => $route.query.id,
     (e) => {
+        isEdit.value = $route.query.type == 1;
         e && initFn(e);
     },
     {
@@ -260,7 +206,10 @@ function initFn(devId: any) {
         const _d = (data.info = res.data ?? {});
         data.formData = {
             deviceType: '服务记录仪',
-            startTime: _d.AllocationTime,
+            // startTime: _d.AllocationTime
+            //     ? getNowDate(+_d.AllocationTime * 1000)?.time
+            //     : '',
+            // endTime: getNowDate(+_d.LastOnlineTime * 1000)?.time,
             devId: _d.DevId,
             groupId: _d.GroupId,
             serviceType: _d.ServiceType,
@@ -277,8 +226,21 @@ function initFn(devId: any) {
  * @description: table 项操作
  */
 const onSubmit = () => {
-    console.log('submit!', toRaw(data.formData));
-    fetchDeviceAssignAllocation(data.formData).then((res) => {
+    const { serviceType } = data.formData;
+    if (!serviceType) {
+        $message.error('存在必填项未填');
+        return;
+    }
+    // if (startTime && endTime && new Date(startTime) > new Date(endTime)) {
+    //     $message.error('开始日期不能大于结束日期');
+    //     return;
+    // }
+    const _q = Object.assign({}, toRaw(data.formData), {
+        // startTime: getNowDate(data.formData.startTime)?.time,
+        // endTime: getNowDate(data.formData.endTime)?.time,
+    });
+    console.log('submit!', _q);
+    fetchDeviceAssignAllocation(_q).then(() => {
         $message.success('提交成功');
         handleBack();
     });

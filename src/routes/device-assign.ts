@@ -1,7 +1,7 @@
 /*
  * @Author: szhao
  * @Date: 2022-12-02 16:12:30
- * @LastEditTime: 2023-01-11 19:07:12
+ * @LastEditTime: 2023-01-19 11:08:26
  * @LastEditors: szhao
  * @Description:
  */
@@ -35,7 +35,13 @@ export const r: RouteItem[] = [
             {
                 name: 'DeviceAssignDetail',
                 path: 'detail',
-                meta: { title: '查看详情', hidden: true },
+                meta: { title: '查看详情', hidden: true, isShowBack: true },
+                component: lazyImportPagesRootVueFile('device-assign/detail'),
+            },
+            {
+                name: 'DeviceAssignEdit',
+                path: 'edit',
+                meta: { title: '编辑', hidden: true, isShowBack: true },
                 component: lazyImportPagesRootVueFile('device-assign/detail'),
             },
         ],

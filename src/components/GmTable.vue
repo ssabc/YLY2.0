@@ -103,6 +103,7 @@ interface Props {
     sendData?: object; // 发送api的请求数据
     sendRequest?: boolean; // 是否触发请求api操作
     loadStatus?: string; // 当前加载状态 isloading： 加载中， loaded： 加载完成
+    isSetNull?: boolean;
 }
 
 const $props = defineProps<Props>(),
@@ -180,8 +181,11 @@ function fetchTableData() {
             [pageSize]: pagination.pageSize,
         })
             .then((res) => {
-                console.log('es.data', res.data);
-                if (res.data?.Data) {
+                console.log($props, res);
+                if ($props.isSetNull) {
+                    tableData.value = [];
+                    pagination.total = 0;
+                } else if (res.data?.Data) {
                     tableData.value = res.data?.Data ?? [];
                     pagination.total = res.data?.Total || 0;
                 } else if (res.data?.DataRecord) {

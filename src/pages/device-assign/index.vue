@@ -44,7 +44,7 @@
 <script setup lang="ts">
 import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
-import { ref, reactive, computed, toRaw, onMounted } from 'vue';
+import { ref, reactive, computed, toRaw, onMounted, onActivated } from 'vue';
 import type { FormListProps } from 'GlobComponentsModule';
 import { DiffOutlined } from '@ant-design/icons-vue';
 import type { ColumnProps, TableHandleOptItem } from 'GlobComponentsModule';
@@ -70,7 +70,6 @@ interface Item {
 let sendRequest = ref(false);
 
 const $store = useStore(),
-    isAdmin = computed(() => $store.getters['common/isAdmin']),
     $router = useRouter(),
     typeList = computed(() => $store.getters['config/deviceAssignStatus']),
     data = reactive<Data>({
@@ -228,6 +227,9 @@ const $store = useStore(),
         },
     ]);
 
+onActivated(() => {
+    refreshList();
+});
 onMounted(() => {
     refreshList();
 });
@@ -265,7 +267,7 @@ function handleClick(item: TableHandleOptItem, row: any) {
             handleToDetail(rowData);
             break;
         case '编辑':
-            handleToDetail(rowData);
+            handleToEdit(rowData);
             break;
         default:
     }
@@ -274,7 +276,9 @@ function handleToDetail(row: any) {
     console.log(row, '---');
     $router.push(`/device-assign/detail?id=${row.DevId}`);
 }
-
+function handleToEdit(row: any) {
+    $router.push(`/device-assign/edit?id=${row.DevId}&type=1`);
+}
 function handleView(idx: number) {
     const _t = statisList.value?.[idx];
 

@@ -36,6 +36,7 @@
         <GmTable
             v-model:data="data.tableData"
             v-model:sendRequest="sendRequest"
+            :is-set-null="data.activeKey != '1'"
             :headers="data.columns"
             :request-api="fetchDeviceStatusOnline"
             :send-data="dealReqData(data.formData)"
@@ -105,11 +106,11 @@ const $store = useStore(),
             },
             {
                 type: 'select',
-                name: 'status',
+                name: 'isAllocated',
                 label: '',
                 width: 160,
                 props: {
-                    placeholder: '请选择运行状态',
+                    placeholder: '请选择分配状态',
                     allowClear: true,
                 },
                 option: $store.getters['config/deviceStatus'],
@@ -155,20 +156,27 @@ const $store = useStore(),
             },
             {
                 title: '设备编号',
-                dataIndex: 'DeviceSn',
+                dataIndex: 'DevId',
             },
             {
                 title: '养老院名称',
-                dataIndex: 'GroupName',
+                dataIndex: 'GroupId',
                 minWidth: 120,
+                customRender: ({ text }) => {
+                    const _list = $store.getters['common/ylyList'] || [];
+                    return (
+                        _list?.filter((_e: any) => _e.value == text)?.[0]
+                            ?.label || ''
+                    );
+                },
             },
             {
                 title: '在线时间',
-                dataIndex: 'AllocationTime',
+                dataIndex: 'OnlineTime',
             },
             {
                 title: '离线时间',
-                dataIndex: 'AllocationTime',
+                dataIndex: 'OfflineTime',
             },
             {
                 title: '在线时长',
@@ -180,12 +188,8 @@ const $store = useStore(),
         ],
     });
 commonMixin(() => (sendRequest.value = true));
-function handleChangeTab(e) {
-    console.log(e);
-    if (e != 1) {
-        data.tableData = [];
-        return;
-    }
+
+function handleChangeTab() {
     sendRequest.value = true;
 }
 </script>

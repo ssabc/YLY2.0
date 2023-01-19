@@ -1,7 +1,7 @@
 /*
  * @Author: szhao
  * @Date: 2022-12-02 16:12:30
- * @LastEditTime: 2023-01-07 15:56:23
+ * @LastEditTime: 2023-01-19 11:08:30
  * @LastEditors: szhao
  * @Description:
  */
@@ -29,7 +29,13 @@ export const r: RouteItem[] = [
             {
                 name: 'DeviceRepairDetail',
                 path: 'detail',
-                meta: { title: '查看详情', hidden: true },
+                meta: { title: '查看详情', hidden: true, isShowBack: true },
+                component: lazyImportPagesRootVueFile('device-repair/detail'),
+            },
+            {
+                name: 'DeviceRepairEdit',
+                path: 'edit',
+                meta: { title: '报修', hidden: true, isShowBack: true },
                 component: lazyImportPagesRootVueFile('device-repair/detail'),
             },
         ],
