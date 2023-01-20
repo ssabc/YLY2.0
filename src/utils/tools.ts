@@ -1,7 +1,7 @@
 /*
  * @Author: szhao
  * @Date: 2022-12-02 19:32:00
- * @LastEditTime: 2023-01-19 10:31:04
+ * @LastEditTime: 2023-01-19 14:34:41
  * @LastEditors: szhao
  * @Description:
  */
@@ -185,7 +185,6 @@ export const handleDownload = function (fileName: string, videoUrl: string) {
     x.open('GET', videoUrl, true);
     x.responseType = 'blob';
     x.onload = () => {
-        console.log('link', videoUrl);
         $message.destroy();
         $message.success('下载完成');
         const url = window.URL.createObjectURL(x.response);

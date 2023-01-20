@@ -1,7 +1,7 @@
 /*
  * @Author: szhao
  * @Date: 2022-12-02 16:12:30
- * @LastEditTime: 2023-01-19 10:08:35
+ * @LastEditTime: 2023-01-20 10:24:07
  * @LastEditors: szhao
  * @Description:
  */
@@ -23,13 +23,20 @@ export const r: RouteItem[] = [
             {
                 name: 'ServiceRecordsIndex',
                 path: 'index',
-                meta: { title: '服务总览', hiddenBreadCrumb: true },
+                meta: {
+                    title: '服务总览',
+                    hiddenBreadCrumb: true,
+                },
                 component: lazyImportPagesRootVueFile('service-records'),
             },
             {
                 name: 'ServiceRecordsVideoDetail',
                 path: 'video-detail',
-                meta: { title: '视频详情', hidden: true, isShowBack: true },
+                meta: {
+                    title: '视频详情',
+                    hidden: true,
+                    isShowBack: true,
+                },
                 component: lazyImportPagesRootVueFile('service-records/detail'),
             },
             {
@@ -41,7 +48,7 @@ export const r: RouteItem[] = [
             {
                 name: 'ServiceRecordsList',
                 path: 'list/:type',
-                meta: { title: '记录', hidden: true },
+                meta: { title: '记录', hidden: true, keepAlive: true },
                 component: lazyImportPagesRootVueFile('service-records/list'),
             },
             {

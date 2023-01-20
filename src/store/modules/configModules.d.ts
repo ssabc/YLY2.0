@@ -1,31 +1,33 @@
 /*
  * @Author: zhaoshan
  * @Date: 2022-11-30 14:10:30
- * @LastEditTime: 2023-01-18 11:52:18
+ * @LastEditTime: 2023-01-19 13:55:26
  * @LastEditors: szhao
  * @Description:
  */
+
+import type { SelectListData } from 'GlobComponentsModule';
 declare module 'ConfigModule' {
     interface Getters {
-        colors?: () => any[];
-        enabledStatus?: () => any[];
-        accountTypes?: () => any[];
-        dealTypes?: () => any[];
-        statusTypes?: () => any[];
-        statusTypes2?: () => any[];
-        statusTypes3?: () => any[];
-        statusTypes4?: () => any[];
-        deviceStatus?: () => any[];
-        deviceAssignStatus?: () => any[];
-        deviceClass?: () => any[];
-        recordTypes?: () => any[];
+        colors?: () => string[];
+        enabledStatus?: () => SelectListData[];
+        accountTypes?: () => SelectListData[];
+        dealTypes?: () => SelectListData[];
+        statusTypes?: () => SelectListData[];
+        statusTypes2?: () => SelectListData[];
+        statusTypes3?: () => SelectListData[];
+        statusTypes4?: () => SelectListData[];
+        deviceStatus?: () => SelectListData[];
+        deviceAssignStatus?: () => SelectListData[];
+        deviceClass?: () => SelectListData[];
+        recordTypes?: () => SelectListData[];
         serviceSeries?: () => any[];
         serviceSeriesAll?: () => any[];
-        serviceTypes?: () => any[];
-        statusTypes?: () => any[];
-        statusTypes2?: () => any[];
-        statusTypes3?: () => any[];
-        statusTypes4?: () => any[];
+        serviceTypes?: () => SelectListData[];
+        statusTypes?: () => SelectListData[];
+        statusTypes2?: () => SelectListData[];
+        statusTypes3?: () => SelectListData[];
+        statusTypes4?: () => SelectListData[];
     }
     interface Common {
         namespaced: boolean;

@@ -77,9 +77,7 @@ function dealwidthReqData(_d: any) {
     const _r = {};
     Object.keys(_d).forEach((_k: any) => {
         _r[toLine(_k)] = _d[_k];
-        console.log(_k);
     });
-    console.log(_r);
     return _r;
 }
 
@@ -92,7 +90,6 @@ export function request(config: any, params?: Params) {
     // 请求拦截器
     service.interceptors.request.use(
         (config: any) => {
-            console.log('config', config);
             // let cancel: Canceler = (msg?: string) => {
             //     console.info(msg);
             // };

@@ -26,7 +26,7 @@
 <script setup lang="ts">
 import { useStore } from 'vuex';
 import { useRoute, useRouter } from 'vue-router';
-import { ref, reactive, toRaw, createVNode, watch } from 'vue';
+import { ref, reactive, toRaw, createVNode, watch, onActivated } from 'vue';
 import type {
     ColumnProps,
     FormListProps,
@@ -186,7 +186,11 @@ const $store = useStore(),
         ],
         chartData: {},
     });
-
+onActivated(() => {
+    console.log(
+        '呼叫记录列表+++++++++++++++++++++++++++++++++++++我缓存了呀！'
+    );
+});
 watch(
     () => $route.query.type,
     (e) => {

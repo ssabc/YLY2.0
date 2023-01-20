@@ -11,7 +11,13 @@
                 >
                     <template v-for="item in data.modulesMenu" :key="item.path">
                         <template v-if="!item.meta.hidden && !item.children">
-                            <MenuItem :key="data.parentPath + '/' + item.path">
+                            <MenuItem
+                                :key="
+                                    item.redirect
+                                        ? item.redirect
+                                        : data.parentPath + '/' + item.path
+                                "
+                            >
                                 <!-- <template #icon>
                                     <PieChartOutlined />
                                 </template> -->

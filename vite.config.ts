@@ -1,8 +1,8 @@
 /*
  * @Author: sZhao
  * @Date: 2023-01-08 15:09:44
- * @LastEditTime: 2023-01-10 21:22:53
- * @LastEditors: sZhao
+ * @LastEditTime: 2023-01-20 10:23:53
+ * @LastEditors: szhao
  * @Description:
  */
 import vue from '@vitejs/plugin-vue';
@@ -11,6 +11,7 @@ import Components from 'unplugin-vue-components/vite';
 import { AntDesignVueResolver } from 'unplugin-vue-components/resolvers';
 import { loadEnv } from 'vite';
 import viteCompression from 'vite-plugin-compression';
+import VueSetupExtend from 'vite-plugin-vue-setup-extend';
 
 export default ({ mode }) => {
     const envPrefix: Array<string> = ['API_'],
@@ -26,6 +27,7 @@ export default ({ mode }) => {
                 dirs: ['src/components/Maple'],
             }),
             viteCompression(),
+            VueSetupExtend(),
         ],
         resolve: {
             alias: {

@@ -1,8 +1,8 @@
 /*
  * @Author: zhaoshan
  * @Date: 2022-11-30 14:10:30
- * @LastEditTime: 2023-01-15 20:02:35
- * @LastEditors: sZhao
+ * @LastEditTime: 2023-01-19 13:54:17
+ * @LastEditors: szhao
  * @Description:
  */
 declare module 'GlobComponentsModule' {
@@ -74,5 +74,10 @@ declare module 'GlobComponentsModule' {
         type?: string;
         title?: string;
         data?: any;
+    }
+
+    export interface SelectListData {
+        label: string;
+        value: string;
     }
 }

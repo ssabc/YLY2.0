@@ -50,7 +50,9 @@ const renderChart1 = (list: any) => {
         },
         xAxis: [
             {
-                name: '日期', nameLocation: 'start', nameGap: 20,
+                name: '日期',
+                nameLocation: 'start',
+                nameGap: 20,
                 nameTextStyle: {
                     color: '#999',
                 },

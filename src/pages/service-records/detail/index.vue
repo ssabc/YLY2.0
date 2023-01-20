@@ -1,8 +1,8 @@
 <!--
  * @Author: szhao
  * @Date: 2023-01-10 10:59:12
- * @LastEditTime: 2023-01-19 00:19:13
- * @LastEditors: sZhao
+ * @LastEditTime: 2023-01-20 10:19:19
+ * @LastEditors: szhao
  * @Description:
 -->
 <template>
@@ -28,10 +28,9 @@
         </div>
     </div>
 </template>
-
 <script setup lang="ts">
 import { useStore } from 'vuex';
-import { reactive, watch } from 'vue';
+import { reactive, watch, onActivated } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import type { FormListProps } from 'GlobComponentsModule';
 import { fetchServiceInfo, serviceFileSave } from '@/api/service-records';
@@ -165,6 +164,12 @@ const $store = useStore(),
         //         `http://119.3.126.12:8064/streams
         // /001000101/20230106/20230106205039-00N.MP4`
     });
+
+onActivated(() => {
+    console.log(
+        '++++++++++++++++++++4444444444444444444444444+++++++++++++++++我缓存了呀！'
+    );
+});
 
 watch(
     () => $route.query.id,

@@ -1,8 +1,8 @@
 /*
  * @Author: szhao
  * @Date: 2022-12-02 16:12:30
- * @LastEditTime: 2023-01-18 22:49:56
- * @LastEditors: sZhao
+ * @LastEditTime: 2023-01-19 15:03:53
+ * @LastEditors: szhao
  * @Description:
  */
 import type { RouteItem } from 'RouterModule';
@@ -41,7 +41,11 @@ export const r: RouteItem[] = [
             {
                 name: 'NurseAideVideoDetail',
                 path: 'video-detail',
-                meta: { title: '视频详情', hidden: true, isShowBack: true },
+                meta: {
+                    title: '视频详情',
+                    hidden: true,
+                    isShowBack: true,
+                },
                 component: lazyImportPagesRootVueFile('service-records/detail'),
             },
         ],

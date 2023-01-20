@@ -1,31 +1,32 @@
 /*
  * @Author: zhaoshan
  * @Date: 2022-11-30 14:10:30
- * @LastEditTime: 2023-01-18 22:28:40
- * @LastEditors: sZhao
+ * @LastEditTime: 2023-01-19 14:04:40
+ * @LastEditors: szhao
  * @Description:
  */
+import type { SelectListData } from 'GlobComponentsModule';
 declare module 'CommonModule' {
     import type { ActionContext } from 'vuex';
-    interface UserInfoVO {
-        type?: string;
-        username?: string;
-        group?: any[];
-    }
-    interface UserInfo {
-        account?: UserInfoVO;
-        token?: string;
-    }
 
     interface Yly {
         name?: string;
         id?: number;
     }
+    interface UserInfoVO {
+        type?: string;
+        username?: string;
+        group?: Yly[];
+    }
+    interface UserInfo {
+        account?: UserInfoVO;
+        token?: string;
+    }
     interface State {
         menu: RouteItem[];
         userInfo: UserInfo;
-        ylyList: any[];
-        fileTags: any[];
+        ylyList: SelectListData[];
+        fileTags: string[];
         gisUrl: string;
         yly: Yly;
     }
@@ -36,9 +37,9 @@ declare module 'CommonModule' {
         headMenu: ({ menu }: State) => RouteItem[];
         isAdmin: ({ userInfo }: State) => boolean;
         userInfo: ({ userInfo }: State) => UserInfo;
-        ylyList: ({ ylyList }: State) => any[];
+        ylyList: ({ ylyList }: State) => SelectListData[];
         groupId: ({ yly }: State) => string;
-        fileTags: ({ fileTags }: State) => any[];
+        fileTags: ({ fileTags }: State) => string[];
     }
 
     interface Actions {

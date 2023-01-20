@@ -1,8 +1,8 @@
 /*
  * @Author: szhao
  * @Date: 2023-01-16 15:42:21
- * @LastEditTime: 2023-01-19 00:49:10
- * @LastEditors: sZhao
+ * @LastEditTime: 2023-01-19 14:31:46
+ * @LastEditors: szhao
  * @Description:
  */
 import { routes, r as $router } from '@/routes';
@@ -22,10 +22,10 @@ const state = (): State => ({
 
 const getters: Getters = {
     gisMapUrl: (state: State) => {
-        const _t = JSON.parse(localStorage.getItem('gisUrl') || '""') ||
-        state?.gisUrl ||
-        '';
-        console.log('2342434234', _t)
+        const _t =
+            JSON.parse(localStorage.getItem('gisUrl') || '""') ||
+            state?.gisUrl ||
+            '';
         return _t;
     },
     fileTags: (state: State) => {
@@ -54,7 +54,6 @@ const getters: Getters = {
     },
     isAdmin: (state: State) => {
         const _t = getters.userInfo(state)?.account?.type;
-        console.log('类型：', _t);
         return _t === 'district';
     },
     groupId: (state: State) => {
@@ -69,7 +68,6 @@ const getters: Getters = {
             : JSON.parse(localStorage.getItem('userInfo') || '{}'),
     ylyList: (state: State) => {
         const _t = getters.userInfo(state)?.account?.group || [];
-        console.log('类型：', _t);
         return _t.map((_e: any) => ({
             label: _e.name,
             value: _e.id,
@@ -88,13 +86,11 @@ const actions: Actions = {
     },
     async getGisUrl({ commit }: ActionContext<State, any>) {
         return fetchNursingMap({}).then((res: any) => {
-            console.log('gis: ', res?.data);
             commit('setGisUrl', res?.data);
         });
     },
     async getDefineFileTag({ commit }: ActionContext<State, any>) {
         return fetchDefineFileTag({}).then((res: any) => {
-            console.log('fetchDefineFileTag: ', res?.data);
             commit('setFileTags', res?.data);
         });
     },
@@ -117,7 +113,6 @@ const mutations = {
         state.fileTags = p;
     },
     setYly(state: State, p: object) {
-        console.log('setYly', p);
         localStorage.setItem('currentYLY', JSON.stringify(p));
         state.yly = p;
     },
