@@ -59,7 +59,9 @@
                     <div class="box" style="min-height: 300px">
                         <div class="title">最新服务记录</div>
                         <Chart3
-                            :p-data="data.info.ServiceLastFile"
+                            :p-data="
+                                (data.info.ServiceLastFile || []).slice(0, 5)
+                            "
                             :yly-flag="true"
                         ></Chart3>
                     </div>

@@ -20,7 +20,7 @@
     </div>
 </template>
 
-<script setup lang="ts">
+<script setup lang="ts" name="AccountManagement">
 import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
 import { ref, reactive, computed, toRaw, createVNode } from 'vue';

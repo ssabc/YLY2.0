@@ -29,13 +29,13 @@ export const r: RouteItem[] = [
             {
                 name: 'NurseAideDetail',
                 path: 'index',
-                meta: { title: '护工帮总览' },
+                meta: { title: '护工帮总览', keepAlive: true },
                 component: lazyImportPagesRootVueFile('nurse-aide'),
             },
             {
                 name: 'callRecord',
                 path: 'call-record',
-                meta: { title: '呼叫记录' },
+                meta: { title: '呼叫记录', keepAlive: true },
                 component: lazyImportPagesRootVueFile('nurse-aide/call-record'),
             },
             {

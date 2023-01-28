@@ -1,5 +1,5 @@
 <template>
-    <a target="_blank" :href="gisUrl">实时调度</a>
+    <!-- <a target="_blank" :href="gisUrl">实时调度</a> -->
     <div class="cells">
         <div
             v-for="(item, idx) in data.statisList"
@@ -63,7 +63,7 @@
     </div>
 </template>
 
-<script setup lang="ts">
+<script setup lang="ts" name="NurseAideDetail">
 import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
 import { ref, reactive, computed, toRaw, createVNode, onMounted } from 'vue';
@@ -167,6 +167,13 @@ const $store = useStore(),
                 title: '养老院名称',
                 dataIndex: 'GroupName',
                 minWidth: 120,
+            },
+            {
+                title: '处置状态',
+                dataIndex: 'IsHandled',
+                customRender: ({ text }) => {
+                    return text ? '已处置' : '未处置';
+                },
             },
             {
                 title: '处置时间',

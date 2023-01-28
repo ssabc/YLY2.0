@@ -19,16 +19,19 @@
             </div>
         </div>
     </div>
-    <GmTable
-        v-model:data="data.tableData"
-        v-model:sendRequest="sendRequest"
-        :headers="data.columns"
-        :request-api="fetchServiceFileList"
-        :send-data="dealReqData(data.formData)"
-    />
+    <div class="cm-box">
+        <div class="table-title">访客近7日明细</div>
+        <GmTable
+            v-model:data="data.tableData"
+            v-model:sendRequest="sendRequest"
+            :headers="data.columns"
+            :request-api="fetchServiceFileList"
+            :send-data="dealReqData(data.formData)"
+        />
+    </div>
 </template>
 
-<script setup lang="ts">
+<script setup lang="ts" name="NurseAideIndex">
 import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
 import { ref, reactive, computed } from 'vue';

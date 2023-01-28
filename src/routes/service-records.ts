@@ -1,7 +1,7 @@
 /*
  * @Author: szhao
  * @Date: 2022-12-02 16:12:30
- * @LastEditTime: 2023-01-20 10:24:07
+ * @LastEditTime: 2023-01-28 11:30:30
  * @LastEditors: szhao
  * @Description:
  */
@@ -26,6 +26,7 @@ export const r: RouteItem[] = [
                 meta: {
                     title: '服务总览',
                     hiddenBreadCrumb: true,
+                    keepAlive: true,
                 },
                 component: lazyImportPagesRootVueFile('service-records'),
             },

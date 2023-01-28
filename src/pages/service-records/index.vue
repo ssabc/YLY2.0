@@ -37,10 +37,16 @@
             <div>数据记录</div>
             <Chart2 :p-data="data.chartData"></Chart2>
         </div>
-        <div class="column c2">
+    </div>
+    <div class="row cm-box">
+        <div class="column c1">
             <div>
                 <div class="time-desc">24小时新增记录</div>
-                <div class="time-cells">
+                <Latestrecords
+                    :p-data="data.fileRank"
+                    :type="'inner'"
+                ></Latestrecords>
+                <!-- <div class="time-cells">
                     <div
                         v-for="item in data.fileRank"
                         :key="item.name"
@@ -54,28 +60,24 @@
                         </div>
                         <div class="icon"></div>
                     </div>
-                </div>
+                </div> -->
             </div>
         </div>
     </div>
 </template>
 
-<script setup lang="ts">
+<script setup lang="ts" name="ServiceRecordsIndex">
 import { useStore } from 'vuex';
 import { reactive, onMounted } from 'vue';
 import type { FormListProps } from 'GlobComponentsModule';
 import { DiffOutlined } from '@ant-design/icons-vue';
 import Chart2 from './compoments/chart2.vue';
 import { fetchServiceRecord } from '@/api/service-records';
-import {
-    getReqData,
-    GetNumberOfDays,
-    showFileDurationText,
-    second2minutes
-} from '@/utils/tools';
+import { getReqData, GetNumberOfDays, second2minutes } from '@/utils/tools';
 import { message as $message } from 'ant-design-vue';
 import { useRouter } from 'vue-router';
 import commonMixin from '@/mixins';
+import Latestrecords from '@/pages/home/components/chart3.vue';
 
 interface Data {
     formData: {

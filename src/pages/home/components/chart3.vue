@@ -1,12 +1,12 @@
 <!--
  * @Author: sZhao
  * @Date: 2023-01-08 16:48:43
- * @LastEditTime: 2023-01-19 01:29:05
- * @LastEditors: sZhao
+ * @LastEditTime: 2023-01-28 10:43:55
+ * @LastEditors: szhao
  * @Description:
 -->
 <template>
-    <div class="like-table">
+    <div class="like-table" :class="type === 'inner' ? 'inner' : ''">
         <div class="hd">
             <div class="tr">
                 <div class="th">序号</div>
@@ -18,7 +18,7 @@
         </div>
         <div class="bd">
             <div
-                v-for="(item, index) in scrollList.slice(0, 5)"
+                v-for="(item, index) in scrollList"
                 :key="item.DeviceSn"
                 class="tr"
                 @click="handleNaviFn(item)"
@@ -42,8 +42,8 @@ import { showFileDurationText } from '@/utils/tools';
 import { useRouter } from 'vue-router';
 
 interface Props {
-    ylyFlag?: any;
-    pData?: any;
+    type?: string;
+    pData: any;
 }
 
 const $router = useRouter(),
@@ -58,15 +58,17 @@ function handleNaviFn(item: any) {
     if (!item.ServiceType) {
         return;
     }
-    const recordTypes = $store.getters['config/recordTypes'],
-        id = recordTypes?.findIndex((_e: any) => _e.label === item.ServiceType);
-    id != undefined && $router.push(`/service-records/list/${id}`);
+    // const recordTypes = $store.getters['config/recordTypes'],
+    //     id = recordTypes?.findIndex((_e: any) => _e.label === item.ServiceType);
+    // id != undefined && $router.push(`/service-records/list/${id}`);
+
+    const fileId = item.FileId;
+    fileId && $router.push(`/service-records/video-detail?id=${fileId}`);
 }
 </script>
 
 <style lang="less" scoped>
 .like-table {
-    // min-height: 260px;
     width: 100%;
     overflow: hidden;
     text-align: center;
@@ -95,12 +97,21 @@ function handleNaviFn(item: any) {
             &:nth-child(5n) {
                 width: 80px;
             }
-            // flex: 1;
         }
     }
     .bd {
         .tr {
             cursor: pointer;
+        }
+    }
+    &.inner {
+        .bd {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .tr {
+            padding: 20px;
+            border-bottom: 1px solid #efefef;
         }
     }
 }

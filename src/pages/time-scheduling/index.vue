@@ -1,44 +1,64 @@
 <template>
-    <div class="cm-box">
-        <GmForm
-            v-model:data="data.formData"
-            :list="data.list"
-            layout="inline"
-            @on-handle="handleFormClick"
-        >
-        </GmForm>
-        <br />
-        <recordTimeChart :p-data="data.chartData"></recordTimeChart>
-    </div>
-    <div class="cm-box">
-        <div class="table-title">呼叫记录</div>
-        <GmTable
-            v-model:data="data.tableData"
-            v-model:sendRequest="sendRequest"
-            :headers="data.columns"
-            :request-api="fetchNursingRecordList"
-            :send-data="dealReqData(data.formData)"
-            @on-handle="handleClick"
-        />
+    <RouteBreadcrumb
+        :current-menu="breadcrumbData"
+        :current-route="breadcrumbData"
+    />
+    <div class="px-4">
+        <div class="cm-box">
+            <GmForm
+                v-model:data="data.formData"
+                :list="data.list"
+                layout="inline"
+                @on-handle="handleFormClick"
+            >
+            </GmForm>
+            <div class="row flex">
+                <div class="cm-box flex-1">
+                    <recordTimeChart :p-data="data.chartData"></recordTimeChart>
+                </div>
+                <div class="cm-box c2">
+                    <!-- <div class="">一键开始实时调度</div> -->
+                    <div class="one-btn">
+                        <div class="inner">
+                            <a target="_blank" :href="gisUrl" class="span">
+                                <div>一键开始</div>
+                                <div>实时调度</div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="cm-box">
+            <div class="table-title">调度记录</div>
+            <GmTable
+                v-model:data="data.tableData"
+                v-model:sendRequest="sendRequest"
+                :headers="data.columns"
+                :request-api="fetchServiceFileList"
+                :send-data="dealReqData(data.formData)"
+                @on-handle="handleClick"
+            />
+        </div>
     </div>
 </template>
 
-<script setup lang="ts" name="callRecord">
+<script setup lang="ts" name="TimeScheduling">
 import { useStore } from 'vuex';
 import { useRoute, useRouter } from 'vue-router';
-import { ref, reactive, toRaw, createVNode, watch, onActivated } from 'vue';
+import { ref, reactive, computed, toRaw, createVNode, watch } from 'vue';
 import type {
     ColumnProps,
     FormListProps,
     TableHandleOptItem,
 } from 'GlobComponentsModule';
-import { fetchNursingRecordList, fetchNursingRecordStat } from '@/api/nurse';
+import { fetchServiceStat, fetchServiceFileList } from '@/api/service-records';
 import {
     getNowDate,
+    showFileDurationText,
     dealReqData,
     getReqData,
     GetNumberOfDays,
-    showFileDurationText,
     handleDownload,
 } from '@/utils/tools';
 import { message as $message } from 'ant-design-vue';
@@ -46,6 +66,7 @@ import recordTimeChart from '@/pages/service-records/compoments/record-time-char
 import { Modal } from 'ant-design-vue';
 import { ExclamationCircleOutlined } from '@ant-design/icons-vue';
 import commonMixin from '@/mixins';
+import RouteBreadcrumb from '@/components/breadcrumb/index.vue';
 
 interface Data {
     formData: {
@@ -66,21 +87,25 @@ interface Item {
 let sendRequest = ref(false);
 
 const $store = useStore(),
+    typeList = computed(() => $store.getters['config/recordTypes']),
     $router = useRouter(),
     $route = useRoute(),
+    breadcrumbData = computed(() => $route),
+    gisUrl = computed(() => $store.getters['common/gisMapUrl']),
     data = reactive<Data>({
         /** 表单list */
         list: [
             {
                 type: 'select',
-                name: 'isHandled',
-                label: '',
+                name: 'serviceType',
+                label: '记录类型：',
                 width: 160,
                 props: {
-                    placeholder: '请选择处置状态',
+                    placeholder: '请选择记录类型',
                     allowClear: true,
+                    disabled: true,
                 },
-                option: $store.getters['config/dealTypes'],
+                option: $store.getters['config/recordTypes'],
             },
             {
                 type: 'range-picker',
@@ -110,7 +135,9 @@ const $store = useStore(),
             },
         ],
         /** 表单数据 */
-        formData: {},
+        formData: {
+            serviceType: '值班长',
+        },
         /** 列表数据 */
         tableData: [],
         /** 列表项 */
@@ -125,25 +152,14 @@ const $store = useStore(),
                 minWidth: 120,
             },
             {
-                title: '呼叫时间',
-                dataIndex: 'DealTime',
-                minWidth: 120,
-                customRender: ({ text }) => {
-                    return getNowDate(text)?.time;
-                },
+                title: '服务内容',
+                dataIndex: 'FileTag',
             },
             {
                 title: '记录时长(分钟)',
                 dataIndex: 'FileDuration',
                 customRender: ({ text }) => {
                     return showFileDurationText(text);
-                },
-            },
-            {
-                title: '处置状态',
-                dataIndex: 'IsHandled',
-                customRender: ({ text }) => {
-                    return text ? '已处置' : '未处置';
                 },
             },
             {
@@ -184,15 +200,11 @@ const $store = useStore(),
                 ],
             },
         ],
-        chartData: {},
+        chartData: [],
     });
-onActivated(() => {
-    console.log(
-        '呼叫记录列表+++++++++++++++++++++++++++++++++++++我缓存了呀！'
-    );
-});
+
 watch(
-    () => $route.query.type,
+    () => $route.params.type,
     (e) => {
         initFn(e);
     },
@@ -200,9 +212,12 @@ watch(
         immediate: true,
     }
 );
+
 commonMixin(refreshList);
+
 function initFn(_type: any) {
-    data.formData.serviceType = _type;
+    const _d = typeList.value?.[_type];
+    data.formData.serviceType = _d?.label;
     refreshList();
 }
 
@@ -228,9 +243,11 @@ function getInfoAjax() {
         // $message.error('日期区间不能超过7天');
         return;
     }
+    !data.formData.serviceType && (data.formData.serviceType = '服务提供');
     const req = getReqData(data.formData);
-    fetchNursingRecordStat(req).then((res: any) => {
+    fetchServiceStat(req).then((res: any) => {
         data.chartData = {
+            name: '调度统计',
             list: res.data || [],
         };
     });
@@ -266,7 +283,7 @@ function handleClick(item: TableHandleOptItem, row: any) {
 }
 function handleToDetail(row: any) {
     console.log(row, '---');
-    $router.push(`/nurse-aide/video-detail?id=${row.FileId}`);
+    $router.push(`/service-records/video-detail?id=${row.FileId}`);
 }
 
 function handleDelete() {
@@ -279,3 +296,75 @@ function handleDelete() {
     });
 }
 </script>
+
+<style lang="less" scoped>
+.padding-16 {
+    padding: 16px;
+}
+.c2 {
+    width: 200px;
+}
+
+.one-btn {
+    width: 150px;
+    height: 150px;
+    margin: 60px auto;
+    border-radius: 50%;
+    background: #1890ff;
+    background: linear-gradient(#1890ff, #0725aa);
+    position: relative;
+    cursor: pointer;
+    padding: 20px;
+    box-shadow: inset 0 2px 3px rgba(255, 255, 255, 0.13),
+        0 5px 8px rgba(0, 0, 0, 0.5), 0 10px 10px 4px rgba(0, 0, 0, 0.3);
+}
+
+.one-btn:after {
+    content: '';
+    position: absolute;
+    left: -20px;
+    right: -20px;
+    top: -20px;
+    bottom: -20px;
+    z-index: -2;
+    border-radius: inherit;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1),
+        0 1px 2px rgba(0, 0, 0, 0.3), 0 0 10px rgba(0, 0, 0, 0.15);
+}
+
+.one-btn:before {
+    content: '';
+    position: absolute;
+    left: -10px;
+    right: -10px;
+    top: -10px;
+    bottom: -10px;
+    z-index: -1;
+    border-radius: inherit;
+    box-shadow: inset 0 10px 10px rgba(0, 0, 0, 0.13);
+    -webkit-filter: blur(1px);
+    filter: blur(1px);
+}
+
+.inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    border-radius: inherit;
+    background: linear-gradient(#0d5da8, #178bf8);
+    display: block;
+    box-shadow: 0 -2px 5px rgba(255, 255, 255, 0.05),
+        0 2px 5px rgba(255, 255, 255, 0.1);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    &:hover {
+        background: linear-gradient(#178bf8, #0d5da8);
+    }
+}
+.inner .span {
+    color: #fff;
+    font-size: 18px;
+}
+</style>

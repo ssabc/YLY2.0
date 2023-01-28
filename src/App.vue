@@ -1,7 +1,7 @@
 <!--
  * @Author: szhao
  * @Date: 2022-11-30 14:10:30
- * @LastEditTime: 2023-01-11 16:56:49
+ * @LastEditTime: 2023-01-28 10:38:44
  * @LastEditors: szhao
  * @Description:
 -->
@@ -39,6 +39,9 @@ watch(
 );
 </script>
 <style lang="less">
+body {
+    background-color: #f0f2f5;
+}
 .cm-box {
     background-color: #fff;
     border-radius: 10px;

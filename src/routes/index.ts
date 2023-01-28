@@ -1,7 +1,7 @@
 /*
  * @Author: szhao
  * @Date: 2022-11-30 14:10:30
- * @LastEditTime: 2023-01-18 15:08:32
+ * @LastEditTime: 2023-01-28 11:36:21
  * @LastEditors: szhao
  * @Description:
  */
@@ -42,6 +42,18 @@ export const routes: RouteItem[] = [
         component: lazyImportPagesRootVueFile('home'),
     },
     ...serviceRecords,
+    {
+        name: 'TimeScheduling',
+        path: '/time-scheduling',
+        meta: {
+            title: '实时调度',
+            hidden: false,
+            isHeadMenu: true,
+            keepAlive: true,
+            isShowBreadCrumb: true,
+        },
+        component: lazyImportPagesRootVueFile('time-scheduling'),
+    },
     ...nurseAide,
     ...visitRecords,
     ...devicesStatus,

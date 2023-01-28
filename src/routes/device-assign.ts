@@ -1,7 +1,7 @@
 /*
  * @Author: szhao
  * @Date: 2022-12-02 16:12:30
- * @LastEditTime: 2023-01-19 11:08:26
+ * @LastEditTime: 2023-01-28 11:26:05
  * @LastEditors: szhao
  * @Description:
  */
@@ -23,13 +23,13 @@ export const r: RouteItem[] = [
             {
                 name: 'DeviceAssignIndex',
                 path: 'index',
-                meta: { title: '设备分配总览' },
+                meta: { title: '设备分配总览', keepAlive: true },
                 component: lazyImportPagesRootVueFile('device-assign'),
             },
             {
                 name: 'DeviceAssignList',
                 path: 'list',
-                meta: { title: '设备分配明细' },
+                meta: { title: '设备分配明细', keepAlive: true },
                 component: lazyImportPagesRootVueFile('device-assign/list'),
             },
             {

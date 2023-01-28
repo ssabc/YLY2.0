@@ -41,7 +41,7 @@
     </div>
 </template>
 
-<script setup lang="ts">
+<script setup lang="ts" name="DeviceAssignIndex">
 import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
 import { ref, reactive, computed, toRaw, onMounted, onActivated } from 'vue';

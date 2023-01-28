@@ -1,7 +1,7 @@
 /*
  * @Author: szhao
  * @Date: 2022-12-02 16:12:30
- * @LastEditTime: 2023-01-10 15:47:28
+ * @LastEditTime: 2023-01-28 11:28:27
  * @LastEditors: szhao
  * @Description:
  */
@@ -23,7 +23,7 @@ export const r: RouteItem[] = [
             {
                 name: 'CareHomeManagement',
                 path: 'index',
-                meta: { title: '养老院管理' },
+                meta: { title: '养老院管理', keepAlive: true },
                 component: lazyImportPagesRootVueFile('config-center'),
             },
             {
@@ -41,7 +41,7 @@ export const r: RouteItem[] = [
             {
                 name: 'AccountManagement',
                 path: 'account-management',
-                meta: { title: '账户管理' },
+                meta: { title: '账户管理', keepAlive: true },
                 component: lazyImportPagesRootVueFile(
                     'config-center/account-management'
                 ),
@@ -65,7 +65,7 @@ export const r: RouteItem[] = [
             {
                 name: 'UserManagement',
                 path: 'user-management',
-                meta: { title: '用户管理' },
+                meta: { title: '用户管理', keepAlive: true },
                 component: lazyImportPagesRootVueFile(
                     'config-center/user-management'
                 ),

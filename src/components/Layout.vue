@@ -50,7 +50,6 @@
                 </a-menu>
             </a-layout-sider>
             <a-layout-content class="flex flex-col overflow-y-scroll">
-                <!-- <div class="flex flex-col overflow-y-scroll"> -->
                 <RouteBreadcrumb
                     :current-menu="data.currentMenu"
                     :current-route="data.currentRoute"
@@ -60,7 +59,6 @@
                 <a-card :bordered="false" class="main-content flex-1">
                     <ViewRouter />
                 </a-card>
-                <!-- </div> -->
             </a-layout-content>
         </a-layout>
         <ViewRouter v-else />
@@ -136,7 +134,9 @@ watch(
         let isRes = false;
         data.currentRoute = data.currentMenu =
             data.modulesMenu?.filter((ele: RouteItem) => {
-                if (ele.children?.length) {
+                if (ele.meta?.isShowBreadCrumb) {
+                    isRes = true;
+                } else if (ele.children?.length) {
                     isRes = ele.children.some((v: RouteItem) => {
                         let p = `${ele.path}/${v.path}`,
                             r: any = childPath.endsWith(p);
@@ -163,7 +163,6 @@ watch(
                     }
                     isRes = childPath.endsWith(ele.path);
                 }
-
                 return isRes;
             })[0] ?? ({} as RouteItem);
 

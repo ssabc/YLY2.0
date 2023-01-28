@@ -20,7 +20,7 @@
     </div>
 </template>
 
-<script setup lang="ts">
+<script setup lang="ts" name="CareHomeManagement">
 import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
 import { ref, reactive, toRaw, createVNode } from 'vue';

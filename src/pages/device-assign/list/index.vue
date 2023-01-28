@@ -21,10 +21,10 @@
     </div>
 </template>
 
-<script setup lang="ts">
+<script setup lang="ts" name="DeviceAssignList">
 import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
-import { ref, reactive, toRaw, createVNode, onMounted, onActivated } from 'vue';
+import { ref, reactive, toRaw, onMounted, onActivated } from 'vue';
 import type {
     ColumnProps,
     FormListProps,
@@ -33,8 +33,6 @@ import type {
 import { fetchDeviceAssignList } from '@/api/device';
 import { getNowDate, dealReqData, GetNumberOfDays } from '@/utils/tools';
 import { message as $message } from 'ant-design-vue';
-import { Modal } from 'ant-design-vue';
-import { ExclamationCircleOutlined } from '@ant-design/icons-vue';
 import commonMixin from '@/mixins';
 
 interface Data {

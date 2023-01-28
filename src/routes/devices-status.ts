@@ -1,7 +1,7 @@
 /*
  * @Author: szhao
  * @Date: 2022-12-02 16:12:30
- * @LastEditTime: 2023-01-07 15:54:10
+ * @LastEditTime: 2023-01-28 11:17:20
  * @LastEditors: szhao
  * @Description:
  */
@@ -22,7 +22,7 @@ export const r: RouteItem[] = [
             {
                 name: 'DevicesStatusIndex',
                 path: 'index',
-                meta: { title: '设备总览' },
+                meta: { title: '设备总览', keepAlive: true },
                 component: lazyImportPagesRootVueFile('devices-status'),
             },
             {

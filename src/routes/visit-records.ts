@@ -1,7 +1,7 @@
 /*
  * @Author: szhao
  * @Date: 2022-12-02 16:12:30
- * @LastEditTime: 2023-01-07 15:52:54
+ * @LastEditTime: 2023-01-28 11:30:46
  * @LastEditors: szhao
  * @Description:
  */
@@ -22,7 +22,7 @@ export const r: RouteItem[] = [
             {
                 name: 'NurseAideIndex',
                 path: 'index',
-                meta: { title: '访客记录总览' },
+                meta: { title: '访客记录总览', keepAlive: true },
                 component: lazyImportPagesRootVueFile('visit-records'),
             },
             {

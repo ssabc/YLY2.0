@@ -57,7 +57,7 @@
     </div>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup name="DevicesStatusIndex">
 import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
 import { reactive, onMounted } from 'vue';

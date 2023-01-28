@@ -1,7 +1,7 @@
 /*
  * @Author: szhao
  * @Date: 2022-12-02 16:12:30
- * @LastEditTime: 2023-01-19 11:08:30
+ * @LastEditTime: 2023-01-28 11:25:45
  * @LastEditors: szhao
  * @Description:
  */
@@ -23,7 +23,7 @@ export const r: RouteItem[] = [
             {
                 name: 'DeviceRepairIndex',
                 path: 'index',
-                meta: { title: '设备报修' },
+                meta: { title: '设备报修', keepAlive: true },
                 component: lazyImportPagesRootVueFile('device-repair'),
             },
             {

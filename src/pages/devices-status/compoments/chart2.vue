@@ -1,3 +1,10 @@
+<!--
+ * @Author: szhao
+ * @Date: 2023-01-18 17:57:11
+ * @LastEditTime: 2023-01-28 10:47:07
+ * @LastEditors: szhao
+ * @Description: 
+-->
 <template>
     <div class="like-table">
         <div class="hd">
@@ -57,6 +64,9 @@ function initFn(_d: ItemData[]) {
     height: 260px;
     width: 100%;
     overflow: hidden;
+    .th {
+        font-weight: bolder;
+    }
     .hd {
         .tr {
             border: none;
