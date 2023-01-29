@@ -91,6 +91,7 @@ const $store = useStore(),
     $router = useRouter(),
     $route = useRoute(),
     breadcrumbData = computed(() => $route),
+    isAdmin = computed(() => $store.getters['common/isAdmin']),
     gisUrl = computed(() => $store.getters['common/gisMapUrl']),
     data = reactive<Data>({
         /** 表单list */
@@ -195,6 +196,7 @@ const $store = useStore(),
                     },
                     {
                         name: '删除',
+                        hidden: !isAdmin.value,
                         type: 'delete',
                     },
                 ],

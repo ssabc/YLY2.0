@@ -30,7 +30,7 @@
         <div class="cell flex">
             <img class="device-icon" :src="deviceIcon" />
             <div class="info">
-                <div class="label">数字哨兵</div>
+                <div class="label">测温随申码访客机</div>
                 <div class="value">
                     {{ info.SentryCount }}
                     <span class="unit">台</span>

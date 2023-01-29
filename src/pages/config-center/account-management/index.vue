@@ -155,6 +155,7 @@ const $store = useStore(),
                     },
                     {
                         name: '删除',
+                        hidden: !isAdmin.value,
                         type: 'edit',
                     },
                 ],

@@ -180,7 +180,7 @@ function getInfoAjax() {
                 unit: '',
             },
             {
-                name: '数字哨兵',
+                name: '测温随申码访客机',
                 value: DeviceOverview?.SentryCount,
                 color: '#FA746B',
                 icon: DiffOutlined,

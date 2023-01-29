@@ -40,7 +40,7 @@
             </div>
             <div class="cells">
                 <div class="cell">
-                    <span class="label">数字哨兵</span>
+                    <span class="label">测温随申码访客机</span>
                     <span class="value">{{ 0 }}%</span>
                 </div>
             </div>

@@ -19,7 +19,7 @@
                 <Chart4 :yly-flag="true"></Chart4>
             </div>
             <div class="cm-box">
-                <div>数字哨兵在线统计</div>
+                <div>测温随申码访客机在线统计</div>
                 <Chart5 :yly-flag="true"></Chart5>
             </div>
         </div>
@@ -89,7 +89,7 @@ const $store = useStore(),
                 key: '2',
             },
             {
-                name: '数字哨兵',
+                name: '测温随申码访客机',
                 key: '3',
             },
         ],

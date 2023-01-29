@@ -1,34 +1,11 @@
 /*
  * @Author: szhao
  * @Date: 2022-12-02 19:32:00
- * @LastEditTime: 2023-01-19 14:34:41
+ * @LastEditTime: 2023-01-29 17:41:03
  * @LastEditors: szhao
  * @Description:
  */
 import { message as $message } from 'ant-design-vue';
-
-export const getOpsOptions = function (_v: any) {
-    const _b = [
-        {
-            name: '点击查看',
-            type: 'view',
-        },
-        {
-            name: '下载',
-            type: 'download',
-        },
-    ];
-    if (_v.value) {
-        return [
-            ..._b,
-            {
-                name: '删除',
-                type: 'delete',
-            },
-        ];
-    }
-    return _b;
-};
 
 export const getNowDate = function (_t: any) {
     const date = _t ? new Date(_t) : new Date();

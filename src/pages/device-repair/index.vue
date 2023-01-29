@@ -76,7 +76,7 @@ const $store = useStore(),
                 key: '2',
             },
             {
-                name: '数字哨兵',
+                name: '测温随申码访客机',
                 key: '3',
             },
         ],

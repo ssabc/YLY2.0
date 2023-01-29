@@ -73,7 +73,7 @@ const getters: Getters = {
                 value: '0',
             },
             {
-                label: '数字哨兵',
+                label: '测温随申码访客机',
                 value: '2',
             },
         ];

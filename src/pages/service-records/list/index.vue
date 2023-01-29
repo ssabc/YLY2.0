@@ -26,15 +26,7 @@
 <script setup lang="ts" name="ServiceRecordsList">
 import { useStore } from 'vuex';
 import { useRoute, useRouter } from 'vue-router';
-import {
-    ref,
-    reactive,
-    computed,
-    toRaw,
-    createVNode,
-    watch,
-    onActivated,
-} from 'vue';
+import { ref, reactive, computed, toRaw, createVNode, watch } from 'vue';
 import type {
     ColumnProps,
     FormListProps,
@@ -77,6 +69,7 @@ const $store = useStore(),
     typeList = computed(() => $store.getters['config/recordTypes']),
     $router = useRouter(),
     $route = useRoute(),
+    isAdmin = computed(() => $store.getters['common/isAdmin']),
     data = reactive<Data>({
         /** 表单list */
         list: [
@@ -180,6 +173,7 @@ const $store = useStore(),
                     },
                     {
                         name: '删除',
+                        hidden: !isAdmin.value,
                         type: 'delete',
                     },
                 ],
@@ -188,11 +182,6 @@ const $store = useStore(),
         chartData: [],
     });
 
-onActivated(() => {
-    console.log(
-        '服务记录列表+++++++++++++++++++++++++++++++++++++我缓存了呀！'
-    );
-});
 watch(
     () => $route.params.type,
     (e) => {

@@ -1,5 +1,4 @@
 <template>
-    <!-- <a target="_blank" :href="gisUrl">实时调度</a> -->
     <div class="cells">
         <div
             v-for="(item, idx) in data.statisList"
@@ -111,7 +110,7 @@ let sendRequest = ref(false);
 const $store = useStore(),
     $router = useRouter(),
     typeList = computed(() => $store.getters['config/dealTypes']),
-    gisUrl = computed(() => $store.getters['common/gisMapUrl']),
+    isAdmin = computed(() => $store.getters['common/isAdmin']),
     data = reactive<Data>({
         /** 表单list */
         list: [
@@ -214,6 +213,7 @@ const $store = useStore(),
                         },
                         {
                             name: '删除',
+                            hidden: !isAdmin.value,
                             type: 'delete',
                         },
                     ];
