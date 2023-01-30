@@ -7,9 +7,7 @@ import { useStore } from 'vuex';
 import { computed, watchEffect, nextTick } from 'vue';
 import * as echarts from 'echarts';
 
-interface Props {
-    ylyFlag?: any;
-}
+interface Props {}
 const $store = useStore(),
     $props = defineProps<Props>(),
     isAdmin = computed(() => $store.getters['common/isAdmin']);
@@ -49,7 +47,9 @@ const renderChart1 = (data: any) => {
             },
             xAxis: [
                 {
-                    name: '日期', nameLocation: 'start', nameGap: 20,
+                    name: '日期',
+                    nameLocation: 'start',
+                    nameGap: 20,
                     nameTextStyle: {
                         color: '#999',
                     },
@@ -73,7 +73,6 @@ const renderChart1 = (data: any) => {
                         show: false,
                     },
                     axisLabel: {
-
                         textStyle: {
                             color: '#000',
                         },

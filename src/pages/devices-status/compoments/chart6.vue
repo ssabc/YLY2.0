@@ -6,26 +6,32 @@
 import { watchEffect, nextTick } from 'vue';
 import * as echarts from 'echarts';
 
+interface Props {
+    pData?: any;
+}
+
+interface ListItem {
+    Date: string;
+    OnlineCount: number;
+    TotalDeviceCount: number;
+}
+
+const $props = defineProps<Props>();
+
 watchEffect(() => {
-    initFn();
+    initFn($props.pData);
 });
 
-function initFn() {
+function initFn(_list: ListItem[]) {
+    if (Object.prototype.toString.call(_list) !== '[object Array]') {
+        return;
+    }
     nextTick(() => {
-        renderChart();
+        renderChart(_list);
     });
 }
 
-const renderChart = () => {
-    let chartData = [
-        { stage: '2023年1月5日', number: '470' },
-        { stage: '2023年1月5日', number: '1410' },
-        { stage: '2023年1月5日', number: '3390' },
-        { stage: '2023年1月5日', number: '5870' },
-        { stage: '2023年1月5日', number: '5870' },
-        { stage: '2023年1月5日', number: '5870' },
-        { stage: '2023年1月5日', number: '5870' },
-    ];
+const renderChart = (chartData: ListItem[]) => {
     const option = {
         color: ['#0EECE4'],
         legend: {
@@ -50,13 +56,15 @@ const renderChart = () => {
         },
         xAxis: [
             {
-                name: '日期', nameLocation: 'start', nameGap: 20,
+                name: '日期',
+                nameLocation: 'start',
+                nameGap: 20,
                 nameTextStyle: {
                     color: '#999',
                 },
                 type: 'category',
                 gridIndex: 0,
-                data: chartData.map((item) => item.stage),
+                data: chartData?.map((item: ListItem) => item.Date),
                 axisLine: {
                     lineStyle: {
                         color: '#efefef',
@@ -66,7 +74,6 @@ const renderChart = () => {
                     show: false,
                 },
                 axisLabel: {
-
                     textStyle: {
                         color: '#000',
                     },
@@ -79,7 +86,7 @@ const renderChart = () => {
         ],
         yAxis: [
             {
-                name: '次数(次)',
+                name: '设备数（台）',
                 type: 'value',
                 nameTextStyle: {
                     color: '#999',
@@ -104,11 +111,10 @@ const renderChart = () => {
                 splitLine: {
                     show: false,
                 },
-                max:
-                    Math.max.apply(
-                        null,
-                        chartData.map((p) => p.number)
-                    ) * 1.5,
+                max: Math.max.apply(
+                    null,
+                    chartData?.map((p: ListItem) => p.TotalDeviceCount)
+                ),
             },
             {
                 type: 'value',
@@ -134,11 +140,10 @@ const renderChart = () => {
                 splitLine: {
                     show: false,
                 },
-                max:
-                    Math.max.apply(
-                        null,
-                        chartData.map((p) => p.number)
-                    ) * 1.5,
+                max: Math.max.apply(
+                    null,
+                    chartData?.map((p: ListItem) => p.TotalDeviceCount)
+                ),
             },
         ],
         series: [
@@ -161,7 +166,7 @@ const renderChart = () => {
                         color: 'rgb(41,132,248)',
                     },
                 },
-                data: chartData.map((item) => item.number),
+                data: chartData?.map((item) => item.OnlineCount),
                 zlevel: 11,
             },
             {
@@ -171,14 +176,14 @@ const renderChart = () => {
                 xAxisIndex: 0,
                 yAxisIndex: 1,
                 barGap: '-100%',
-                data: chartData.map(
-                    () =>
-                        Math.max.apply(
-                            null,
-                            chartData.map((p) => p.number)
-                        ) * 1.5
+                data: chartData?.map(() =>
+                    Math.max.apply(
+                        null,
+                        chartData?.map((p) => p.TotalDeviceCount)
+                    )
                 ),
                 tooltip: {
+                    show: false,
                     backgroundColor: 'transparent',
                     formatter: ' ',
                 },

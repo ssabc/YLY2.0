@@ -80,8 +80,9 @@ import {
     showFileDurationText,
     handleDownload,
 } from '@/utils/tools';
+import { deleteFile } from '@/api/app';
 import { fetchNursingRecord } from '@/api/nurse';
-import { message as $message, Modal } from 'ant-design-vue';
+import { Modal } from 'ant-design-vue';
 import { ExclamationCircleOutlined } from '@ant-design/icons-vue';
 import commonMixin from '@/mixins';
 
@@ -323,7 +324,7 @@ function handleClick(item: TableHandleOptItem, row: any, index: number) {
             handleDownload(rowData.GroupName, rowData.FileHref);
             break;
         case '删除':
-            handleDelete();
+            handleDelete(rowData?.FileId);
             break;
         default:
     }
@@ -342,12 +343,12 @@ function handleToDetail(row: any) {
     $router.push(`/nurse-aide/video-detail?id=${row.FileId}`);
 }
 
-function handleDelete() {
+function handleDelete(fileId: string | number) {
     Modal.confirm({
         content: '确定删除吗？',
         icon: createVNode(ExclamationCircleOutlined),
-        onCancel() {
-            Modal.destroyAll();
+        onOk() {
+            deleteFile({ fileId }).then(() => refreshList());
         },
     });
 }

@@ -10,17 +10,17 @@
     </div>
     <div class="row">
         <div class="column c1 cm-box mr-15">
-            <div>访客数量统计（每周）</div>
-            <Chart6 :yly-flag="true"></Chart6>
+            <div>服务记录仪在线统计</div>
+            <Chart6 :p-data="chart6Data"></Chart6>
         </div>
         <div class="column c1 c2">
             <div class="cm-box">
                 <div>采集柜在线统计</div>
-                <Chart4 :yly-flag="true"></Chart4>
+                <Chart4></Chart4>
             </div>
             <div class="cm-box">
                 <div>测温随申码访客机在线统计</div>
-                <Chart5 :yly-flag="true"></Chart5>
+                <Chart5></Chart5>
             </div>
         </div>
     </div>
@@ -47,9 +47,12 @@
 <script setup lang="ts">
 import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
-import { ref, reactive, computed } from 'vue';
+import { ref, reactive, computed, onMounted } from 'vue';
 import type { ColumnProps, FormListProps } from 'GlobComponentsModule';
-import { fetchDeviceStatusOnline } from '@/api/device';
+import {
+    fetchDeviceStatusOnline,
+    fetchDeviceStatusRecords,
+} from '@/api/device';
 import { dealReqData, showFileDurationText } from '@/utils/tools';
 import Chart6 from '../compoments/chart6.vue';
 import Chart4 from '../compoments/chart4.vue';
@@ -77,7 +80,7 @@ let sendRequest = ref(false);
 const $store = useStore(),
     isAdmin = computed(() => $store.getters['common/isAdmin']),
     $router = useRouter(),
-    data = reactive<Data>({
+    data = reactive<Array>({
         activeKey: '1',
         tabs: [
             {
@@ -187,7 +190,25 @@ const $store = useStore(),
             },
         ],
     });
-commonMixin(() => (sendRequest.value = true));
+
+commonMixin(() => {
+    initFn();
+});
+
+onMounted(() => {
+    getInfoAjax();
+});
+
+function initFn() {
+    sendRequest.value = true;
+    getInfoAjax();
+}
+let chart6Data = reactive<any>({});
+function getInfoAjax() {
+    fetchDeviceStatusRecords({}).then((res: any) => {
+        chart6Data = res.data?.OnlineCountStat || [];
+    });
+}
 
 function handleChangeTab() {
     sendRequest.value = true;

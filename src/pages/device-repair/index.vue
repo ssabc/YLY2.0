@@ -8,6 +8,11 @@
         >
         </GmForm>
     </div>
+    <div class="info-wrap">
+        <div><PhoneOutlined /><span>全国售后服务热线：021-69772165</span></div>
+        <div><CreditCardOutlined /><span>邮政编码：201705</span></div>
+        <div><UserOutlined /><span>联系人：刘小姐</span></div>
+    </div>
     <div class="cm-box">
         <div class="table-title">在线记录</div>
         <a-tabs v-model:active-key="data.activeKey" @change="handleChangeTab">
@@ -38,10 +43,16 @@ import type {
     FormListProps,
     TableHandleOptItem,
 } from 'GlobComponentsModule';
+import { deleteFile } from '@/api/app';
 import { fetchDeviceAssignList } from '@/api/device';
 import { getNowDate, dealReqData, showFileDurationText } from '@/utils/tools';
 import { Modal } from 'ant-design-vue';
-import { ExclamationCircleOutlined } from '@ant-design/icons-vue';
+import {
+    ExclamationCircleOutlined,
+    PhoneOutlined,
+    UserOutlined,
+    CreditCardOutlined,
+} from '@ant-design/icons-vue';
 import commonMixin from '@/mixins';
 
 interface Data {
@@ -217,7 +228,7 @@ function handleClick(item: TableHandleOptItem, row: any) {
             handleToEdit(rowData);
             break;
         case '删除':
-            handleDelete();
+            handleDelete(rowData?.FileId);
             break;
         default:
     }
@@ -230,13 +241,36 @@ function handleToEdit(row: any) {
     $router.push(`/device-repair/edit?id=${row.DevId}&type=1`);
 }
 
-function handleDelete() {
+function handleDelete(fileId: string | number) {
     Modal.confirm({
         content: '确定删除吗？',
         icon: createVNode(ExclamationCircleOutlined),
-        onCancel() {
-            Modal.destroyAll();
+        onOk() {
+            deleteFile({ fileId }).then(() => refreshList());
         },
     });
 }
 </script>
+<style lang="less" scoped>
+.info-wrap {
+    display: flex;
+    // flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 20px;
+    padding-bottom: 30px;
+    font-size: 42px;
+    color: #f46944;
+    & > div {
+        // flex: 1;
+        margin-right: 80px;
+        &:last-child {
+            margin-right: 0;
+        }
+        text-align: center;
+        span {
+            margin-left: 10px;
+        }
+    }
+}
+</style>

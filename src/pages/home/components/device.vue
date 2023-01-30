@@ -90,7 +90,6 @@ import { watchEffect, computed } from 'vue';
 import deviceIcon from '@/assets/pictures/device.svg';
 
 interface Props {
-    ylyFlag?: any;
     pData?: any;
 }
 const $props = defineProps<Props>(),

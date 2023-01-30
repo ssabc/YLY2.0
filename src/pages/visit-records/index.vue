@@ -11,11 +11,11 @@
         <div class="row">
             <div class="column c1">
                 <div>访客数量统计（每周）</div>
-                <Chart1 :yly-flag="true"></Chart1>
+                <Chart1></Chart1>
             </div>
             <div class="column c1">
                 <div>分时段访客统计（7日）</div>
-                <Chart2 :yly-flag="true"></Chart2>
+                <Chart2></Chart2>
             </div>
         </div>
     </div>

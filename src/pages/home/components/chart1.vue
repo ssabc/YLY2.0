@@ -9,7 +9,6 @@ import * as echarts from 'echarts';
 import { groupBy, second2minutes } from '@/utils/tools';
 
 interface Props {
-    ylyFlag?: any;
     pData?: any;
 }
 

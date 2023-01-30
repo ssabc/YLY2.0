@@ -37,7 +37,7 @@
                     </div>
                 </div>
                 <div class="column c2">
-                    <div>分配信息：</div>
+                    <div>报修信息：</div>
                     <div class="box">
                         <div class="sub-form">
                             <a-form-item label="分配类型：" prop="serviceType">

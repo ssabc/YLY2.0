@@ -1,8 +1,8 @@
 /*
  * @Author: sZhao
  * @Date: 2023-01-08 15:09:43
- * @LastEditTime: 2023-01-18 21:47:42
- * @LastEditors: sZhao
+ * @LastEditTime: 2023-01-30 17:13:50
+ * @LastEditors: szhao
  * @Description:
  */
 import { request } from '@/utils/axios';
@@ -108,15 +108,6 @@ export function fetchDeviceStatus(data: any) {
     });
 }
 
-/** 设备状态-设备使用记录 */
-export function fetchDeviceStatusRecord(data: any) {
-    return request({
-        url: `${prefix}/manage/device-status/record`,
-        method: 'post',
-        data,
-    });
-}
-
 /** 服务内容list */
 export function fetchDefineFileTag(data: any) {
     return request({
@@ -129,6 +120,15 @@ export function fetchDefineFileTag(data: any) {
 export function fetchNursingMap(data: any) {
     return request({
         url: `${prefix}/manage/nursing/map`,
+        method: 'post',
+        data,
+    });
+}
+
+/** 删除文件 */
+export function deleteFile(data: any) {
+    return request({
+        url: `${prefix}/manage/sync/file/delete`,
         method: 'post',
         data,
     });

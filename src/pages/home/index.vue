@@ -9,10 +9,7 @@
                     </div>
                     <div class="box box2">
                         <div class="title">记录时长分类统计</div>
-                        <Chart1
-                            :p-data="data.info.FileDurationStat"
-                            :yly-flag="true"
-                        ></Chart1>
+                        <Chart1 :p-data="data.info.FileDurationStat"></Chart1>
                     </div>
                 </div>
                 <div class="column home-img-wrap flex1">
@@ -54,7 +51,7 @@
                         <div class="visit-num">
                             访问次： <span class="value">{{ 65 }}</span>
                         </div>
-                        <Chart2 :yly-flag="true"></Chart2>
+                        <Chart2></Chart2>
                     </div>
                     <div class="box" style="min-height: 300px">
                         <div class="title">最新服务记录</div>
@@ -62,7 +59,6 @@
                             :p-data="
                                 (data.info.ServiceLastFile || []).slice(0, 5)
                             "
-                            :yly-flag="true"
                         ></Chart3>
                     </div>
                 </div>

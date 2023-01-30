@@ -52,6 +52,7 @@ import type {
     FormListProps,
     TableHandleOptItem,
 } from 'GlobComponentsModule';
+import { deleteFile } from '@/api/app';
 import { fetchServiceStat, fetchServiceFileList } from '@/api/service-records';
 import {
     getNowDate,
@@ -278,7 +279,7 @@ function handleClick(item: TableHandleOptItem, row: any) {
             handleDownload(rowData.GroupName, rowData.FileHref);
             break;
         case '删除':
-            handleDelete();
+            handleDelete(rowData.FileId);
             break;
         default:
     }
@@ -288,12 +289,12 @@ function handleToDetail(row: any) {
     $router.push(`/service-records/video-detail?id=${row.FileId}`);
 }
 
-function handleDelete() {
+function handleDelete(fileId: string | number) {
     Modal.confirm({
         content: '确定删除吗？',
         icon: createVNode(ExclamationCircleOutlined),
-        onCancel() {
-            Modal.destroyAll();
+        onOk() {
+            deleteFile({ fileId }).then(() => refreshList());
         },
     });
 }
