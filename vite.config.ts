@@ -1,7 +1,7 @@
 /*
  * @Author: sZhao
  * @Date: 2023-01-08 15:09:44
- * @LastEditTime: 2023-01-20 10:23:53
+ * @LastEditTime: 2023-01-31 19:25:58
  * @LastEditors: szhao
  * @Description:
  */
@@ -44,6 +44,11 @@ export default ({ mode }) => {
                     target: 'http://119.3.126.12:3000/',
                     changeOrigin: true,
                     rewrite: (path) => path.replace(/^\/api/, ''),
+                },
+                '/videofile/': {
+                    target: 'http://119.3.126.12:8064/',
+                    changeOrigin: true,
+                    rewrite: (path) => path.replace(/^\/videofile/, ''),
                 },
             },
         },

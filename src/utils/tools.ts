@@ -157,6 +157,7 @@ export const second2minutes = function (_s: number) {
 };
 
 export const handleDownload = function (fileName: string, videoUrl: string) {
+    videoUrl = videoUrl.replace('http://119.3.126.12:8064/', 'videofile/');
     const x = new XMLHttpRequest();
     $message.loading('视频下载中，请稍后...', 0);
     x.open('GET', videoUrl, true);
