@@ -11,10 +11,18 @@
         <recordTimeChart :p-data="data.chartData"></recordTimeChart>
     </div>
     <div class="cm-box">
-        <div class="table-title">呼叫记录</div>
+        <div class="flex justify-between">
+            <div class="table-title">呼叫记录</div>
+            <a-button type="primary" @click="handleOneClick">
+                一键处置
+            </a-button>
+        </div>
         <GmTable
             v-model:data="data.tableData"
             v-model:sendRequest="sendRequest"
+            v-model:selectedRowKeys="data.selectedRowKeys"
+            :row-key="'LogId'"
+            :is-selection="true"
             :headers="data.columns"
             :request-api="fetchNursingRecordList"
             :send-data="dealReqData(data.formData)"
@@ -33,7 +41,11 @@ import type {
     TableHandleOptItem,
 } from 'GlobComponentsModule';
 import { deleteFile } from '@/api/app';
-import { fetchNursingRecordList, fetchNursingRecordStat } from '@/api/nurse';
+import {
+    fetchNursingRecordList,
+    fetchNursingRecordStat,
+    nursingHandle,
+} from '@/api/nurse';
 import {
     getNowDate,
     dealReqData,
@@ -57,6 +69,7 @@ interface Data {
     tableData: Item[];
     columns: ColumnProps[];
     chartData?: any;
+    selectedRowKeys?: any[];
 }
 interface Item {
     deviceId: string;
@@ -188,7 +201,9 @@ const $store = useStore(),
             },
         ],
         chartData: {},
+        selectedRowKeys: [],
     });
+
 watch(
     () => $route.query.type,
     (e) => {
@@ -243,6 +258,22 @@ function handleFormClick(e: any) {
         default:
     }
 }
+/**
+ * @description: 一键处置
+ */
+function handleOneClick() {
+    if (data.selectedRowKeys?.length === 0) {
+        $message.warning('请选择要处置的呼叫记录！');
+        return;
+    }
+    nursingHandle({
+        logId: data.selectedRowKeys?.join(','),
+    }).then(() => {
+        $message.success('一键处置成功.');
+        refreshList();
+    });
+}
+
 /**
  * @description: table 项操作
  */

@@ -259,8 +259,8 @@ function handleDelete(fileId: string | number) {
     justify-content: center;
     padding: 10px 20px;
     padding-bottom: 30px;
-    font-size: 42px;
-    color: #f46944;
+    font-size: 28px;
+    color: #000;
     & > div {
         // flex: 1;
         margin-right: 80px;

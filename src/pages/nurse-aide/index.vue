@@ -51,9 +51,17 @@
     </div>
     <div class="row cm-box">
         <div class="column c-full">
-            <div class="table-title">24小时呼叫记录</div>
+            <div class="flex justify-between">
+                <div class="table-title">24小时呼叫记录</div>
+                <a-button type="primary" @click="handleOneClick">
+                    一键处置
+                </a-button>
+            </div>
             <GmTable
                 v-model:data="data.tableData"
+                v-model:selectedRowKeys="data.selectedRowKeys"
+                :row-key="'LogId'"
+                :is-selection="true"
                 :headers="data.columns"
                 :send-data="dealReqData(data.formData)"
                 @on-handle="handleClick"
@@ -81,10 +89,11 @@ import {
     handleDownload,
 } from '@/utils/tools';
 import { deleteFile } from '@/api/app';
-import { fetchNursingRecord } from '@/api/nurse';
+import { fetchNursingRecord, nursingHandle } from '@/api/nurse';
 import { Modal } from 'ant-design-vue';
 import { ExclamationCircleOutlined } from '@ant-design/icons-vue';
 import commonMixin from '@/mixins';
+import { message as $message } from 'ant-design-vue';
 
 interface Data {
     formData: {
@@ -99,6 +108,7 @@ interface Data {
     chart2Data?: any;
     chart2Tab?: string;
     info?: any;
+    selectedRowKeys?: any[];
 }
 interface Item {
     deviceId: string;
@@ -228,6 +238,7 @@ const $store = useStore(),
         chart2Tab: 'sevenday',
         chart1Data: {},
         chart2Data: {},
+        selectedRowKeys: [],
     });
 
 onMounted(() => {
@@ -307,6 +318,23 @@ function getChart2Data(key: string | undefined, _info: any) {
         list: groupBy(_list, 'GroupName'),
     };
 }
+
+/**
+ * @description: 一键处置
+ */
+function handleOneClick() {
+    if (data.selectedRowKeys?.length === 0) {
+        $message.warning('请选择要处置的呼叫记录！');
+        return;
+    }
+    nursingHandle({
+        logId: data.selectedRowKeys?.join(','),
+    }).then(() => {
+        $message.success('一键处置成功.');
+        sendRequest.value = true;
+    });
+}
+
 /**
  * @description: table 项操作
  */

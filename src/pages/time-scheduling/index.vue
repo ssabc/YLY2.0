@@ -17,7 +17,6 @@
                     <recordTimeChart :p-data="data.chartData"></recordTimeChart>
                 </div>
                 <div class="cm-box c2">
-                    <!-- <div class="">一键开始实时调度</div> -->
                     <div class="one-btn">
                         <div class="inner">
                             <a target="_blank" :href="gisUrl" class="span">
@@ -35,7 +34,7 @@
                 v-model:data="data.tableData"
                 v-model:sendRequest="sendRequest"
                 :headers="data.columns"
-                :request-api="fetchServiceFileList"
+                :request-api="fetchRealTimeList"
                 :send-data="dealReqData(data.formData)"
                 @on-handle="handleClick"
             />
@@ -53,7 +52,7 @@ import type {
     TableHandleOptItem,
 } from 'GlobComponentsModule';
 import { deleteFile } from '@/api/app';
-import { fetchServiceStat, fetchServiceFileList } from '@/api/service-records';
+import { fetchRealTimeStat, fetchRealTimeList } from '@/api/time-scheduling';
 import {
     getNowDate,
     showFileDurationText,
@@ -98,21 +97,9 @@ const $store = useStore(),
         /** 表单list */
         list: [
             {
-                type: 'select',
-                name: 'serviceType',
-                label: '记录类型：',
-                width: 160,
-                props: {
-                    placeholder: '请选择记录类型',
-                    allowClear: true,
-                    disabled: true,
-                },
-                option: $store.getters['config/recordTypes'],
-            },
-            {
                 type: 'range-picker',
                 name: 'date',
-                label: '记录时间',
+                label: '调度时间',
                 props: {
                     valueFormat: 'YYYY-MM-DD',
                 },
@@ -146,7 +133,7 @@ const $store = useStore(),
         columns: [
             {
                 title: '设备编号',
-                dataIndex: 'DeviceSn',
+                dataIndex: 'DevSn',
             },
             {
                 title: '养老院名称',
@@ -154,18 +141,14 @@ const $store = useStore(),
                 minWidth: 120,
             },
             {
-                title: '服务内容',
-                dataIndex: 'FileTag',
-            },
-            {
-                title: '记录时长(分钟)',
+                title: '调度时长(分钟)',
                 dataIndex: 'FileDuration',
                 customRender: ({ text }) => {
                     return showFileDurationText(text);
                 },
             },
             {
-                title: '记录时间',
+                title: '调度时间',
                 dataIndex: 'CreateTime',
                 minWidth: 120,
                 customRender: ({ text }) => {
@@ -248,7 +231,7 @@ function getInfoAjax() {
     }
     !data.formData.serviceType && (data.formData.serviceType = '服务提供');
     const req = getReqData(data.formData);
-    fetchServiceStat(req).then((res: any) => {
+    fetchRealTimeStat(req).then((res: any) => {
         data.chartData = {
             name: '调度统计',
             list: res.data || [],

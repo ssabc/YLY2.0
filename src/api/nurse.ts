@@ -47,3 +47,14 @@ export function fetchNursingRecordStat(data: any) {
         data,
     });
 }
+
+/**
+ * @description: 护工帮一键处理
+ */
+export function nursingHandle(query: any) {
+    return request({
+        url: `${prefix}/manage/nursing/record/list/handle`,
+        method: 'post',
+        data: query,
+    });
+}

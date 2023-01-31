@@ -2,6 +2,7 @@
     <a-table
         v-bind="$props"
         :id="rowKey"
+        :row-selection="isSelection ? rowSelection : null"
         :data-source="tableData"
         :row-key="rowKey || 'id'"
         class="gm-table"
@@ -11,7 +12,7 @@
         @change="handleChange"
     >
         <a-table-column
-            v-for="(item, idx) in cols"
+            v-for="item in cols"
             :key="item.dataIndex || item.type"
             :title="item.title"
             :data-index="item.dataIndex"
@@ -104,6 +105,8 @@ interface Props {
     sendRequest?: boolean; // 是否触发请求api操作
     loadStatus?: string; // 当前加载状态 isloading： 加载中， loaded： 加载完成
     isSetNull?: boolean;
+    isSelection?: boolean; // 是否支持选中
+    selectedRowKeys?: number[];
 }
 
 const $props = defineProps<Props>(),
@@ -118,16 +121,27 @@ const $props = defineProps<Props>(),
             indx: number
         ): void;
         (event: 'update:sendRequest', v: boolean): void;
+        (event: 'update:selectedRowKeys', v: number[]): void;
     }>();
 // 分页配置
 const pagination = reactive<PaginationProps>({
-    current: 1,
-    pageSize: 10,
-    showSizeChanger: true,
-    showQuickJumper: true,
-    showTotal: (total: number) => `总共 ${total} 条`,
-    total: 0,
-});
+        current: 1,
+        pageSize: 10,
+        showSizeChanger: true,
+        showQuickJumper: true,
+        showTotal: (total: number) => `总共 ${total} 条`,
+        total: 0,
+    }),
+    rowSelection = reactive<any>({
+        columnWidth: 80,
+        fixed: true,
+        onChange: (selectedRowKeys: any[]) => {
+            $emit('update:selectedRowKeys', selectedRowKeys);
+        },
+        getCheckboxProps: (record: any) => ({
+            disabled: record.IsHandled, // Column configuration not to be checked
+        }),
+    });
 
 let cols = ref<ColumnProps[]>([]),
     tableData = ref<Array<object>>([]),
@@ -181,7 +195,6 @@ function fetchTableData() {
             [pageSize]: pagination.pageSize,
         })
             .then((res) => {
-                console.log($props, res);
                 if ($props.isSetNull) {
                     tableData.value = [];
                     pagination.total = 0;
