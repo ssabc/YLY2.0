@@ -11,7 +11,7 @@
     <div class="row">
         <div class="column c1 cm-box mr-15">
             <div>服务记录仪在线统计</div>
-            <Chart6 :p-data="chart6Data"></Chart6>
+            <Chart6 :p-data="data.chart6Data"></Chart6>
         </div>
         <div class="column c1 c2">
             <div class="cm-box">
@@ -46,8 +46,7 @@
 
 <script setup lang="ts">
 import { useStore } from 'vuex';
-import { useRouter } from 'vue-router';
-import { ref, reactive, computed, onMounted } from 'vue';
+import { ref, reactive, onMounted } from 'vue';
 import type { ColumnProps, FormListProps } from 'GlobComponentsModule';
 import {
     fetchDeviceStatusOnline,
@@ -68,6 +67,7 @@ interface Data {
     list: FormListProps[];
     tableData: Item[];
     columns: ColumnProps[];
+    chart6Data: any[];
 }
 interface Item {
     deviceId: string;
@@ -78,9 +78,7 @@ interface Item {
 let sendRequest = ref(false);
 
 const $store = useStore(),
-    isAdmin = computed(() => $store.getters['common/isAdmin']),
-    $router = useRouter(),
-    data = reactive<Array>({
+    data = reactive<Data>({
         activeKey: '1',
         tabs: [
             {
@@ -189,6 +187,7 @@ const $store = useStore(),
                 },
             },
         ],
+        chart6Data: [],
     });
 
 commonMixin(() => {
@@ -203,10 +202,9 @@ function initFn() {
     sendRequest.value = true;
     getInfoAjax();
 }
-let chart6Data = reactive<any>({});
 function getInfoAjax() {
     fetchDeviceStatusRecords({}).then((res: any) => {
-        chart6Data = res.data?.OnlineCountStat || [];
+        data.chart6Data = res.data?.OnlineCountStat || [];
     });
 }
 

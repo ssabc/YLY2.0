@@ -23,10 +23,10 @@ watchEffect(() => {
 });
 
 function initFn(_list: ListItem[]) {
-    if (Object.prototype.toString.call(_list) !== '[object Array]') {
-        return;
-    }
     nextTick(() => {
+        if (Object.prototype.toString.call(_list) !== '[object Array]') {
+            return;
+        }
         renderChart(_list);
     });
 }
