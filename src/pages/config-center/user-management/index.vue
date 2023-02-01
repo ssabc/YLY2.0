@@ -8,26 +8,28 @@
         >
         </GmForm>
     </div>
-    <GmTable
-        v-model:data="data.tableData"
-        v-model:sendRequest="sendRequest"
-        :headers="data.columns"
-        :request-api="fetchServiceRecord"
-        :send-data="dealReqData(data.formData)"
-        @on-handle="handleClick"
-    />
+    <div class="cm-box">
+        <GmTable
+            v-model:data="data.tableData"
+            v-model:sendRequest="sendRequest"
+            :headers="data.columns"
+            :request-api="feachUserList"
+            :send-data="dealReqData(data.formData)"
+            @on-handle="handleClick"
+        />
+    </div>
 </template>
 
 <script setup lang="ts" name="UserManagement">
 import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
-import { ref, reactive, computed, toRaw, createVNode } from 'vue';
+import { ref, reactive, computed, toRaw, createVNode, onActivated } from 'vue';
 import type {
     ColumnProps,
     FormListProps,
     TableHandleOptItem,
 } from 'GlobComponentsModule';
-import { fetchServiceRecord } from '@/api/service-records';
+import { feachUserList } from '@/api/config-center';
 import { dealReqData } from '@/utils/tools';
 import { Modal } from 'ant-design-vue';
 import { ExclamationCircleOutlined } from '@ant-design/icons-vue';
@@ -90,32 +92,35 @@ const $store = useStore(),
         columns: [
             {
                 title: '用户类型',
-                dataIndex: 'Dept',
+                dataIndex: 'ServiceType',
                 minWidth: 120,
             },
             {
                 title: '用户机构',
-                dataIndex: 'Name',
+                dataIndex: 'GroupName',
             },
             {
                 title: '所持设备编号',
-                dataIndex: 'Name',
+                dataIndex: 'DeviceSn',
             },
             {
                 title: '所持设备类型',
-                dataIndex: 'Name',
+                dataIndex: 'ServiceType',
+                customRender: ({ text }) => {
+                    return '记录仪';
+                },
             },
             {
                 title: '联系人',
-                dataIndex: 'Name',
+                dataIndex: 'UserName',
             },
             {
                 title: '联系电话',
-                dataIndex: 'Name',
+                dataIndex: 'Telephone',
             },
             {
                 title: '设置账号',
-                dataIndex: 'Name',
+                dataIndex: 'Setter',
             },
             {
                 title: '操作',
@@ -139,6 +144,10 @@ const $store = useStore(),
             },
         ],
     });
+
+onActivated(() => {
+    sendRequest = true;
+});
 /**
  * @description: table 项操作
  */
@@ -160,13 +169,13 @@ function handleClick(item: TableHandleOptItem, row: any) {
 }
 function handleToDetail(row: any) {
     $router.push(
-        `/config-center/user-management/detail?id=${row.GroupId}&type=1`
+        `/config-center/user-management/detail2?id=${row.DevId}&type=1`
     );
 }
 
 function handleToEdit(row: any) {
     $router.push(
-        `/config-center/user-management/edit?id=${row.GroupId}&type=2`
+        `/config-center/user-management/edit2?id=${row.DevId}&type=2`
     );
 }
 

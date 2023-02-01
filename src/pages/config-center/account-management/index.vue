@@ -23,7 +23,7 @@
 <script setup lang="ts" name="AccountManagement">
 import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
-import { ref, reactive, computed, toRaw, createVNode } from 'vue';
+import { ref, reactive, computed, toRaw, createVNode, onActivated} from 'vue';
 import type {
     ColumnProps,
     FormListProps,
@@ -162,6 +162,9 @@ const $store = useStore(),
             },
         ],
     });
+onActivated(() => {
+    sendRequest = true;
+});
 /**
  * @description: table 项操作
  */
@@ -183,13 +186,13 @@ function handleClick(item: TableHandleOptItem, row: any) {
 }
 function handleToDetail(row: any) {
     $router.push(
-        `/config-center/account-management/detail?id=${row.GroupId}&type=1`
+        `/config-center/account-management/detail1?id=${row.GroupId}&type=1`
     );
 }
 
 function handleToEdit(row: any) {
     $router.push(
-        `/config-center/account-management/edit?id=${row.GroupId}&type=2`
+        `/config-center/account-management/edit1?id=${row.GroupId}&type=2`
     );
 }
 function handleDelete() {

@@ -1,13 +1,16 @@
 /*
  * @Author: szhao
  * @Date: 2022-12-02 19:32:00
- * @LastEditTime: 2023-01-29 17:41:03
- * @LastEditors: szhao
+ * @LastEditTime: 2023-02-01 21:51:30
+ * @LastEditors: sZhao
  * @Description:
  */
 import { message as $message } from 'ant-design-vue';
 
 export const getNowDate = function (_t: any) {
+    if (!_t) {
+        return {};
+    }
     const date = _t ? new Date(_t) : new Date();
     const year = date.getFullYear(); // 年
     let month = date.getMonth() + 1; // 月

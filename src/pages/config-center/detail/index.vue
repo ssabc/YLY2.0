@@ -1,8 +1,8 @@
 <!--
  * @Author: zhaoshan
  * @Date: 2022-11-30 14:10:30
- * @LastEditTime: 2023-02-01 19:16:10
- * @LastEditors: szhao
+ * @LastEditTime: 2023-02-01 22:15:59
+ * @LastEditors: sZhao
  * @Description:
 -->
 <template>
@@ -21,6 +21,8 @@
 <script setup lang="ts">
 import { useRoute, useRouter } from 'vue-router';
 import { watch, reactive } from 'vue';
+import { feachNurseHomeDetail, saveNurseHome } from '@/api/config-center';
+import { message as $message } from 'ant-design-vue';
 
 const $router = useRouter(),
     $route = useRoute(),
@@ -117,13 +119,10 @@ watch(
         immediate: true,
     }
 );
-function initFn(e: string) {
-    console.log(e);
-    // fetchServiceInfo({ fileId }).then((res) => {
-    //     res.data.FileDuration = showFileDurationText(+res.data.FileDuration);
-    //     data.formData = res.data ?? {};
-    //     data.videoUrl = data.formData.FilePath;
-    // });
+function initFn(groupId: string) {
+    feachNurseHomeDetail({ groupId }).then((res) => {
+        Object.assign(formData, res.data ?? {});
+    });
 }
 
 function handleClick(e: any) {
@@ -143,23 +142,19 @@ function handleClick(e: any) {
  * @description: table 项操作
  */
 const onSubmit = () => {
-    console.log('3333', formData);
-    // if (!data.formData?.FileTag) {
-    //     $message.error('服务内容必填！');
-    //     return;
-    // }
-    // serviceFileSave({
-    //     fileId: data.formData?.FileId,
-    //     fileTag: data.formData?.FileTag,
-    // }).then(() => {
-    //     $message.success('提交成功');
-    //     $router.go(-1);
-    // });
-};
+    const keys = ['Address', 'Dean', 'Telephone', 'GroupId'],
+        _req = {};
 
-function back() {
-    $router.go(-1);
-}
+    Object.keys(formData).forEach((_k: string) => {
+        if (keys.includes(_k)) {
+            _req[_k] = formData[_k];
+        }
+    });
+    saveNurseHome(_req).then(() => {
+        $message.success('提交成功');
+        $router.go(-1);
+    });
+};
 </script>
 
 <style lang="less" scoped>

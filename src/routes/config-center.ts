@@ -1,8 +1,8 @@
 /*
  * @Author: szhao
  * @Date: 2022-12-02 16:12:30
- * @LastEditTime: 2023-02-01 20:00:51
- * @LastEditors: szhao
+ * @LastEditTime: 2023-02-01 22:46:55
+ * @LastEditors: sZhao
  * @Description:
  */
 import type { RouteItem } from 'RouterModule';
@@ -56,7 +56,7 @@ export const r: RouteItem[] = [
             },
             {
                 name: 'AccountManagementDetail',
-                path: 'account-management/detail',
+                path: 'account-management/detail1',
                 meta: { title: '账户信息详情', hidden: true },
                 component: lazyImportPagesRootVueFile(
                     'config-center/account-management/detail'
@@ -64,7 +64,7 @@ export const r: RouteItem[] = [
             },
             {
                 name: 'AccountManagementEdit',
-                path: 'account-management/edit',
+                path: 'account-management/edit1',
                 meta: { title: '账户信息编辑', hidden: true },
                 component: lazyImportPagesRootVueFile(
                     'config-center/account-management/detail'
@@ -80,7 +80,7 @@ export const r: RouteItem[] = [
             },
             {
                 name: 'UserManagementDetail',
-                path: 'user-management/detail',
+                path: 'user-management/detail2',
                 meta: { title: '用户信息详情', hidden: true },
                 component: lazyImportPagesRootVueFile(
                     'config-center/user-management/detail'
@@ -88,7 +88,7 @@ export const r: RouteItem[] = [
             },
             {
                 name: 'UserManagementEdit',
-                path: 'user-management/edit',
+                path: 'user-management/edit2',
                 meta: { title: '用户信息编辑', hidden: true },
                 component: lazyImportPagesRootVueFile(
                     'config-center/user-management/detail'

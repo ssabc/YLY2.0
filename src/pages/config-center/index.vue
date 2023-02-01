@@ -23,7 +23,7 @@
 <script setup lang="ts" name="CareHomeManagement">
 import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
-import { ref, reactive, toRaw, createVNode, computed } from 'vue';
+import { ref, reactive, toRaw, createVNode, computed, onActivated } from 'vue';
 import type {
     ColumnProps,
     FormListProps,
@@ -106,9 +106,6 @@ const $store = useStore(),
                 title: '联系电话',
                 dataIndex: 'Telephone',
                 minWidth: 120,
-                customRender: ({ text }) => {
-                    return getNowDate(text)?.time;
-                },
             },
             {
                 title: '记录仪启用时间',
@@ -127,7 +124,7 @@ const $store = useStore(),
                 },
             },
             {
-                title: '测温随申码访客机启用时间：',
+                title: '测温随申码访客机启用时间',
                 dataIndex: 'time',
                 minWidth: 120,
                 customRender: ({ text }) => {
@@ -156,6 +153,11 @@ const $store = useStore(),
             },
         ],
     });
+
+onActivated(() => {
+    sendRequest = true;
+});
+
 /**
  * @description: table 项操作
  */

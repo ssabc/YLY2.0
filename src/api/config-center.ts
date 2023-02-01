@@ -1,7 +1,7 @@
 /*
  * @Author: sZhao
  * @Date: 2023-01-10 23:19:43
- * @LastEditTime: 2023-01-18 20:23:21
+ * @LastEditTime: 2023-02-01 22:29:15
  * @LastEditors: sZhao
  * @Description:护工帮
  */
@@ -35,6 +35,61 @@ export function fetchConfigSystemLog(query: any) {
 export function fetchConfigAccount(query: any) {
     return request({
         url: `${prefix}/manage/config/account`,
+        method: 'post',
+        data: query,
+    });
+}
+
+/**
+ * @description: 配置中心-养老院-修改
+ */
+export function saveNurseHome(query: any) {
+    return request({
+        url: `${prefix}/manage/config/nursing-home/save`,
+        method: 'post',
+        data: query,
+    });
+}
+
+/**
+ * @description: 配置中心-养老院-养老院详情
+ */
+export function feachNurseHomeDetail(query: any) {
+    return request({
+        url: `${prefix}/manage/config/nursing-home/info`,
+        method: 'post',
+        data: query,
+    });
+}
+
+/**
+ * @description: 用户列表
+ */
+ export function feachUserList(query: any) {
+    return request({
+        url: `${prefix}/manage/config/user`,
+        method: 'post',
+        data: query,
+    });
+}
+
+/**
+ * @description: 修改用户信息
+ */
+export function saveUserInfo(query: any) {
+    return request({
+        url: `${prefix}/manage/config/user/save`,
+        method: 'post',
+        data: query,
+    });
+}
+
+/**
+ * @description: 用户列表
+ */
+export function feachUserDetail(query: any) {
+    return request({
+        url: `${prefix}/manage/config/user/info`,
         method: 'post',
         data: query,
     });
