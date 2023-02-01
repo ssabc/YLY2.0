@@ -1,24 +1,161 @@
 <!--
  * @Author: zhaoshan
  * @Date: 2022-11-30 14:10:30
- * @LastEditTime: 2022-12-03 18:09:49
- * @LastEditors: error: git config user.name && git config user.email & please set dead value or install git
+ * @LastEditTime: 2023-02-01 19:16:10
+ * @LastEditors: szhao
  * @Description:
 -->
 <template>
-    <div class="items-center">
-        <div style="text-align: right">
-            <a-button @click="back">返回</a-button>
-        </div>
-        <div class="iframe-wrap">
-            <IframeComp></IframeComp>
+    <div class="cm-box">
+        <div class="form-wrap">
+            <GmForm
+                v-model:data="formData"
+                :list="list"
+                :label-col="{ style: { width: '180px' } }"
+                @on-handle="handleClick"
+            ></GmForm>
         </div>
     </div>
 </template>
 
 <script setup lang="ts">
-import { useRouter } from 'vue-router';
-const $router = useRouter();
+import { useRoute, useRouter } from 'vue-router';
+import { watch, reactive } from 'vue';
+
+const $router = useRouter(),
+    $route = useRoute(),
+    list = reactive<any[]>([
+        {
+            type: 'input',
+            name: 'GroupName',
+            label: '养老院名称：',
+            props: {
+                placeholder: '',
+                disabled: true,
+            },
+        },
+        {
+            type: 'input',
+            name: 'Dean',
+            label: '院长/负责人：',
+            props: {
+                placeholder: '',
+            },
+        },
+        {
+            type: 'input',
+            name: 'Telephone',
+            label: '联系电话：',
+            props: {
+                placeholder: '',
+            },
+        },
+        {
+            type: 'input',
+            name: 'Address',
+            label: '详细地址：',
+            props: {
+                placeholder: '',
+            },
+        },
+        {
+            type: 'input',
+            name: 'time',
+            label: '记录仪启用时间：',
+            props: {
+                placeholder: '',
+                disabled: true,
+            },
+        },
+        {
+            type: 'input',
+            name: 'time',
+            label: '采集柜启用时间：',
+            props: {
+                placeholder: '',
+                disabled: true,
+            },
+        },
+        {
+            type: 'input',
+            name: 'time',
+            label: '测温随申码访客机启用时间',
+            props: {
+                type: 'textarea',
+                placeholder: '',
+                disabled: true,
+            },
+        },
+        {
+            type: 'handle',
+            name: 'handle',
+            label: '',
+            option: [
+                {
+                    label: '保存',
+                    value: 'submit',
+                    props: {
+                        type: 'primary',
+                        hidden: $route.query.type == 1,
+                    },
+                },
+                {
+                    label: '返回',
+                    value: 'cancel',
+                },
+            ],
+        },
+    ]),
+    formData = reactive<any>({});
+
+watch(
+    () => $route.query.id,
+    (e: any) => {
+        e && initFn(e);
+    },
+    {
+        immediate: true,
+    }
+);
+function initFn(e: string) {
+    console.log(e);
+    // fetchServiceInfo({ fileId }).then((res) => {
+    //     res.data.FileDuration = showFileDurationText(+res.data.FileDuration);
+    //     data.formData = res.data ?? {};
+    //     data.videoUrl = data.formData.FilePath;
+    // });
+}
+
+function handleClick(e: any) {
+    const { label } = e;
+    switch (label) {
+        case '保存':
+            onSubmit();
+            break;
+        case '返回':
+            $router.go(-1);
+            break;
+        default:
+    }
+}
+
+/**
+ * @description: table 项操作
+ */
+const onSubmit = () => {
+    console.log('3333', formData);
+    // if (!data.formData?.FileTag) {
+    //     $message.error('服务内容必填！');
+    //     return;
+    // }
+    // serviceFileSave({
+    //     fileId: data.formData?.FileId,
+    //     fileTag: data.formData?.FileTag,
+    // }).then(() => {
+    //     $message.success('提交成功');
+    //     $router.go(-1);
+    // });
+};
 
 function back() {
     $router.go(-1);
@@ -26,9 +163,8 @@ function back() {
 </script>
 
 <style lang="less" scoped>
-.iframe-wrap {
+.form-wrap {
     padding: 20px 0;
-    height: calc(100vh - 220px);
-    min-height: 300px;
+    width: 600px;
 }
 </style>

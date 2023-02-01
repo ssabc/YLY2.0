@@ -146,8 +146,8 @@ const $store = useStore(),
                 minWidth: 240,
                 option: [
                     {
-                        name: '查看',
-                        type: 'edit',
+                        name: '详情',
+                        type: 'view',
                     },
                     {
                         name: '编辑',
@@ -169,11 +169,11 @@ function handleClick(item: TableHandleOptItem, row: any) {
     const { name } = item;
     const rowData = toRaw(row);
     switch (name) {
-        case '点击查看':
-            // handleToDetail(rowData);
+        case '详情':
+            handleToDetail(rowData);
             break;
-        case '下载':
-            // handleDownload(rowData);
+        case '编辑':
+            handleToEdit(rowData);
             break;
         case '删除':
             handleDelete();
@@ -182,10 +182,16 @@ function handleClick(item: TableHandleOptItem, row: any) {
     }
 }
 function handleToDetail(row: any) {
-    console.log(row, '---');
-    $router.push('/service-records/video-detail');
+    $router.push(
+        `/config-center/account-management/detail?id=${row.GroupId}&type=1`
+    );
 }
 
+function handleToEdit(row: any) {
+    $router.push(
+        `/config-center/account-management/edit?id=${row.GroupId}&type=2`
+    );
+}
 function handleDelete() {
     Modal.confirm({
         content: '确定删除吗？',

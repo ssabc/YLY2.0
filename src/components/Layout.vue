@@ -167,6 +167,7 @@ watch(
             })[0] ?? ({} as RouteItem);
 
         console.warn(
+            data.modulesMenu,
             '左侧菜单',
             data.selectedKeys,
             parentPath,

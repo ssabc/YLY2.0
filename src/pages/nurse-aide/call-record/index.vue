@@ -148,7 +148,7 @@ const $store = useStore(),
                 },
             },
             {
-                title: '记录时长(分钟)',
+                title: '记录时长',
                 dataIndex: 'FileDuration',
                 customRender: ({ text }) => {
                     return showFileDurationText(text);

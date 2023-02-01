@@ -1,7 +1,7 @@
 /*
  * @Author: szhao
  * @Date: 2022-12-02 16:12:30
- * @LastEditTime: 2023-01-28 11:28:27
+ * @LastEditTime: 2023-02-01 20:00:51
  * @LastEditors: szhao
  * @Description:
  */
@@ -29,13 +29,21 @@ export const r: RouteItem[] = [
             {
                 name: 'CareHomeManagementDetail',
                 path: 'detail',
-                meta: { title: '养老院信息详情', hidden: true },
+                meta: {
+                    title: '养老院信息详情',
+                    hidden: true,
+                    isShowBack: true,
+                },
                 component: lazyImportPagesRootVueFile('config-center/detail'),
             },
             {
-                name: 'CareHomeManagementAdd',
-                path: 'add',
-                meta: { title: '养老院信息新增', hidden: true },
+                name: 'CareHomeManagementEdit',
+                path: 'edit',
+                meta: {
+                    title: '养老院信息编辑',
+                    hidden: true,
+                    isShowBack: true,
+                },
                 component: lazyImportPagesRootVueFile('config-center/detail'),
             },
             {
@@ -55,9 +63,9 @@ export const r: RouteItem[] = [
                 ),
             },
             {
-                name: 'AccountManagementAdd',
-                path: 'account-management/add',
-                meta: { title: '账户信息新增', hidden: true },
+                name: 'AccountManagementEdit',
+                path: 'account-management/edit',
+                meta: { title: '账户信息编辑', hidden: true },
                 component: lazyImportPagesRootVueFile(
                     'config-center/account-management/detail'
                 ),
@@ -79,9 +87,9 @@ export const r: RouteItem[] = [
                 ),
             },
             {
-                name: 'UserManagementAdd',
-                path: 'user-management/add',
-                meta: { title: '用户信息新增', hidden: true },
+                name: 'UserManagementEdit',
+                path: 'user-management/edit',
+                meta: { title: '用户信息编辑', hidden: true },
                 component: lazyImportPagesRootVueFile(
                     'config-center/user-management/detail'
                 ),

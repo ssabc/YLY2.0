@@ -124,6 +124,10 @@ const $store = useStore(),
                 option: [
                     {
                         name: '详情',
+                        type: 'view',
+                    },
+                    {
+                        name: '编辑',
                         type: 'edit',
                     },
                     {
@@ -143,7 +147,10 @@ function handleClick(item: TableHandleOptItem, row: any) {
     const rowData = toRaw(row);
     switch (name) {
         case '详情':
-            // handleToDetail(rowData);
+            handleToDetail(rowData);
+            break;
+        case '编辑':
+            handleToEdit(rowData);
             break;
         case '删除':
             handleDelete();
@@ -152,8 +159,15 @@ function handleClick(item: TableHandleOptItem, row: any) {
     }
 }
 function handleToDetail(row: any) {
-    console.log(row, '---');
-    $router.push('/service-records/video-detail');
+    $router.push(
+        `/config-center/user-management/detail?id=${row.GroupId}&type=1`
+    );
+}
+
+function handleToEdit(row: any) {
+    $router.push(
+        `/config-center/user-management/edit?id=${row.GroupId}&type=2`
+    );
 }
 
 function handleDelete() {

@@ -141,7 +141,7 @@ const $store = useStore(),
                 minWidth: 120,
             },
             {
-                title: '调度时长(分钟)',
+                title: '调度时长',
                 dataIndex: 'FileDuration',
                 customRender: ({ text }) => {
                     return showFileDurationText(text);

@@ -41,6 +41,7 @@ let routeInfo = ref<RouteInfo>({}), // 路由信息
     showBreadcrumb = ref<boolean>(false);
 
 showBreadcrumb = computed<boolean>(() => {
+    console.log('$props.currentMenu', $props.currentMenu);
     return (
         !$props.currentMenu?.meta?.hiddenBreadCrumb &&
         !!$props.currentMenu?.meta?.title
