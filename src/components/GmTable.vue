@@ -28,16 +28,8 @@
                             : item.option"
                         :key="ele.name"
                     >
-                        <a
-                            v-if="!ele.hidden && ele.name === '立即处置'"
-                            target="_blank"
-                            class="text-blue-500"
-                            :href="gisUrl"
-                            :src="gisUrl"
-                            >立即处置</a
-                        >
                         <button
-                            v-else-if="!ele.hidden"
+                            v-if="!ele.hidden"
                             class="text-blue-500"
                             :disabled="ele.disabled"
                             :class="{

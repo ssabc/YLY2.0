@@ -6,11 +6,10 @@
 import { useStore } from 'vuex';
 import { computed, watchEffect, nextTick } from 'vue';
 import * as echarts from 'echarts';
+import { getLastest7day } from '@/utils/tools';
 
 interface Props {}
-const $store = useStore(),
-    $props = defineProps<Props>(),
-    isAdmin = computed(() => $store.getters['common/isAdmin']);
+const $store = useStore();
 
 watchEffect(() => {
     initFn();
@@ -49,21 +48,12 @@ const renderChart1 = (data: any) => {
                 {
                     name: '日期',
                     nameLocation: 'start',
-                    nameGap: 20,
+                    // nameGap: 20,
                     nameTextStyle: {
                         color: '#999',
                     },
                     type: 'category',
-                    data: [
-                        '2023年1月4日',
-                        '2023年1月5日',
-                        '2023年1月6日',
-                        '2023年1月7日',
-                        '2023年1月8日',
-                        '2023年1月9日',
-                        '2023年1月10日',
-                        '2023年1月11日',
-                    ],
+                    data: getLastest7day(),
                     axisLine: {
                         lineStyle: {
                             color: '#33BBFF',
@@ -96,7 +86,7 @@ const renderChart1 = (data: any) => {
             ],
             yAxis: [
                 {
-                    name: '次数（人次）',
+                    name: '人次',
                     nameTextStyle: {
                         color: '#999',
                     },

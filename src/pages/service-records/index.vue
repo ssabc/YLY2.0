@@ -42,25 +42,12 @@
         <div class="column c1">
             <div>
                 <div class="time-desc">24小时新增记录</div>
-                <Latestrecords
-                    :p-data="data.fileRank"
-                    :type="'inner'"
-                ></Latestrecords>
-                <!-- <div class="time-cells">
-                    <div
-                        v-for="item in data.fileRank"
-                        :key="item.name"
-                        class="time-cell"
-                    >
-                        <div>
-                            <div class="value">
-                                {{ showFileDurationText(item.FileDuration) }}
-                            </div>
-                            <div class="label">{{ item.GroupName }}</div>
-                        </div>
-                        <div class="icon"></div>
-                    </div>
-                </div> -->
+                <div style="width: 800px">
+                    <Latestrecords
+                        :p-data="data.fileRank"
+                        :type="'inner'"
+                    ></Latestrecords>
+                </div>
             </div>
         </div>
     </div>
@@ -104,6 +91,16 @@ const $store = useStore(),
                     allowClear: true,
                 },
                 option: $store.getters['config/recordTypes'],
+            },
+            {
+                type: 'select',
+                name: 'FileTag',
+                label: '服务内容：',
+                props: {
+                    placeholder: '请选择服务内容',
+                    allowClear: true,
+                },
+                option: $store.getters['common/fileTags'],
             },
             {
                 type: 'range-picker',

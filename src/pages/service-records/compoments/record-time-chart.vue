@@ -90,7 +90,7 @@ const renderChart1 = (list: any) => {
         ],
         yAxis: [
             {
-                name: '次数（次）',
+                name: '次数',
                 nameTextStyle: {
                     color: '#999',
                 },

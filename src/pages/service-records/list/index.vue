@@ -87,6 +87,16 @@ const $store = useStore(),
                 option: $store.getters['config/recordTypes'],
             },
             {
+                type: 'select',
+                name: 'FileTag',
+                label: '服务内容：',
+                props: {
+                    placeholder: '请选择服务内容',
+                    allowClear: true,
+                },
+                option: $store.getters['common/fileTags'],
+            },
+            {
                 type: 'range-picker',
                 name: 'date',
                 label: '记录时间',

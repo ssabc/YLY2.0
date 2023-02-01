@@ -42,7 +42,7 @@ const renderChart1 = (data: any) => {
             grid: {
                 top: '15%',
                 left: '8%',
-                bottom: '15%',
+                bottom: '32%',
                 right: '8%',
             },
             xAxis: [
@@ -55,14 +55,14 @@ const renderChart1 = (data: any) => {
                     },
                     type: 'category',
                     data: [
-                        '2023年1月4日',
-                        '2023年1月5日',
-                        '2023年1月6日',
-                        '2023年1月7日',
-                        '2023年1月8日',
-                        '2023年1月9日',
-                        '2023年1月10日',
-                        '2023年1月11日',
+                        '0:00:00-03：00',
+                        '3:00:00-06：00',
+                        '6:00:00-09：00',
+                        '9:00:00-12：00',
+                        '12:00:00-15：00',
+                        '15:00:00-18：00',
+                        '18:00:00-21：00',
+                        '21:00:00-24：00',
                     ],
                     axisLine: {
                         lineStyle: {
@@ -80,6 +80,7 @@ const renderChart1 = (data: any) => {
                         fontSize: 12,
                         // margin:文字到x轴的距离
                         margin: 15,
+                        rotate: 30,
                     },
                     axisPointer: {
                         label: {
@@ -92,12 +93,12 @@ const renderChart1 = (data: any) => {
                             backgroundColor: 'rgba(0,0,0,0)',
                         },
                     },
-                    boundaryGap: false,
+                    boundaryGap: true,
                 },
             ],
             yAxis: [
                 {
-                    name: '次数(人次)',
+                    name: '次数',
                     nameTextStyle: {
                         color: '#999',
                     },
@@ -124,10 +125,10 @@ const renderChart1 = (data: any) => {
                 {
                     name: '养老院1',
                     type: 'line',
-                    data: [100, 20, 30, 102, 15, 30, 20, 18],
+                    data: [0, 0, 3, 9, 12, 15, 4, 0],
                     symbolSize: 1,
                     symbol: 'circle',
-                    smooth: true,
+                    smooth: false,
                     showSymbol: false,
                     lineStyle: {
                         width: 2,
@@ -155,10 +156,10 @@ const renderChart1 = (data: any) => {
                 {
                     name: '养老院2',
                     type: 'line',
-                    data: [20, 12, 11, 14, 25, 16, 10, 20],
+                    data: [0, 0, 5, 5, 6, 3, 1, 0],
                     symbolSize: 1,
                     symbol: 'circle',
-                    smooth: true,
+                    smooth: false,
                     showSymbol: false,
                     lineStyle: {
                         width: 2,
@@ -186,10 +187,10 @@ const renderChart1 = (data: any) => {
                 {
                     name: '养老院3',
                     type: 'line',
-                    data: [150, 120, 170, 140, 100, 160, 110, 110],
+                    data: [0, 0, 10, 9, 6, 3, 0, 0],
                     symbolSize: 1,
                     symbol: 'circle',
-                    smooth: true,
+                    smooth: false,
                     showSymbol: false,
                     lineStyle: {
                         width: 2,

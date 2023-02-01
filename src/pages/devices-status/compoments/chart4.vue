@@ -41,20 +41,22 @@ const renderChart1 = () => {
             },
             xAxis: [
                 {
-                    name: '日期', nameLocation: 'start', nameGap: 20,
+                    name: '月份',
+                    nameLocation: 'start',
+                    nameGap: 20,
                     nameTextStyle: {
                         color: '#999',
                     },
                     type: 'category',
                     data: [
-                        '2023年1月4日',
-                        '2023年1月5日',
-                        '2023年1月6日',
-                        '2023年1月7日',
-                        '2023年1月8日',
-                        '2023年1月9日',
-                        '2023年1月10日',
-                        '2023年1月11日',
+                        '1月',
+                        '2月',
+                        '3月',
+                        '4月',
+                        '5月',
+                        '6月',
+                        '7月',
+                        '8月',
                     ],
                     axisLine: {
                         lineStyle: {
@@ -65,7 +67,6 @@ const renderChart1 = () => {
                         show: false,
                     },
                     axisLabel: {
-
                         textStyle: {
                             color: '#000',
                         },
@@ -89,7 +90,7 @@ const renderChart1 = () => {
             ],
             yAxis: [
                 {
-                    name: '次数（次）',
+                    name: '次数',
                     nameTextStyle: {
                         color: '#999',
                     },
@@ -116,7 +117,7 @@ const renderChart1 = () => {
                 {
                     name: '养老院1',
                     type: 'bar',
-                    data: [100, 20, 30, 102, 15, 30, 20, 18],
+                    data: [31,1,0,0,0,0,0,0,0,0,0,0],
                     symbolSize: 1,
                     symbol: 'circle',
                     smooth: true,
@@ -147,7 +148,7 @@ const renderChart1 = () => {
                 {
                     name: '养老院2',
                     type: 'bar',
-                    data: [20, 12, 11, 14, 25, 16, 10, 20],
+                    data: [31,1,0,0,0,0,0,0,0,0,0,0],
                     symbolSize: 1,
                     symbol: 'circle',
                     smooth: true,
@@ -178,7 +179,7 @@ const renderChart1 = () => {
                 {
                     name: '养老院3',
                     type: 'bar',
-                    data: [150, 120, 170, 140, 100, 160, 110, 110],
+                    data: [31,1,0,0,0,0,0,0,0,0,0,0],
                     symbolSize: 1,
                     symbol: 'circle',
                     smooth: true,

@@ -145,7 +145,7 @@ const renderChart1 = (data: any, _colors: Array<string>, isSeven: boolean) => {
         ],
         yAxis: [
             {
-                name: '次数(次)',
+                name: '次数',
                 nameTextStyle: {
                     color: '#999',
                 },

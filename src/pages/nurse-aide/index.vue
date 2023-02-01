@@ -210,7 +210,7 @@ const $store = useStore(),
                         {
                             name: '立即处置',
                             type: 'deal',
-                            disabled: record?.IsHandled,
+                            disabled: record.IsHandled,
                         },
                         {
                             name: '点击查看',
@@ -358,7 +358,8 @@ function handleClick(item: TableHandleOptItem, row: any, index: number) {
     }
 }
 function handleDeal(index: number) {
-    data.tableData[index].IsHandled = !data.tableData[index].IsHandled;
+    // data.tableData[index].IsHandled = !data.tableData[index].IsHandled;
+    $router.push('/time-scheduling');
 }
 
 function changeTab(key: string) {

@@ -174,3 +174,37 @@ export const handleDownload = function (fileName: string, videoUrl: string) {
     };
     x.send();
 };
+
+export function getDay(day: number) {
+    const today = new Date();
+
+    const targetday_milliseconds = today.getTime() + 1000 * 60 * 60 * 24 * day;
+
+    today.setTime(targetday_milliseconds); //注意，这行是关键代码
+
+    const tYear = today.getFullYear();
+
+    let tMonth = today.getMonth();
+
+    let tDate = today.getDate();
+
+    tMonth = doHandleMonth(tMonth + 1);
+
+    tDate = doHandleMonth(tDate);
+
+    return tYear + '-' + tMonth + '-' + tDate;
+}
+
+export function getLastest7day() {
+    return [-6, -5, -4, -3, -2, -1, 0].map((_e: number) => getDay(_e));
+}
+
+function doHandleMonth(month: string) {
+    let m = month;
+
+    if (month.toString().length == 1) {
+        m = '0' + month;
+    }
+
+    return m;
+}
