@@ -95,6 +95,7 @@ const data = reactive<Data>({
     $route = useRoute(),
     // 二级路由首页path
     secondLevelRouteIndex = 'index',
+    currentYly = computed(() => $store.getters['common/currentYly']),
     // 路由菜单
     menu = computed(() => $store.getters['common/menu']);
 
@@ -115,7 +116,16 @@ function jumpRoute({ key }: { key: string }) {
  * @param { Array } _menu 所有菜单
  */
 function getMenu(_path: string, _menu: any) {
-    return _menu?.filter((_e: RouteItem) => _e.path === _path)?.[0]?.children;
+    let filterMenuNames: string[] = [];
+    if (currentYly.value?.id) {
+        // 院级隐藏的菜单
+        filterMenuNames = ['OperationLogs'];
+    }
+    return _menu
+        ?.filter((_e: RouteItem) => _e.path === _path)?.[0]
+        ?.children?.filter(
+            (_e: RouteItem) => !filterMenuNames.includes(_e.name)
+        );
 }
 
 // 更新并高亮路由

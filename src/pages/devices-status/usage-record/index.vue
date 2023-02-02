@@ -16,11 +16,11 @@
         <div class="column c1 c2">
             <div class="cm-box">
                 <div>采集柜在线统计</div>
-                <Chart4></Chart4>
+                <Chart4 :p-data="data.chart4Data"></Chart4>
             </div>
             <div class="cm-box">
                 <div>测温随申码访客机在线统计</div>
-                <Chart5></Chart5>
+                <Chart5 :p-data="data.chart5Data"></Chart5>
             </div>
         </div>
     </div>
@@ -46,7 +46,7 @@
 
 <script setup lang="ts">
 import { useStore } from 'vuex';
-import { ref, reactive, onMounted } from 'vue';
+import { ref, reactive, onMounted, computed } from 'vue';
 import type { ColumnProps, FormListProps } from 'GlobComponentsModule';
 import {
     fetchDeviceStatusOnline,
@@ -67,7 +67,9 @@ interface Data {
     list: FormListProps[];
     tableData: Item[];
     columns: ColumnProps[];
-    chart6Data: any[];
+    chart4Data?: any[];
+    chart5Data?: any[];
+    chart6Data?: any[];
 }
 interface Item {
     deviceId: string;
@@ -78,6 +80,9 @@ interface Item {
 let sendRequest = ref(false);
 
 const $store = useStore(),
+    ylyList = computed(() => $store.getters['common/ylyList']),
+    groupId = computed(() => $store.getters['common/groupId']),
+    currentYly = computed(() => $store.getters['common/currentYly']),
     data = reactive<Data>({
         activeKey: '1',
         tabs: [
@@ -188,6 +193,8 @@ const $store = useStore(),
             },
         ],
         chart6Data: [],
+        chart4Data: [],
+        chart5Data: [],
     });
 
 commonMixin(() => {
@@ -203,6 +210,23 @@ function initFn() {
     getInfoAjax();
 }
 function getInfoAjax() {
+    let _temp = [];
+    if (!groupId.value) {
+        _temp = ylyList.value?.map((_e: any) => {
+            return {
+                name: _e.name,
+                data: [31, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            };
+        });
+    } else {
+        _temp = [
+            {
+                name: currentYly.value.name,
+                data: [31, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            },
+        ];
+    }
+    data.chart4Data = data.chart5Data = _temp;
     fetchDeviceStatusRecords({}).then((res: any) => {
         data.chart6Data = res.data?.OnlineCountStat || [];
     });

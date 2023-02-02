@@ -56,6 +56,12 @@ const getters: Getters = {
         const _t = getters.userInfo(state)?.account?.type;
         return _t === 'district';
     },
+    currentYly: (state: State) => {
+        const ylyObj = state.yly?.name
+            ? state.yly
+            : JSON.parse(localStorage.getItem('currentYLY') || '{}');
+        return ylyObj;
+    },
     groupId: (state: State) => {
         const ylyObj = state.yly?.name
             ? state.yly
