@@ -112,7 +112,7 @@ const $store = useStore(),
             },
             {
                 title: '联系人',
-                dataIndex: 'UserName',
+                dataIndex: 'Contacts',
             },
             {
                 title: '联系电话',

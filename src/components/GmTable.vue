@@ -101,6 +101,15 @@ interface Props {
     selectedRowKeys?: number[];
 }
 
+function onRow(record) {
+    console.log('点击行：', record)
+    return {
+        onClick: (event) => {
+            console.log('点击行：', event, record)
+        }, // 点击行
+    };
+}
+
 const $props = defineProps<Props>(),
     $store = useStore(),
     gisUrl = computed(() => $store.getters['common/gisMapUrl']),

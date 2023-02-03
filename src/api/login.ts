@@ -1,3 +1,10 @@
+/*
+ * @Author: sZhao
+ * @Date: 2023-01-08 15:09:43
+ * @LastEditTime: 2023-02-02 23:10:11
+ * @LastEditors: sZhao
+ * @Description:
+ */
 import { request } from '@/utils/axios';
 const prefix = '/api';
 
@@ -6,7 +13,7 @@ const prefix = '/api';
  */
 export function fetchVerificationCode(query: any) {
     return request({
-        url: `${prefix}/manage/account/login/captcha`,
+        url: `${prefix}/manage/account/login/captcha??VNK=${new Date().getTime()}`,
         method: 'get',
         data: query,
     });

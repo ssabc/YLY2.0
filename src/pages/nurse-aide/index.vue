@@ -304,6 +304,7 @@ function getInfo() {
             list: SosGroupCount,
         };
         data.chart2Data = getChart2Data(data.chart2Tab, data.info);
+        console.log('data.chart2Data', data.chart2Data)
         data.tableData = SosIn24h || [];
     });
 }

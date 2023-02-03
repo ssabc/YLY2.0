@@ -26,6 +26,7 @@ watch(
 
 function initFn(data: any) {
     const _d = data?.list || [];
+    console.log(data);
     nextTick(() => {
         renderChart1(_d, colors.value);
     });
@@ -34,7 +35,10 @@ function initFn(data: any) {
 const renderChart1 = (data: any, _colors: Array<string>) => {
     const colorList = _colors,
         seriesData: any[] = [],
-        xAxisData: string[] = data?.[0]?.map((_e: any) => _e.Date);
+        isDate = data?.[0]?.length == 7,
+        xAxisData: string[] = data?.[0]?.map((_e: any) =>
+            isDate ? _e.Date : `${_e.Month} 月`
+        );
     data?.forEach((_e: any, index: number) => {
         const name = _e?.[0]?.GroupName || '',
             data = _e?.map((_s: any) => _s.Count),

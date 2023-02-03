@@ -1,8 +1,8 @@
 <!--
  * @Author: zhaoshan
  * @Date: 2022-11-30 14:10:30
- * @LastEditTime: 2023-02-01 19:16:10
- * @LastEditors: szhao
+ * @LastEditTime: 2023-02-03 21:21:15
+ * @LastEditors: sZhao
  * @Description:
 -->
 <template>
@@ -61,7 +61,7 @@ const $router = useRouter(),
         {
             type: 'input',
             name: 'time',
-            label: '记联系电话：',
+            label: '联系电话：',
             props: {
                 placeholder: '',
                 disabled: true,

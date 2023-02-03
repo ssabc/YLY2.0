@@ -37,10 +37,11 @@
                             ></div>
                         </div>
                         <div class="cell">
-                            <div class="label">总访客人数:</div>
+                            <div class="label">总访客数:</div>
                             <div class="value">
-                                {{ data.CenterStatistic.TotalVisitor }}
-                                <span class="unit">次</span>
+                                <!-- data.CenterStatistic.TotalVisitor -->
+                                {{ data.chartSum }}
+                                <span class="unit">人次</span>
                             </div>
                         </div>
                     </div>
@@ -49,9 +50,9 @@
                     <div class="box">
                         <div class="title">访客情况监测（本周）</div>
                         <div class="visit-num">
-                            访问次： <span class="value">{{ 65 }}</span>
+                            访客数： <span class="value">{{ data.chartSum }}</span>
                         </div>
-                        <Chart2></Chart2>
+                        <Chart2 :p-data="data.chart2Data"></Chart2>
                     </div>
                     <div class="box" style="min-height: 300px">
                         <div class="title">最新服务记录</div>
@@ -108,12 +109,17 @@ import { changeHourMinutestr } from '@/utils/tools';
 import commonMixin from '@/mixins';
 
 const $store = useStore(),
+    ylyList = computed(() => $store.getters['common/ylyList']),
+    groupId = computed(() => $store.getters['common/groupId']),
+    currentYly = computed(() => $store.getters['common/currentYly']),
     data = reactive<any>({
         info: {},
         yly: '',
         CenterStatistic: {},
         deviceInfo: {},
         sosInfo: {},
+        chart2Data: [],
+        chartSum: 0,
     });
 
 onMounted(() => {
@@ -127,6 +133,7 @@ commonMixin(getHomeInfo);
  * @description: 获取首页数据
  */
 function getHomeInfo() {
+    getChart2Data();
     const _req = {};
     fetchHomeInfo(_req).then((res: any) => {
         data.info = res?.data || {};
@@ -141,6 +148,39 @@ function getHomeInfo() {
             SosIn24h,
         };
     });
+}
+
+function getChart2Data() {
+    let _temp = [];
+    const _list = [
+        [100, 20, 34, 56, 77, 56, 30],
+        [50, 30, 24, 36, 47, 76, 90],
+        [60, 50, 24, 66, 67, 86, 20],
+    ];
+    if (!groupId.value) {
+        _temp = ylyList.value?.map((_e: any, idx: number) => {
+            return {
+                name: _e.name,
+                data: _list[idx],
+            };
+        });
+    } else {
+        const l = currentYly.value.name || '',
+            idx = l.substring(l.length, l.length - 1) - 1;
+        _temp = [
+            {
+                name: currentYly.value.name,
+                data: _list[idx],
+            },
+        ];
+    }
+    data.chart2Data = _temp;
+
+    let sum = 0;
+    _temp?.forEach((_e) => {
+        _e?.data?.forEach((_s) => sum =  +sum +_s);
+    });
+    data.chartSum = sum || 0;
 }
 </script>
 

@@ -62,7 +62,7 @@ import {
     handleDownload,
 } from '@/utils/tools';
 import { message as $message } from 'ant-design-vue';
-import recordTimeChart from '@/pages/service-records/compoments/record-time-chart.vue';
+import recordTimeChart from './compoments/record-time-chart.vue';
 import { Modal } from 'ant-design-vue';
 import { ExclamationCircleOutlined } from '@ant-design/icons-vue';
 import commonMixin from '@/mixins';
@@ -70,7 +70,6 @@ import RouteBreadcrumb from '@/components/breadcrumb/index.vue';
 
 interface Data {
     formData: {
-        serviceType?: string;
         date?: any[];
     };
     list: FormListProps[];
@@ -125,7 +124,6 @@ const $store = useStore(),
         ],
         /** 表单数据 */
         formData: {
-            serviceType: '值班长',
         },
         /** 列表数据 */
         tableData: [],
@@ -229,7 +227,7 @@ function getInfoAjax() {
         // $message.error('日期区间不能超过7天');
         return;
     }
-    !data.formData.serviceType && (data.formData.serviceType = '服务提供');
+    // !data.formData.serviceType && (data.formData.serviceType = '服务提供');
     const req = getReqData(data.formData);
     fetchRealTimeStat(req).then((res: any) => {
         data.chartData = {

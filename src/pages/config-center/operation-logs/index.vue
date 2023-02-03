@@ -85,7 +85,7 @@ const $store = useStore(),
         columns: [
             {
                 title: '系统菜单',
-                dataIndex: 'Dept',
+                dataIndex: 'SystemMenu',
                 minWidth: 120,
             },
             {

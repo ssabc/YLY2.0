@@ -10,25 +10,41 @@
                 <div class="cell">
                     <span class="label">值班长</span>
                     <span class="value"
-                        >{{ info.ForemanOnlineRate || 0 }}%</span
+                        >{{
+                            (info.ForemanOnlineRate * 100 + '')?.split(
+                                '.'
+                            )?.[0] || 0
+                        }}%</span
                     >
                 </div>
                 <div class="cell">
                     <span class="label">服务提供</span>
                     <span class="value"
-                        >{{ info.ProvisionOnlineRate || 0 }}%</span
+                        >{{
+                            (info.ProvisionOnlineRate * 100 + '')?.split(
+                                '.'
+                            )?.[0] || 0
+                        }}%</span
                     >
                 </div>
                 <div class="cell">
                     <span class="label">服务保障</span>
                     <span class="value"
-                        >{{ info.GuaranteeOnlineRate || 0 }}%</span
+                        >{{
+                            (info.GuaranteeOnlineRate * 100 + '')?.split(
+                                '.'
+                            )?.[0] || 0
+                        }}%</span
                     >
                 </div>
                 <div class="cell">
                     <span class="label">服务安全</span>
                     <span class="value"
-                        >{{ info.SecurityOnlineRate || 0 }}%</span
+                        >{{
+                            (info.SecurityOnlineRate * 100 + '')?.split(
+                                '.'
+                            )?.[0] || 0
+                        }}%</span
                     >
                 </div>
             </div>
@@ -92,7 +108,7 @@ watch(
 
 function initFn(_d: any) {
     nextTick(() => {
-        renderChart1(_d?.toralOnlineRate);
+        renderChart1((_d?.toralOnlineRate * 100 + '')?.split('.')?.[0]);
     });
 }
 const renderChart1 = (_rate: any) => {

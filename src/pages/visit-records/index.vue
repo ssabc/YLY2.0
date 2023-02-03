@@ -11,11 +11,11 @@
         <div class="row">
             <div class="column c1">
                 <div>访客数量统计（每周）</div>
-                <Chart1></Chart1>
+                <Chart1 :p-data="data.chart1Data"></Chart1>
             </div>
             <div class="column c1">
                 <div>分时段访客统计（7日）</div>
-                <Chart2></Chart2>
+                <Chart2 :p-data="data.chart2Data"></Chart2>
             </div>
         </div>
     </div>
@@ -33,8 +33,7 @@
 
 <script setup lang="ts" name="NurseAideIndex">
 import { useStore } from 'vuex';
-import { useRouter } from 'vue-router';
-import { ref, reactive, computed } from 'vue';
+import { ref, reactive, computed, onMounted} from 'vue';
 import type { ColumnProps, FormListProps } from 'GlobComponentsModule';
 import { fetchServiceFileList } from '@/api/service-records';
 import { dealReqData } from '@/utils/tools';
@@ -49,6 +48,8 @@ interface Data {
     list: FormListProps[];
     tableData: Item[];
     columns: ColumnProps[];
+    chart1Data: any[];
+    chart2Data: any[];
 }
 interface Item {
     deviceId: string;
@@ -59,8 +60,9 @@ interface Item {
 let sendRequest = ref(false);
 
 const $store = useStore(),
-    isAdmin = computed(() => $store.getters['common/isAdmin']),
-    $router = useRouter(),
+    ylyList = computed(() => $store.getters['common/ylyList']),
+    groupId = computed(() => $store.getters['common/groupId']),
+    currentYly = computed(() => $store.getters['common/currentYly']),
     data = reactive<Data>({
         /** 表单list */
         list: [
@@ -119,8 +121,43 @@ const $store = useStore(),
                 dataIndex: 'FileDuration',
             },
         ],
+        chart1Data: [],
+        chart2Data: [],
     });
-commonMixin(() => (sendRequest.value = true));
+commonMixin(() => initfn());
+
+onMounted(() => {
+    initfn();
+});
+
+function initfn() {
+    sendRequest.value = true;
+
+    let _temp = [];
+    const _list = [
+        [100, 20, 34, 56, 77, 56, 30],
+        [50, 30, 24, 36, 47, 76, 90],
+        [60, 50, 24, 66, 67, 86, 20],
+    ];
+    if (!groupId.value) {
+        _temp = ylyList.value?.map((_e: any, idx: number) => {
+            return {
+                name: _e.name,
+                data: _list[idx],
+            };
+        });
+    } else {
+        const l = currentYly.value.name || '',
+            idx = l.substring(l.length, l.length - 1) - 1;
+        _temp = [
+            {
+                name: currentYly.value.name,
+                data: _list[idx],
+            },
+        ];
+    }
+    data.chart1Data = data.chart2Data = _temp;
+}
 </script>
 <style lang="less" scoped>
 .row {

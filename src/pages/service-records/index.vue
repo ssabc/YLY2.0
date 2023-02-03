@@ -38,18 +38,14 @@
             <Chart2 :p-data="data.chartData"></Chart2>
         </div>
     </div>
-    <div class="row cm-box">
-        <div class="column c1">
-            <div>
-                <div class="time-desc">24小时新增记录</div>
-                <div style="width: 800px">
-                    <Latestrecords
-                        :p-data="data.fileRank"
-                        :type="'inner'"
-                    ></Latestrecords>
-                </div>
-            </div>
-        </div>
+    <div class="cm-box">
+        <div class="table-title">24小时新增记录</div>
+        <GmTable
+            v-model:data="data.fileRank"
+            :custom-row="onRow"
+            :pagination="false"
+            :headers="data.columns"
+        />
     </div>
 </template>
 
@@ -60,16 +56,21 @@ import type { FormListProps } from 'GlobComponentsModule';
 import { DiffOutlined } from '@ant-design/icons-vue';
 import Chart2 from './compoments/chart2.vue';
 import { fetchServiceRecord } from '@/api/service-records';
-import { getReqData, GetNumberOfDays, second2minutes } from '@/utils/tools';
+import {
+    getReqData,
+    GetNumberOfDays,
+    second2minutes,
+    showFileDurationText,
+} from '@/utils/tools';
 import { message as $message } from 'ant-design-vue';
 import { useRouter } from 'vue-router';
 import commonMixin from '@/mixins';
-import Latestrecords from '@/pages/home/components/chart3.vue';
 
 interface Data {
     formData: {
         serviceType?: string;
         date?: any[];
+        columns?: any[];
     };
     list: FormListProps[];
     statisList?: any[];
@@ -134,6 +135,34 @@ const $store = useStore(),
         statisList: [],
         chartData: [],
         fileRank: [],
+        /** 列表项 */
+        columns: [
+            {
+                title: '序号',
+                type: 'index',
+                width: 80,
+                dataIndex: 'index',
+            },
+            {
+                title: '养老院',
+                dataIndex: 'GroupName',
+            },
+            {
+                title: '记录时长',
+                dataIndex: 'FileDuration',
+                customRender: ({ text }) => {
+                    return showFileDurationText(text);
+                },
+            },
+            {
+                title: '设备号',
+                dataIndex: 'DeviceSn',
+            },
+            {
+                title: '记录类型',
+                dataIndex: 'ServiceType',
+            },
+        ],
     }),
     $router = useRouter();
 
@@ -171,6 +200,18 @@ function getInfoAjax() {
         };
         data.fileRank = res.data.LastFile || [];
     });
+}
+function onRow(item: any) {
+    return {
+        onClick: () => {
+            if (!item.ServiceType) {
+                return;
+            }
+            const fileId = item.FileId;
+            fileId &&
+                $router.push(`/service-records/video-detail?id=${fileId}`);
+        }, // 点击行
+    };
 }
 
 function setStatisList(_t: any) {

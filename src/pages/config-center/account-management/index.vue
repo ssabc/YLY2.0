@@ -114,7 +114,7 @@ const $store = useStore(),
         columns: [
             {
                 title: '所属机构',
-                dataIndex: 'Account',
+                dataIndex: 'GroupName',
                 minWidth: 120,
             },
             {
@@ -129,8 +129,8 @@ const $store = useStore(),
                 },
             },
             {
-                title: '设置者账号',
-                dataIndex: 'Name',
+                title: '账户名',
+                dataIndex: 'Account',
             },
             {
                 title: '联系人',

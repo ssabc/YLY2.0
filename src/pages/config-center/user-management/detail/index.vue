@@ -1,7 +1,7 @@
 <!--
  * @Author: zhaoshan
  * @Date: 2022-11-30 14:10:30
- * @LastEditTime: 2023-02-01 22:43:34
+ * @LastEditTime: 2023-02-02 23:26:22
  * @LastEditors: sZhao
  * @Description:
 -->
@@ -46,7 +46,7 @@ const $router = useRouter(),
         },
         {
             type: 'input',
-            name: 'UserName',
+            name: 'Contacts',
             label: '联系人：',
             props: {
                 placeholder: '',
@@ -63,7 +63,7 @@ const $router = useRouter(),
         {
             type: 'input',
             name: 'Setter',
-            label: '记设置者账号：',
+            label: '设置者账号：',
             props: {
                 placeholder: '',
                 disabled: true,
@@ -144,7 +144,7 @@ function handleClick(e: any) {
  * @description: table 项操作
  */
  const onSubmit = () => {
-    const keys = ['setter', 'Telephone', 'DevId'],
+    const keys = ['setter', 'Telephone', 'DevId', 'Contacts'],
         _req = {};
 
     Object.keys(formData).forEach((_k: string) => {

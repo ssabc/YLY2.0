@@ -124,7 +124,7 @@ const $store = useStore(),
                 },
             },
             {
-                title: '测温随申码访客机启用时间',
+                title: '测温随申码访客机启用时间：',
                 dataIndex: 'time',
                 minWidth: 120,
                 customRender: ({ text }) => {
@@ -155,6 +155,7 @@ const $store = useStore(),
     });
 
 onActivated(() => {
+    console.log('执行了actived方法。。。');
     sendRequest = true;
 });
 

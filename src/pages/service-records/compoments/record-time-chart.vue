@@ -25,7 +25,9 @@ watchEffect(() => {
 const renderChart1 = (list: any) => {
     const _newList = list || [],
         xAxisData = _newList?.map((_e: any) => _e?.Date),
-        seriesData = _newList?.map((_e: any) => _e?.TotalFileDuration);
+        seriesData = _newList?.map((_e: any) =>
+            Math.floor(_e?.TotalFileDuration / 60)
+        );
     const option = {
         legend: {
             icon: 'circle',
@@ -90,7 +92,7 @@ const renderChart1 = (list: any) => {
         ],
         yAxis: [
             {
-                name: '次数',
+                name: '分钟',
                 nameTextStyle: {
                     color: '#999',
                 },

@@ -3,212 +3,141 @@
 </template>
 
 <script setup lang="ts">
-import { useStore } from 'vuex';
-import { computed, watchEffect, nextTick } from 'vue';
+import { watch, nextTick } from 'vue';
 import * as echarts from 'echarts';
+import { getLastest7day } from '@/utils/tools';
 
-interface Props {}
-const $store = useStore(),
-    $props = defineProps<Props>(),
-    isAdmin = computed(() => $store.getters['common/isAdmin']);
+interface Props {
+    pData?: any;
+}
+const $props = defineProps<Props>();
 
-watchEffect(() => {
-    initFn();
-});
+watch(
+    () => $props.pData,
+    (e) => {
+        initFn(e);
+    },
+    {
+        immediate: false,
+    }
+);
 
-function initFn() {
+function initFn(_list: any) {
     nextTick(() => {
-        renderChart1();
+        renderChart1(_list);
     });
 }
 
-const renderChart1 = (data: any) => {
+const renderChart1 = (_list: any) => {
     const colorList = ['#2984f8', '#67d4fb', '#ff9700', '#7357ff', '#f2d750'],
-        option = {
-            legend: {
-                icon: 'circle',
-                top: '5%',
-                right: '8%',
-                itemWidth: 6,
-                itemGap: 5,
-                textStyle: {
-                    color: '#fff',
-                    padding: [3, 0, 0, 0],
+        seriesData = [];
+    _list?.map((_e: any, idx: number) => {
+        seriesData.push({
+            name: _e.name,
+            type: 'line',
+            data: _e.data,
+            symbolSize: 1,
+            symbol: 'circle',
+            smooth: true,
+            showSymbol: false,
+            lineStyle: {
+                width: 2,
+                color: colorList[idx],
+                shadowColor: 'rgba(144, 255, 198, .3)',
+                shadowBlur: 5,
+                shadowOffsetY: 5,
+            },
+            itemStyle: {
+                normal: {
+                    color: colorList[idx],
+                    borderColor: colorList[idx],
                 },
             },
-            tooltip: {
-                trigger: 'axis',
+        });
+    });
+    const option = {
+        legend: {
+            icon: 'circle',
+            top: '5%',
+            right: '8%',
+            itemWidth: 6,
+            itemGap: 5,
+            textStyle: {
+                color: '#fff',
+                padding: [3, 0, 0, 0],
             },
-            grid: {
-                top: '15%',
-                left: '8%',
-                bottom: '15%',
-                right: '8%',
-            },
-            xAxis: [
-                {
-                    name: '日期',
-                    nameLocation: 'start',
-                    nameGap: 20,
-                    type: 'category',
-                    data: [
-                        '12/1',
-                        '12/2',
-                        '12/3',
-                        '12/4',
-                        '12/5',
-                        '12/6',
-                        '12/7',
-                    ],
-                    axisLine: {
-                        lineStyle: {
-                            color: '#fff',
-                        },
+        },
+        tooltip: {
+            trigger: 'axis',
+        },
+        grid: {
+            top: '15%',
+            left: '8%',
+            bottom: '15%',
+            right: '8%',
+        },
+        xAxis: [
+            {
+                name: '日期',
+                nameLocation: 'start',
+                nameGap: 20,
+                type: 'category',
+                data: getLastest7day(),
+                axisLine: {
+                    lineStyle: {
+                        color: '#fff',
                     },
-                    axisTick: {
-                        show: false,
+                },
+                axisTick: {
+                    show: false,
+                },
+                axisLabel: {
+                    textStyle: {
+                        color: '#999',
                     },
-                    axisLabel: {
-                        textStyle: {
-                            color: '#999',
-                        },
-                        // 默认x轴字体大小）
-                        fontSize: 12,
-                        // margin:文字到x轴的距离
+                    // 默认x轴字体大小）
+                    fontSize: 12,
+                    // margin:文字到x轴的距离
+                    margin: 10,
+                },
+                axisPointer: {
+                    label: {
+                        // padding: [11, 5, 7],
+                        padding: [0, 0, 0, 0],
+                        // 这里的margin和axisLabel的margin要一致!
                         margin: 10,
-                    },
-                    axisPointer: {
-                        label: {
-                            // padding: [11, 5, 7],
-                            padding: [0, 0, 0, 0],
-                            // 这里的margin和axisLabel的margin要一致!
-                            margin: 10,
-                            // 移入时的字体大小
-                            fontSize: 12,
-                            backgroundColor: 'rgba(0,0,0,0)',
-                        },
-                    },
-                    boundaryGap: false,
-                },
-            ],
-            yAxis: [
-                {
-                    name: '(次)',
-                    axisTick: {
-                        show: false,
-                    },
-                    axisLine: {
-                        show: true,
-                        lineStyle: {
-                            color: '#fff',
-                        },
-                    },
-                    axisLabel: {
-                        textStyle: {
-                            color: '#999',
-                        },
-                    },
-                    splitLine: {
-                        show: false,
+                        // 移入时的字体大小
+                        fontSize: 12,
+                        backgroundColor: 'rgba(0,0,0,0)',
                     },
                 },
-            ],
-            series: [
-                {
-                    name: '养老院1',
-                    type: 'line',
-                    data: [100, 20, 30, 102, 15, 30, 20, 18],
-                    symbolSize: 1,
-                    symbol: 'circle',
-                    smooth: true,
-                    showSymbol: false,
+                boundaryGap: false,
+            },
+        ],
+        yAxis: [
+            {
+                name: '人次',
+                axisTick: {
+                    show: false,
+                },
+                axisLine: {
+                    show: true,
                     lineStyle: {
-                        width: 2,
-                        color: new echarts.graphic.LinearGradient(1, 1, 0, 0, [
-                            {
-                                offset: 0,
-                                color: '#90ffc6',
-                            },
-                            {
-                                offset: 1,
-                                color: '#46ea91',
-                            },
-                        ]),
-                        shadowColor: 'rgba(144, 255, 198, .3)',
-                        shadowBlur: 5,
-                        shadowOffsetY: 5,
-                    },
-                    itemStyle: {
-                        normal: {
-                            color: colorList[0],
-                            borderColor: colorList[0],
-                        },
+                        color: '#fff',
                     },
                 },
-                {
-                    name: '养老院2',
-                    type: 'line',
-                    data: [20, 12, 11, 14, 25, 16, 10, 20],
-                    symbolSize: 1,
-                    symbol: 'circle',
-                    smooth: true,
-                    showSymbol: false,
-                    lineStyle: {
-                        width: 2,
-                        color: new echarts.graphic.LinearGradient(1, 1, 0, 0, [
-                            {
-                                offset: 0,
-                                color: '#67bcfc',
-                            },
-                            {
-                                offset: 1,
-                                color: '#2ba0ff',
-                            },
-                        ]),
-                        shadowColor: 'rgba(105, 188, 252,.3)',
-                        shadowBlur: 5,
-                        shadowOffsetY: 5,
-                    },
-                    itemStyle: {
-                        normal: {
-                            color: colorList[1],
-                            borderColor: colorList[1],
-                        },
+                axisLabel: {
+                    textStyle: {
+                        color: '#999',
                     },
                 },
-                {
-                    name: '养老院3',
-                    type: 'line',
-                    data: [150, 120, 170, 140, 100, 160, 110, 110],
-                    symbolSize: 1,
-                    symbol: 'circle',
-                    smooth: true,
-                    showSymbol: false,
-                    lineStyle: {
-                        width: 2,
-                        color: new echarts.graphic.LinearGradient(1, 1, 0, 0, [
-                            {
-                                offset: 0,
-                                color: '#fc937e ',
-                            },
-                            {
-                                offset: 1,
-                                color: '#ed593b',
-                            },
-                        ]),
-                        shadowColor: 'rgb(252, 147, 126,.3)',
-                        shadowBlur: 2,
-                        shadowOffsetY: 2,
-                    },
-                    itemStyle: {
-                        normal: {
-                            color: colorList[2],
-                            borderColor: colorList[2],
-                        },
-                    },
+                splitLine: {
+                    show: false,
                 },
-            ],
-        };
+            },
+        ],
+        series: seriesData,
+    };
     // 绘制图表
     let myChart = echarts.init(document.getElementById('ylyChart2'));
     myChart.clear();

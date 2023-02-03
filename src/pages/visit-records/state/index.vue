@@ -148,7 +148,7 @@ function getInfoAjax() {
         $message.error('日期区间不能超过7天');
         return;
     }
-    !data.formData.serviceType && (data.formData.serviceType = '服务提供');
+    // !data.formData.serviceType && (data.formData.serviceType = '服务提供');
     const req = getReqData(data.formData);
     fetchServiceStat(req).then((res: any) => {
         data.chartData = {

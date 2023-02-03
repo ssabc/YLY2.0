@@ -1,7 +1,7 @@
 /*
  * @Author: szhao
  * @Date: 2022-12-02 19:32:00
- * @LastEditTime: 2023-02-01 21:51:30
+ * @LastEditTime: 2023-02-02 22:47:02
  * @LastEditors: sZhao
  * @Description:
  */
@@ -124,6 +124,7 @@ export const toLine = function (name: string) {
 export const changeHourMinutestr = function (str: number) {
     let _h = '0',
         _m = '0';
+    str = +str / 60;
     if (str) {
         _h =
             Math.floor(str / 60).toString().length < 2
@@ -133,6 +134,8 @@ export const changeHourMinutestr = function (str: number) {
             (str % 60).toString().length < 2
                 ? '0' + (str % 60).toString()
                 : (str % 60).toString();
+        _h = _h.split('.')[0];
+        _m = _m.split('.')[0];
     }
     return {
         h: _h,
