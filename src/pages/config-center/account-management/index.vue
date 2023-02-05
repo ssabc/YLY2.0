@@ -4,14 +4,14 @@
             v-model:data="data.formData"
             :list="data.list"
             layout="inline"
-            @on-handle="sendRequest = true"
+            @on-handle="data.sendRequest = true"
         >
         </GmForm>
     </div>
     <div class="cm-box">
         <GmTable
             v-model:data="data.tableData"
-            v-model:sendRequest="sendRequest"
+            v-model:sendRequest="data.sendRequest"
             :headers="data.columns"
             :request-api="fetchConfigAccount"
             :send-data="dealReqData(data.formData)"
@@ -23,7 +23,7 @@
 <script setup lang="ts" name="AccountManagement">
 import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
-import { ref, reactive, computed, toRaw, createVNode, onActivated} from 'vue';
+import { reactive, computed, toRaw, createVNode, onActivated } from 'vue';
 import type {
     ColumnProps,
     FormListProps,
@@ -41,6 +41,7 @@ interface Data {
     list: FormListProps[];
     tableData: Item[];
     columns: ColumnProps[];
+    sendRequest: boolean;
 }
 interface Item {
     deviceId: string;
@@ -48,12 +49,12 @@ interface Item {
     groupId: string;
     upgradeStatus: string;
 }
-let sendRequest = ref(false);
 
 const $store = useStore(),
     isAdmin = computed(() => $store.getters['common/isAdmin']),
     $router = useRouter(),
     data = reactive<Data>({
+        sendRequest: false,
         /** 表单list */
         list: [
             {
@@ -118,7 +119,11 @@ const $store = useStore(),
                 minWidth: 120,
             },
             {
-                title: '账户类型',
+                title: '账户名称',
+                dataIndex: 'Username',
+            },
+            {
+                title: '账户类',
                 dataIndex: 'AccountType',
             },
             {
@@ -129,12 +134,12 @@ const $store = useStore(),
                 },
             },
             {
-                title: '账户名',
-                dataIndex: 'Account',
+                title: '设置者账号',
+                dataIndex: 'Setter',
             },
             {
                 title: '联系人',
-                dataIndex: 'Contact',
+                dataIndex: 'Contacts',
             },
             {
                 title: '联系电话',
@@ -163,7 +168,7 @@ const $store = useStore(),
         ],
     });
 onActivated(() => {
-    sendRequest = true;
+    data.sendRequest = true;
 });
 /**
  * @description: table 项操作
@@ -186,13 +191,13 @@ function handleClick(item: TableHandleOptItem, row: any) {
 }
 function handleToDetail(row: any) {
     $router.push(
-        `/config-center/account-management/detail1?id=${row.GroupId}&type=1`
+        `/config-center/account-management/detail1?id=${row.RegisterId}&type=1`
     );
 }
 
 function handleToEdit(row: any) {
     $router.push(
-        `/config-center/account-management/edit1?id=${row.GroupId}&type=2`
+        `/config-center/account-management/edit1?id=${row.RegisterId}&type=2`
     );
 }
 function handleDelete() {

@@ -4,14 +4,14 @@
             v-model:data="data.formData"
             :list="data.list"
             layout="inline"
-            @on-handle="sendRequest = true"
+            @on-handle="data.sendRequest = true"
         >
         </GmForm>
     </div>
     <div class="cm-box">
         <GmTable
             v-model:data="data.tableData"
-            v-model:sendRequest="sendRequest"
+            v-model:sendRequest="data.sendRequest"
             :headers="data.columns"
             :request-api="feachUserList"
             :send-data="dealReqData(data.formData)"
@@ -41,6 +41,7 @@ interface Data {
     list: FormListProps[];
     tableData: Item[];
     columns: ColumnProps[];
+    sendRequest: boolean;
 }
 interface Item {
     deviceId: string;
@@ -48,12 +49,12 @@ interface Item {
     groupId: string;
     upgradeStatus: string;
 }
-let sendRequest = ref(false);
 
 const $store = useStore(),
     isAdmin = computed(() => $store.getters['common/isAdmin']),
     $router = useRouter(),
     data = reactive<Data>({
+        sendRequest: false,
         /** 表单list */
         list: [
             {
@@ -146,7 +147,7 @@ const $store = useStore(),
     });
 
 onActivated(() => {
-    sendRequest = true;
+    data.sendRequest = true;
 });
 /**
  * @description: table 项操作

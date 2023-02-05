@@ -181,6 +181,7 @@ formData = computed({
  * @description: 统一处理click
  */
 function handleClick(item: any, type: string) {
+    console.log('4343434', item, type)
     switch (type) {
         case 'submit':
             refForm.value

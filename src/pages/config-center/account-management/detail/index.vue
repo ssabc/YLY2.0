@@ -1,7 +1,7 @@
 <!--
  * @Author: zhaoshan
  * @Date: 2022-11-30 14:10:30
- * @LastEditTime: 2023-02-03 21:21:15
+ * @LastEditTime: 2023-02-05 11:30:17
  * @LastEditors: sZhao
  * @Description:
 -->
@@ -21,6 +21,8 @@
 <script setup lang="ts">
 import { useRoute, useRouter } from 'vue-router';
 import { watch, reactive } from 'vue';
+import { saveUser, fetchUserInfo } from '@/api/config-center';
+import { message as $message } from 'ant-design-vue';
 
 const $router = useRouter(),
     $route = useRoute(),
@@ -28,6 +30,15 @@ const $router = useRouter(),
         {
             type: 'input',
             name: 'GroupName',
+            label: '所属机构：',
+            props: {
+                placeholder: '',
+                disabled: true,
+            },
+        },
+        {
+            type: 'input',
+            name: 'AccountType',
             label: '账户类型：',
             props: {
                 placeholder: '',
@@ -36,32 +47,8 @@ const $router = useRouter(),
         },
         {
             type: 'input',
-            name: 'Dean',
-            label: '账户：',
-            props: {
-                placeholder: '',
-            },
-        },
-        {
-            type: 'input',
-            name: 'Telephone',
-            label: '所属机构：',
-            props: {
-                placeholder: '',
-            },
-        },
-        {
-            type: 'input',
-            name: 'Address',
-            label: '联系人：',
-            props: {
-                placeholder: '',
-            },
-        },
-        {
-            type: 'input',
-            name: 'time',
-            label: '联系电话：',
+            name: 'Username',
+            label: '账户名称：',
             props: {
                 placeholder: '',
                 disabled: true,
@@ -69,7 +56,23 @@ const $router = useRouter(),
         },
         {
             type: 'input',
-            name: 'time',
+            name: 'Contacts',
+            label: '联系人：',
+            props: {
+                placeholder: '',
+            },
+        },
+        {
+            type: 'input',
+            name: 'Telephone',
+            label: '联系电话：',
+            props: {
+                placeholder: '',
+            },
+        },
+        {
+            type: 'input',
+            name: 'Setter',
             label: '设置者账号：',
             props: {
                 placeholder: '',
@@ -117,13 +120,11 @@ watch(
         immediate: true,
     }
 );
-function initFn(e: string) {
-    console.log(e);
-    // fetchServiceInfo({ fileId }).then((res) => {
-    //     res.data.FileDuration = showFileDurationText(+res.data.FileDuration);
-    //     data.formData = res.data ?? {};
-    //     data.videoUrl = data.formData.FilePath;
-    // });
+function initFn(registerId: string) {
+    console.log(registerId);
+    fetchUserInfo({ registerId }).then((res) => {
+        Object.assign(formData, res.data ?? {});
+    });
 }
 
 function handleClick(e: any) {
@@ -144,22 +145,15 @@ function handleClick(e: any) {
  */
 const onSubmit = () => {
     console.log('3333', formData);
-    // if (!data.formData?.FileTag) {
-    //     $message.error('服务内容必填！');
-    //     return;
-    // }
-    // serviceFileSave({
-    //     fileId: data.formData?.FileId,
-    //     fileTag: data.formData?.FileTag,
-    // }).then(() => {
-    //     $message.success('提交成功');
-    //     $router.go(-1);
-    // });
+    saveUser({
+        registerId: formData.RegisterId,
+        contacts: formData?.Contacts,
+        telephone: formData?.Telephone,
+    }).then(() => {
+        $message.success('提交成功');
+        $router.go(-1);
+    });
 };
-
-function back() {
-    $router.go(-1);
-}
 </script>
 
 <style lang="less" scoped>

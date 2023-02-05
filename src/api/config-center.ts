@@ -1,7 +1,7 @@
 /*
  * @Author: sZhao
  * @Date: 2023-01-10 23:19:43
- * @LastEditTime: 2023-02-01 22:29:15
+ * @LastEditTime: 2023-02-05 11:38:32
  * @LastEditors: sZhao
  * @Description:护工帮
  */
@@ -34,7 +34,29 @@ export function fetchConfigSystemLog(query: any) {
  */
 export function fetchConfigAccount(query: any) {
     return request({
-        url: `${prefix}/manage/config/account`,
+        url: `${prefix}/manage/config/register`,
+        method: 'post',
+        data: query,
+    });
+}
+
+/**
+ * @description 账户管理-保存
+ */
+export function saveUser(query: any) {
+    return request({
+        url: `${prefix}/manage/config/register/save`,
+        method: 'post',
+        data: query,
+    });
+}
+
+/**
+ * @description 账户管理-详情
+ */
+export function fetchUserInfo(query: any) {
+    return request({
+        url: `${prefix}/manage/config/register/info`,
         method: 'post',
         data: query,
     });

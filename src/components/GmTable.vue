@@ -101,15 +101,6 @@ interface Props {
     selectedRowKeys?: number[];
 }
 
-function onRow(record) {
-    console.log('点击行：', record)
-    return {
-        onClick: (event) => {
-            console.log('点击行：', event, record)
-        }, // 点击行
-    };
-}
-
 const $props = defineProps<Props>(),
     $store = useStore(),
     gisUrl = computed(() => $store.getters['common/gisMapUrl']),
@@ -184,6 +175,7 @@ function handleChange(p: PaginationProps) {
  * @description: 请求更新表格数据api
  */
 function fetchTableData() {
+    console.log('343434', $props.sendRequest);
     const { requestApi, sendData = {}, currentName, pageSizeName } = $props,
         current = currentName ?? 'page',
         pageSize = pageSizeName ?? 'page-size';
