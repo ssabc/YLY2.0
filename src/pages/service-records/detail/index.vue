@@ -1,22 +1,14 @@
 <!--
  * @Author: szhao
  * @Date: 2023-01-10 10:59:12
- * @LastEditTime: 2023-01-20 10:19:19
+ * @LastEditTime: 2023-02-06 19:25:52
  * @LastEditors: szhao
  * @Description:
 -->
 <template>
     <div class="row cm-box">
         <div class="column c1">
-            <video
-                v-if="data.videoUrl"
-                style="width: 100%; height: 100%"
-                controls
-            >
-                <source :src="data.videoUrl" type="video/mp4" />
-                <source :src="data.videoUrl" type="video/ogg" />
-                您的浏览器不支持Video标签。
-            </video>
+            <div id="Player" style="width: 100%; height: 100%"></div>
         </div>
         <div class="column c2">
             <GmForm
@@ -30,10 +22,11 @@
 </template>
 <script setup lang="ts">
 import { useStore } from 'vuex';
-import { reactive, watch, onActivated } from 'vue';
+import { reactive, watch, computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import type { FormListProps } from 'GlobComponentsModule';
-import { fetchServiceInfo, serviceFileSave } from '@/api/service-records';
+import { serviceFileSave } from '@/api/service-records';
+import { fetchRealTimeInfo } from '@/api/app';
 import { message as $message } from 'ant-design-vue';
 import { showFileDurationText } from '@/utils/tools';
 
@@ -41,12 +34,15 @@ interface Data {
     formData: any;
     list: FormListProps[];
     videoUrl: string;
+    player: any;
 }
 
 const $store = useStore(),
     $route = useRoute(),
     $router = useRouter(),
+    isFlv = computed(() => $route.query.type != '1'),
     data = reactive<Data>({
+        player: null,
         formData: {},
         /** 表单list */
         list: [
@@ -164,13 +160,6 @@ const $store = useStore(),
         //         `http://119.3.126.12:8064/streams
         // /001000101/20230106/20230106205039-00N.MP4`
     });
-
-onActivated(() => {
-    console.log(
-        '++++++++++++++++++++4444444444444444444444444+++++++++++++++++我缓存了呀！'
-    );
-});
-
 watch(
     () => $route.query.id,
     (e) => {
@@ -180,12 +169,25 @@ watch(
         immediate: true,
     }
 );
+function initVideoFn(url: string, domId: string) {
+    // 实例化播放器
+    data.player = new WasmPlayer(null, domId, callbackfun);
+    // 调用播放
+    data.player.play(url, 1);
+}
 
+function callbackfun(e) {
+    console.log('callbackfun', e);
+}
 function initFn(fileId: any) {
-    fetchServiceInfo({ fileId }).then((res) => {
+    fetchRealTimeInfo({ fileId }).then((res: any) => {
         res.data.FileDuration = showFileDurationText(+res.data.FileDuration);
         data.formData = res.data ?? {};
-        data.videoUrl = data.formData.FilePath;
+        data.videoUrl = isFlv.value
+            ? data.formData.FilePath2
+            : data.formData.FilePath;
+        console.log('isFlv.value', isFlv.value ? '2' : ' 1', data.videoUrl);
+        initVideoFn(data.videoUrl, 'Player');
     });
 }
 
@@ -232,6 +234,8 @@ const onSubmit = () => {
             background-color: #efefef;
             margin-right: 15px;
             max-width: 500px;
+            display: flex;
+            align-items: center;
         }
         &.c2 {
             width: 400px;

@@ -1,7 +1,7 @@
 /*
  * @Author: sZhao
  * @Date: 2023-01-08 15:09:43
- * @LastEditTime: 2023-01-30 17:13:50
+ * @LastEditTime: 2023-02-06 19:04:00
  * @LastEditors: szhao
  * @Description:
  */
@@ -129,6 +129,15 @@ export function fetchNursingMap(data: any) {
 export function deleteFile(data: any) {
     return request({
         url: `${prefix}/manage/sync/file/delete`,
+        method: 'post',
+        data,
+    });
+}
+
+/** 获取实时调度视频详情接口 */
+export function fetchRealTimeInfo(data: any) {
+    return request({
+        url: `${prefix}/manage/real-time/list/info`,
         method: 'post',
         data,
     });

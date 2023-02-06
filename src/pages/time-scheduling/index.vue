@@ -123,8 +123,7 @@ const $store = useStore(),
             },
         ],
         /** 表单数据 */
-        formData: {
-        },
+        formData: {},
         /** 列表数据 */
         tableData: [],
         /** 列表项 */
@@ -169,12 +168,12 @@ const $store = useStore(),
                     {
                         name: '点击查看',
                         type: 'view',
-                        disabled: !record.FileHref,
+                        disabled: !record.FileHref2,
                     },
                     {
                         name: '下载',
                         type: 'download',
-                        disabled: !record.FileHref,
+                        disabled: !record.FileHref2,
                     },
                     {
                         name: '删除',
@@ -257,7 +256,7 @@ function handleClick(item: TableHandleOptItem, row: any) {
             handleToDetail(rowData);
             break;
         case '下载':
-            handleDownload(rowData.GroupName, rowData.FileHref);
+            handleDownload(rowData.GroupName, rowData.FileHref2);
             break;
         case '删除':
             handleDelete(rowData.FileId);
@@ -267,7 +266,7 @@ function handleClick(item: TableHandleOptItem, row: any) {
 }
 function handleToDetail(row: any) {
     console.log(row, '---');
-    $router.push(`/service-records/video-detail?id=${row.FileId}`);
+    $router.push(`/time-scheduling/video-detail?id=${row.FileId}`);
 }
 
 function handleDelete(fileId: string | number) {

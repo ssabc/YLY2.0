@@ -271,7 +271,7 @@ function handleClick(item: TableHandleOptItem, row: any) {
     }
 }
 function handleToDetail(row: any) {
-    $router.push(`/service-records/video-detail?id=${row.FileId}`);
+    $router.push(`/service-records/video-detail?id=${row.FileId}&type=1`);
 }
 
 function handleDelete(fileId: string | number) {

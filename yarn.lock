@@ -348,6 +348,11 @@
   resolved "https://registry.npmmirror.com/@ctrl/tinycolor/-/tinycolor-3.4.1.tgz#75b4c27948c81e88ccd3a8902047bcd797f38d32"
   integrity sha512-ej5oVy6lykXsvieQtqZxCOaLT+xD4+QNarq78cIYISHmZXshCvROLudpQN3lfL8G0NL7plMSSK+zlyvCaIJ4Iw==
 
+"@easydarwin/easywasmplayer@^4.0.13":
+  version "4.0.13"
+  resolved "https://registry.npmmirror.com/@easydarwin/easywasmplayer/-/easywasmplayer-4.0.13.tgz#83dc92d880e9b0528e5d4cfc9c669a1a1e420c08"
+  integrity sha512-yvVlFZgmrydMxAEeA1IHWHgt4T91TGLOHhgCOSLkI1iHddPl7wEw2U7+0E+TcKNHaPf5/FqF/4JR4+W+kRr2HA==
+
 "@emmetio/abbreviation@^2.2.3":
   version "2.2.3"
   resolved "https://registry.npmjs.org/@emmetio/abbreviation/-/abbreviation-2.2.3.tgz#2b3c0383c1a4652f677d5b56fb3f1616fe16ef10"
@@ -1700,6 +1705,11 @@ dot-prop@^5.1.0, dot-prop@^5.2.0:
 eastasianwidth@^0.2.0:
   version "0.2.0"
   resolved "https://registry.npmjs.org/eastasianwidth/-/eastasianwidth-0.2.0.tgz#696ce2ec0aa0e6ea93a397ffcf24aa7840c827cb"
+
+easywasmplayer@^1.0.6:
+  version "1.0.6"
+  resolved "https://registry.npmmirror.com/easywasmplayer/-/easywasmplayer-1.0.6.tgz#848e00674e26896b57d2adda9b8c1cd6ea0932b5"
+  integrity sha512-6hGnaj1olr3SQToYlZxggNMgFZpSCUOK//jkq0q1lZ76MfOHXXPwhbXNwMmlwZuW0TdCUKQFK8P2yTV6amb4NA==
 
 echarts-liquidfill@^3.1.0:
   version "3.1.0"

@@ -63,7 +63,7 @@ function handleNaviFn(item: any) {
     // id != undefined && $router.push(`/service-records/list/${id}`);
 
     const fileId = item.FileId;
-    fileId && $router.push(`/service-records/video-detail?id=${fileId}`);
+    fileId && $router.push(`/service-records/video-detail?id=${fileId}&type=1`);
 }
 </script>
 

@@ -209,7 +209,7 @@ function onRow(item: any) {
             }
             const fileId = item.FileId;
             fileId &&
-                $router.push(`/service-records/video-detail?id=${fileId}`);
+                $router.push(`/service-records/video-detail?id=${fileId}&type=1`);
         }, // 点击行
     };
 }

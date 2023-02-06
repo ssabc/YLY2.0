@@ -1,7 +1,7 @@
 /*
  * @Author: szhao
  * @Date: 2022-11-30 14:10:30
- * @LastEditTime: 2023-02-02 10:23:20
+ * @LastEditTime: 2023-02-06 10:12:04
  * @LastEditors: szhao
  * @Description:
  */
@@ -47,6 +47,16 @@ export const routes: RouteItem[] = [
             isShowBreadCrumb: true,
         },
         component: lazyImportPagesRootVueFile('time-scheduling'),
+    },
+    {
+        name: 'TimeSchedulingVideoDetail',
+        path: '/time-scheduling/video-detail',
+        meta: {
+            title: '视频详情',
+            hidden: true,
+            isShowBack: true,
+        },
+        component: lazyImportPagesRootVueFile('service-records/detail'),
     },
     ...nurseAide,
     ...visitRecords,
