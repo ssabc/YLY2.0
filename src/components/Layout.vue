@@ -1,7 +1,8 @@
 <template>
     <a-layout class="base-layout h-full">
         <Header></Header>
-        <a-layout v-if="data.modulesMenu && data.modulesMenu.length > 0">
+        <!-- v-if="data.modulesMenu && data.modulesMenu.length > 0" -->
+        <a-layout>
             <a-layout-sider class="overflow-y-scroll">
                 <a-menu
                     v-model:selectedKeys="data.selectedKeys"
@@ -61,7 +62,7 @@
                 </a-card>
             </a-layout-content>
         </a-layout>
-        <ViewRouter v-else />
+        <!-- <ViewRouter v-else /> -->
     </a-layout>
 </template>
 

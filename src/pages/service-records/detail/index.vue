@@ -1,7 +1,7 @@
 <!--
  * @Author: szhao
  * @Date: 2023-01-10 10:59:12
- * @LastEditTime: 2023-02-06 19:25:52
+ * @LastEditTime: 2023-02-07 10:19:03
  * @LastEditors: szhao
  * @Description:
 -->
@@ -157,8 +157,6 @@ const $store = useStore(),
             },
         ],
         videoUrl: '',
-        //         `http://119.3.126.12:8064/streams
-        // /001000101/20230106/20230106205039-00N.MP4`
     });
 watch(
     () => $route.query.id,
@@ -183,9 +181,15 @@ function initFn(fileId: any) {
     fetchRealTimeInfo({ fileId }).then((res: any) => {
         res.data.FileDuration = showFileDurationText(+res.data.FileDuration);
         data.formData = res.data ?? {};
-        data.videoUrl = isFlv.value
+        let videoUrl = isFlv.value
             ? data.formData.FilePath2
             : data.formData.FilePath;
+        // videoUrl = videoUrl.replace('http://119.3.126.12:8064/', 'videofile/');
+        // videoUrl = videoUrl.replace(
+        //     'http://119.3.126.12:10010/',
+        //     'videoflvfile/'
+        // );
+        data.videoUrl = videoUrl;
         console.log('isFlv.value', isFlv.value ? '2' : ' 1', data.videoUrl);
         initVideoFn(data.videoUrl, 'Player');
     });

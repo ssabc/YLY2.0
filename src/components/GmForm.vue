@@ -7,10 +7,10 @@
         :rules="rules"
     >
         <a-form-item
-            class="gm-form-item"
             v-for="item of list.filter((_e: any) => !_e.hidden)"
             v-bind="item.itemProps"
             :key="item.name"
+            class="gm-form-item"
             :name="item.name"
             :label="item.label"
             :required="item.required"
@@ -131,7 +131,7 @@
             <template v-if="item.type === 'slot'">
                 <slot :data="item" :name="`${item.name}-label`" />
             </template>
-            <div class="unit" v-if="item.unit">
+            <div v-if="item.unit" class="unit">
                 {{ item.unit?.text }}
             </div>
         </a-form-item>
@@ -181,7 +181,6 @@ formData = computed({
  * @description: 统一处理click
  */
 function handleClick(item: any, type: string) {
-    console.log('4343434', item, type)
     switch (type) {
         case 'submit':
             refForm.value

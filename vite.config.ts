@@ -50,6 +50,11 @@ export default ({ mode }) => {
                     changeOrigin: true,
                     rewrite: (path) => path.replace(/^\/videofile/, ''),
                 },
+                '/videoflvfile/': {
+                    target: 'http://119.3.126.12:10010/',
+                    changeOrigin: true,
+                    rewrite: (path) => path.replace(/^\/videoflvfile/, ''),
+                },
             },
         },
     };
