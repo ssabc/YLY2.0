@@ -2,7 +2,8 @@
     <a-layout class="base-layout h-full">
         <Header></Header>
         <!-- v-if="data.modulesMenu && data.modulesMenu.length > 0" -->
-        <a-layout>
+        <ViewRouter v-if="currentRouteName === 'Home'" />
+        <a-layout v-else>
             <a-layout-sider class="overflow-y-scroll">
                 <a-menu
                     v-model:selectedKeys="data.selectedKeys"
@@ -94,6 +95,7 @@ const data = reactive<Data>({
     $store = useStore(),
     $router = useRouter(),
     $route = useRoute(),
+    currentRouteName = computed(() => $route.name),
     // 二级路由首页path
     secondLevelRouteIndex = 'index',
     currentYly = computed(() => $store.getters['common/currentYly']),

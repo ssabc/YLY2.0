@@ -1,46 +1,67 @@
 <!--
  * @Author: zhaoshan
  * @Date: 2022-12-01 18:35:26
- * @LastEditTime: 2022-12-08 13:47:44
- * @LastEditors: szhao
+ * @LastEditTime: 2023-02-12 15:32:02
+ * @LastEditors: sZhao
  * @Description:
 -->
 <template>
     <a-modal
         :visible="modalData.visible"
-        :title="title"
+        :title="'查看视频'"
         :footer="null"
+        width="1240px"
+        height="700px"
         @cancel="$emit('cancel')"
     >
-        <video style="width: 100%; height: 100%" controls>
-            <source :src="vedioUrl" type="video/mp4" />
-            <!-- <source v-if="vedioUrlIMG" :src="vedioUrlIMG" type="video/jpg" /> -->
-            您的浏览器不支持 HTML5 video 标签。
-        </video>
+        <div style="width: 1200px; height: 660px" class="box">
+            <div id="Player1"></div>
+        </div>
     </a-modal>
 </template>
 <script setup lang="ts">
-import { computed, defineProps, defineEmits } from 'vue';
-import type { ModalData } from 'GlobComponentsModule';
+import { watch, defineProps, defineEmits, reactive, nextTick } from 'vue';
+
+interface Data {
+    player?: any;
+}
 
 const $props = defineProps<{
-        modalData: ModalData; // 弹窗数据信息
+        modalData: any; // 弹窗数据信息
     }>(),
+    data = reactive<Data>({
+        player: null,
+    }),
     $emit = defineEmits<{
         (event: 'cancel', v: void): void;
         (event: 'ok', v: void): void;
     }>();
-/** 弹窗标题 */
-const title = computed(() => {
-    return `${$props.modalData.data.FileName}`;
-});
-const vedioUrl = computed(() => {
-    return `${$props.modalData.data.FilePath || $props.modalData.data.Video}`;
-});
-// const vedioUrlIMG = computed(() => {
-//     const _a = $props.modalData.data.Video || '',
-//         _t = _a.substring(0, _a.lastIndexOf('.'));
-//     return _t ? `${_t}_thumb.jpg` : '';
+
+watch(
+    () => $props.modalData.videoUrl,
+    (e: string) => {
+        e && initVideoFn(e, 'Player1');
+    },
+    {
+        immediate: false,
+    }
+);
+// onMounted(() => {
+//     data.player = new WasmPlayer(null, domId, callbackfun);
 // });
+
+function initVideoFn(url: string, domId: string) {
+    console.log('url', url);
+    // 实例化播放器
+    nextTick(() => {
+        data.player = new WasmPlayer(null, domId, callbackfun);
+        // 调用播放
+        data.player.play(url, 1);
+    });
+}
+function callbackfun(e) {
+    console.log('callbackfun', e);
+}
 </script>
-<style></style>
+<style>
+</style>

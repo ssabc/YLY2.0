@@ -22,7 +22,8 @@
                                     class="value"
                                     v-html="
                                         changeHourMinutestr(
-                                            data.CenterStatistic.TotalFileDuration
+                                            data.CenterStatistic
+                                                .TotalFileDuration
                                         )?.htmlText
                                     "
                                 ></div>
@@ -33,7 +34,8 @@
                                     class="value"
                                     v-html="
                                         changeHourMinutestr(
-                                            data.CenterStatistic.TodayFileDuration
+                                            data.CenterStatistic
+                                                .TodayFileDuration
                                         )?.htmlText
                                     "
                                 ></div>
@@ -53,7 +55,8 @@
                     <div class="box">
                         <div class="title">访客情况监测（本周）</div>
                         <div class="visit-num">
-                            访客数： <span class="value">{{ data.chartSum }}</span>
+                            访客数：
+                            <span class="value">{{ data.chartSum }}</span>
                         </div>
                         <Chart2 :p-data="data.chart2Data"></Chart2>
                     </div>
@@ -63,6 +66,7 @@
                             :p-data="
                                 (data.info.ServiceLastFile || []).slice(0, 5)
                             "
+                            @open="handleOpenVideo"
                         ></Chart3>
                     </div>
                 </div>
@@ -94,6 +98,10 @@
             </div>
         </div>
     </div>
+    <VideoModal
+        :modal-data="data.modalData"
+        @cancel="data.modalData.visible = false"
+    ></VideoModal>
 </template>
 
 <script setup lang="ts">
@@ -104,14 +112,15 @@ import { fetchHomeInfo } from '@/api/app';
 import Device from '@/pages/home/components/device.vue';
 import Chart1 from '@/pages/home/components/chart1.vue';
 import Chart2 from '@/pages/home/components/chart2.vue';
-import Chart3 from '@/pages/home/components/chart3.vue';
-import Chart4 from '@/pages/home/components/chart4-cc.vue';
+import Chart3 from './components/chart3-cc.vue';
+import Chart4 from './components/chart4-cc.vue';
 import Chart5 from '@/pages/home/components/chart5.vue';
-import Chart6 from '@/pages/home/components/chart6-cc.vue';
+import Chart6 from './components/chart6-cc.vue';
 import { BellOutlined } from '@ant-design/icons-vue';
 import { changeHourMinutestr } from '@/utils/tools';
 import commonMixin from '@/mixins';
 import Header from './header.vue';
+import VideoModal from '@/components/VideoModal.vue';
 
 const $store = useStore(),
     ylyList = computed(() => $store.getters['common/ylyList']),
@@ -127,6 +136,9 @@ const $store = useStore(),
         sosInfo: {},
         chart2Data: [],
         chartSum: 0,
+        modalData: {
+            visible: false,
+        },
     });
 
 onMounted(() => {
@@ -139,6 +151,11 @@ onMounted(() => {
 });
 
 commonMixin(getHomeInfo);
+
+function handleOpenVideo(url: string) {
+    data.modalData.visible = true;
+    data.modalData.videoUrl = url;
+}
 
 /**
  * @description: 获取首页数据
@@ -189,7 +206,7 @@ function getChart2Data() {
 
     let sum = 0;
     _temp?.forEach((_e) => {
-        _e?.data?.forEach((_s) => sum =  +sum +_s);
+        _e?.data?.forEach((_s) => (sum = +sum + _s));
     });
     data.chartSum = sum || 0;
 }
