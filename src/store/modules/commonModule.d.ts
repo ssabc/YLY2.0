@@ -1,8 +1,8 @@
 /*
  * @Author: zhaoshan
  * @Date: 2022-11-30 14:10:30
- * @LastEditTime: 2023-01-19 14:04:40
- * @LastEditors: szhao
+ * @LastEditTime: 2023-02-12 14:30:35
+ * @LastEditors: sZhao
  * @Description:
  */
 import type { SelectListData } from 'GlobComponentsModule';
@@ -29,6 +29,7 @@ declare module 'CommonModule' {
         fileTags: string[];
         gisUrl: string;
         yly: Yly;
+        bigPwdOk: string;
     }
 
     interface Getters {
@@ -40,6 +41,7 @@ declare module 'CommonModule' {
         ylyList: ({ ylyList }: State) => SelectListData[];
         groupId: ({ yly }: State) => string;
         fileTags: ({ fileTags }: State) => string[];
+        bigPwdOk: ({ bigPwdOk }: State) => string;
     }
 
     interface Actions {
