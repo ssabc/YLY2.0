@@ -1,8 +1,8 @@
 /*
  * @Author: szhao
  * @Date: 2023-01-16 15:42:21
- * @LastEditTime: 2023-01-19 14:31:46
- * @LastEditors: szhao
+ * @LastEditTime: 2023-02-12 14:31:08
+ * @LastEditors: sZhao
  * @Description:
  */
 import { routes, r as $router } from '@/routes';
@@ -18,6 +18,7 @@ const state = (): State => ({
     fileTags: [],
     /** 系统当前养老院 */
     yly: {},
+    bigPwdOk: false,
 });
 
 const getters: Getters = {
@@ -61,6 +62,10 @@ const getters: Getters = {
             ? state.yly
             : JSON.parse(localStorage.getItem('currentYLY') || '{}');
         return ylyObj;
+    },
+    isBigPwdOk: (state: State) => {
+        const bigPwdOk = localStorage.getItem('bigPwdOk') || state.bigPwdOk;
+        return bigPwdOk == '1';
     },
     groupId: (state: State) => {
         const ylyObj = state.yly?.name
@@ -121,6 +126,10 @@ const mutations = {
     setYly(state: State, p: object) {
         localStorage.setItem('currentYLY', JSON.stringify(p));
         state.yly = p;
+    },
+    setBigPwdOk(state: State, p: string) {
+        localStorage.setItem('bigPwdOk', p);
+        state.bigPwdOk = p;
     },
 };
 

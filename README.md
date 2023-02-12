@@ -23,3 +23,5 @@ Since TypeScript cannot handle type information for `.vue` imports, they are shi
 ## docker ps -a
 ## docker exec ac6116ccfd5b nginx -s reload
 ## docker ps -a | grep nginx
+
+## npm install

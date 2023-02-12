@@ -13,7 +13,9 @@
                 @press-enter="submit"
             >
                 <template #verifyCode>
-                    <div class="flex items-center justify-center verify-code-wrap">
+                    <div
+                        class="verify-code-wrap flex items-center justify-center"
+                    >
                         <a-input
                             v-model:value="data.formData.verifyCode"
                             allow-clear
@@ -37,10 +39,14 @@
                     >
                         登录
                     </a-button>
+                    <a-button class="dapin-btn" size="large" @click="submitDP">
+                        大屏
+                    </a-button>
                 </template>
             </GmForm>
         </div>
     </div>
+    <BigPwd :modal-data="data.modalData" @ok="handleBigPwdOk" @cancel="handleCancelPwdOk"></BigPwd>
 </template>
 
 <script setup lang="ts">
@@ -52,12 +58,14 @@ import { fetchVerificationCode, fetchLogin } from '@/api/login';
 import type { FetchLoginQuery } from 'LoginModule';
 import { useStore } from 'vuex';
 import { RuleObject } from 'ant-design-vue/es/form/interface';
+import BigPwd from './big-pwd.vue';
 
 interface Data {
     formData: FetchLoginQuery;
     list: FormListProps[];
     rules: object;
     codeBaseUrl: string;
+    modalData?: any;
 }
 
 const data = reactive<Data>({
@@ -101,6 +109,9 @@ const data = reactive<Data>({
             },
         },
         codeBaseUrl: '',
+        modalData: {
+            visible: false,
+        },
     }),
     { globalProperties } = getCurrentInstance()?.appContext.config as any,
     $store = useStore();
@@ -109,6 +120,7 @@ const refGmForm = ref(),
     $router = useRouter();
 
 onMounted(() => {
+    $store.dispatch('common/exit');
     getIdentifyCode();
 });
 /**
@@ -116,6 +128,20 @@ onMounted(() => {
  */
 function submit() {
     refGmForm.value.handleClick(data.formData, 'submit');
+}
+function submitDP() {
+    bigPwdOk.value = true;
+    submit();
+}
+let bigPwdOk = ref(false);
+function handleBigPwdOk() {
+    bigPwdOk.value = false;
+    $store.commit('common/setBigPwdOk', '1');
+    $router.push('/big-screen');
+}
+function handleCancelPwdOk() {
+    bigPwdOk.value = false;
+    data.modalData.visible = false;
 }
 /**
  * @description: 统一处理点击事件
@@ -135,6 +161,10 @@ function handleClick() {
                 };
             $store.commit('common/setYly', _q);
             $store.dispatch('common/getGisUrl');
+            if (bigPwdOk.value) {
+                data.modalData.visible = true;
+                return;
+            }
             $router.push('/');
         })
         .catch(() => {
@@ -197,5 +227,8 @@ function validateVerifyCode(rule: RuleObject, value: string) {
     height: 30px;
     margin-left: 10px;
     cursor: pointer;
+}
+.dapin-btn {
+    margin-left: 10px;
 }
 </style>

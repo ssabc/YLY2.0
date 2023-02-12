@@ -1,8 +1,8 @@
 /*
  * @Author: szhao
  * @Date: 2022-11-30 14:10:30
- * @LastEditTime: 2023-02-02 10:23:20
- * @LastEditors: szhao
+ * @LastEditTime: 2023-02-12 12:38:47
+ * @LastEditors: sZhao
  * @Description:
  */
 import type { RouteItem } from 'RouterModule';
@@ -19,9 +19,19 @@ import { r as configCenter } from './config-center';
 
 export const routes: RouteItem[] = [
     {
+        name: 'BigScreen',
+        path: '/big-screen',
+        meta: { title: '综合态势大屏', hidden: true, layout: false },
+        component: lazyImportPagesRootVueFile('big-screen'),
+    },
+    {
         name: 'Login',
         path: '/login',
-        meta: { title: '登录', hidden: true, layout: false },
+        meta: {
+            title: '登录',
+            hidden: true,
+            layout: false,
+        },
         component: lazyImportPagesRootVueFile('login'),
     },
     {
