@@ -1,8 +1,8 @@
 <!--
  * @Author: sZhao
  * @Date: 2023-01-08 16:48:43
- * @LastEditTime: 2023-01-10 21:55:15
- * @LastEditors: sZhao
+ * @LastEditTime: 2023-02-27 19:18:46
+ * @LastEditors: szhao
  * @Description:
 -->
 <template>
@@ -147,6 +147,7 @@ watchEffect(() => {
         .label {
             padding: 5px 0;
             background-image: url('@/assets/pictures/bg1.svg');
+            background-size: 100% 100%;
         }
         .value {
             font-weight: bold;

@@ -178,6 +178,7 @@ const renderChart1 = (_rate: any) => {
     .rg {
         flex: 1;
         max-width: 600px;
+        margin-top: -20px;
     }
 }
 .chart {
@@ -186,11 +187,11 @@ const renderChart1 = (_rate: any) => {
 }
 .cell {
     display: flex;
-    padding: 10px 10px;
+    padding: 10px 30px;
     font-size: 12px;
     .label {
         display: block;
-        width: 100px;
+        flex: 1;
     }
     .value {
         flex: 1;
@@ -198,6 +199,7 @@ const renderChart1 = (_rate: any) => {
 }
 .out {
     color: #ffe400;
+    padding: 0 30px 10px 30px;
 }
 .cells {
     margin-bottom: 10px;
@@ -208,7 +210,7 @@ const renderChart1 = (_rate: any) => {
     .cell {
         background-image: url('@/assets/pictures/bg.svg');
         background-size: 100% 100%;
-        padding: 8px 10px;
+        // padding: 8px 10px;
     }
 }
 </style>
