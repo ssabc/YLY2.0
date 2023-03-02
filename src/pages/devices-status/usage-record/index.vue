@@ -214,7 +214,7 @@ function getInfoAjax() {
     if (!groupId.value) {
         _temp = ylyList.value?.map((_e: any) => {
             return {
-                name: _e.name,
+                name: _e.label,
                 data: [31, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
             };
         });

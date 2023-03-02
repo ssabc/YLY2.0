@@ -58,7 +58,7 @@ const renderChart1 = (_list: any) => {
     const option = {
         legend: {
             icon: 'circle',
-            top: '5%',
+            top: '0%',
             right: '8%',
             itemWidth: 6,
             itemGap: 5,

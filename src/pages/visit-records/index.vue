@@ -33,7 +33,7 @@
 
 <script setup lang="ts" name="NurseAideIndex">
 import { useStore } from 'vuex';
-import { ref, reactive, computed, onMounted} from 'vue';
+import { ref, reactive, computed, onMounted } from 'vue';
 import type { ColumnProps, FormListProps } from 'GlobComponentsModule';
 import { fetchServiceFileList } from '@/api/service-records';
 import { dealReqData } from '@/utils/tools';
@@ -142,7 +142,7 @@ function initfn() {
     if (!groupId.value) {
         _temp = ylyList.value?.map((_e: any, idx: number) => {
             return {
-                name: _e.name,
+                name: _e.label,
                 data: _list[idx],
             };
         });

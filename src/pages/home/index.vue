@@ -50,7 +50,8 @@
                     <div class="box">
                         <div class="title">访客情况监测（本周）</div>
                         <div class="visit-num">
-                            访客数： <span class="value">{{ data.chartSum }}</span>
+                            访客数：
+                            <span class="value">{{ data.chartSum }}</span>
                         </div>
                         <Chart2 :p-data="data.chart2Data"></Chart2>
                     </div>
@@ -160,7 +161,7 @@ function getChart2Data() {
     if (!groupId.value) {
         _temp = ylyList.value?.map((_e: any, idx: number) => {
             return {
-                name: _e.name,
+                name: _e.label,
                 data: _list[idx],
             };
         });
@@ -178,7 +179,7 @@ function getChart2Data() {
 
     let sum = 0;
     _temp?.forEach((_e) => {
-        _e?.data?.forEach((_s) => sum =  +sum +_s);
+        _e?.data?.forEach((_s) => (sum = +sum + _s));
     });
     data.chartSum = sum || 0;
 }

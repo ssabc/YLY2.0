@@ -28,6 +28,7 @@ const renderChart1 = (list: any) => {
         seriesData = _newList?.map((_e: any) =>
             Math.floor(_e?.TotalFileDuration / 60)
         );
+    console.log('seriesData=', _newList);
     const option = {
         legend: {
             icon: 'circle',

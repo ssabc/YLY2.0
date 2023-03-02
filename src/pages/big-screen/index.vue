@@ -188,7 +188,7 @@ function getChart2Data() {
     if (!groupId.value) {
         _temp = ylyList.value?.map((_e: any, idx: number) => {
             return {
-                name: _e.name,
+                name: _e.label,
                 data: _list[idx],
             };
         });
