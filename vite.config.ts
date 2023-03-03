@@ -1,7 +1,7 @@
 /*
  * @Author: sZhao
  * @Date: 2023-01-08 15:09:44
- * @LastEditTime: 2023-01-31 19:25:58
+ * @LastEditTime: 2023-03-03 16:52:46
  * @LastEditors: szhao
  * @Description:
  */
@@ -37,6 +37,13 @@ export default ({ mode }) => {
         },
         build: {
             target: 'es2015',
+            minify: 'terser',
+            terserOptions: {
+                compress: {
+                    drop_console: true,
+                    drop_debugger: true,
+                },
+            },
         },
         server: {
             proxy: {

@@ -1,8 +1,8 @@
 <!--
  * @Author: zhaoshan
  * @Date: 2022-12-01 18:35:26
- * @LastEditTime: 2023-02-12 15:32:02
- * @LastEditors: sZhao
+ * @LastEditTime: 2023-03-03 16:37:39
+ * @LastEditors: szhao
  * @Description:
 -->
 <template>
@@ -12,7 +12,7 @@
         :footer="null"
         width="1240px"
         height="700px"
-        @cancel="$emit('cancel')"
+        @cancel="handleCancel"
     >
         <div style="width: 1200px; height: 660px" class="box">
             <div id="Player1"></div>
@@ -20,7 +20,16 @@
     </a-modal>
 </template>
 <script setup lang="ts">
-import { watch, defineProps, defineEmits, reactive, nextTick } from 'vue';
+import {
+    watch,
+    defineProps,
+    defineEmits,
+    reactive,
+    nextTick,
+    onMounted,
+    onBeforeUnmount,
+} from 'vue';
+import func from 'vue-temp/vue-editor-bridge';
 
 interface Data {
     player?: any;
@@ -46,9 +55,25 @@ watch(
         immediate: false,
     }
 );
-// onMounted(() => {
-//     data.player = new WasmPlayer(null, domId, callbackfun);
-// });
+
+onMounted(() => {
+    window.onbeforeunload = function () {
+        closePage();
+        return false;
+    };
+});
+onBeforeUnmount(() => {
+    closePage();
+});
+function closePage() {
+    data.player?.destroy();
+    window.onbeforeunload = null;
+}
+
+function handleCancel() {
+    data.player?.destroy();
+    $emit('cancel');
+}
 
 function initVideoFn(url: string, domId: string) {
     console.log('url', url);
@@ -63,5 +88,4 @@ function callbackfun(e) {
     console.log('callbackfun', e);
 }
 </script>
-<style>
-</style>
+<style></style>

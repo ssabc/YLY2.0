@@ -1,7 +1,7 @@
 <!--
  * @Author: szhao
  * @Date: 2023-01-10 10:59:12
- * @LastEditTime: 2023-02-07 10:19:03
+ * @LastEditTime: 2023-03-03 16:32:53
  * @LastEditors: szhao
  * @Description:
 -->
@@ -22,7 +22,7 @@
 </template>
 <script setup lang="ts">
 import { useStore } from 'vuex';
-import { reactive, watch, computed } from 'vue';
+import { reactive, watch, computed, onMounted, onBeforeUnmount } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import type { FormListProps } from 'GlobComponentsModule';
 import { serviceFileSave } from '@/api/service-records';
@@ -172,6 +172,20 @@ function initVideoFn(url: string, domId: string) {
     data.player = new WasmPlayer(null, domId, callbackfun);
     // 调用播放
     data.player.play(url, 1);
+}
+
+onMounted(() => {
+    window.onbeforeunload = function () {
+        closePage();
+        return false;
+    };
+});
+onBeforeUnmount(() => {
+    closePage();
+});
+function closePage() {
+    data.player?.destroy();
+    window.onbeforeunload = null;
 }
 
 function callbackfun(e) {
