@@ -31,7 +31,6 @@
     ]
   },
   "dependencies": {
-    "@easydarwin/easywasmplayer": "^4.0.13",
     "ant-design-vue": "2.2.8",
     "axios": "^0.26.1",
     "easywasmplayer": "^1.0.6",

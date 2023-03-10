@@ -1,7 +1,7 @@
 <!--
  * @Author: zhaoshan
  * @Date: 2022-12-01 18:35:26
- * @LastEditTime: 2023-03-03 16:37:39
+ * @LastEditTime: 2023-03-10 18:03:29
  * @LastEditors: szhao
  * @Description:
 -->
@@ -29,7 +29,6 @@ import {
     onMounted,
     onBeforeUnmount,
 } from 'vue';
-import func from 'vue-temp/vue-editor-bridge';
 
 interface Data {
     player?: any;
@@ -62,21 +61,17 @@ onMounted(() => {
         return false;
     };
 });
+
 onBeforeUnmount(() => {
     closePage();
 });
-function closePage() {
-    data.player?.destroy();
-    window.onbeforeunload = null;
-}
 
 function handleCancel() {
-    data.player?.destroy();
+    closePage();
     $emit('cancel');
 }
 
 function initVideoFn(url: string, domId: string) {
-    console.log('url', url);
     // 实例化播放器
     nextTick(() => {
         data.player = new WasmPlayer(null, domId, callbackfun);
@@ -84,8 +79,14 @@ function initVideoFn(url: string, domId: string) {
         data.player.play(url, 1);
     });
 }
-function callbackfun(e) {
-    console.log('callbackfun', e);
+function closePage() {
+    console.log('执行了 player.destroy()');
+    data.player?.destroy();
+    window.onbeforeunload = null;
+}
+
+function callbackfun(e: any) {
+    console.log('实例化播放器 callbackfun', e);
 }
 </script>
 <style></style>

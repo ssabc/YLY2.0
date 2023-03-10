@@ -1,7 +1,7 @@
 <!--
  * @Author: szhao
  * @Date: 2023-01-10 10:59:12
- * @LastEditTime: 2023-03-03 16:32:53
+ * @LastEditTime: 2023-03-10 19:02:03
  * @LastEditors: szhao
  * @Description:
 -->
@@ -158,6 +158,7 @@ const $store = useStore(),
         ],
         videoUrl: '',
     });
+
 watch(
     () => $route.query.id,
     (e) => {
@@ -170,6 +171,8 @@ watch(
 function initVideoFn(url: string, domId: string) {
     // 实例化播放器
     data.player = new WasmPlayer(null, domId, callbackfun);
+
+    console.log('data.player=', data.player);
     // 调用播放
     data.player.play(url, 1);
 }
@@ -184,12 +187,13 @@ onBeforeUnmount(() => {
     closePage();
 });
 function closePage() {
+    console.log('执行了 player.destroy()');
     data.player?.destroy();
     window.onbeforeunload = null;
 }
 
-function callbackfun(e) {
-    console.log('callbackfun', e);
+function callbackfun(e: any) {
+    console.log('实例化播放器 callbackfun', e);
 }
 function initFn(fileId: any) {
     fetchRealTimeInfo({ fileId }).then((res: any) => {
