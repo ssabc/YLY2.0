@@ -187,7 +187,7 @@ onBeforeUnmount(() => {
     closePage();
 });
 function closePage() {
-    console.log('执行了 player.destroy()');
+    console.log('执行了 player.destroy()', data.player?.destroy);
     data.player?.destroy();
     window.onbeforeunload = null;
 }
