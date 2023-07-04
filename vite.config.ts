@@ -1,8 +1,8 @@
 /*
  * @Author: sZhao
  * @Date: 2023-01-08 15:09:44
- * @LastEditTime: 2023-03-03 16:52:46
- * @LastEditors: szhao
+ * @LastEditTime: 2023-07-04 21:45:21
+ * @LastEditors: sZhao
  * @Description:
  */
 import vue from '@vitejs/plugin-vue';
@@ -48,17 +48,17 @@ export default ({ mode }) => {
         server: {
             proxy: {
                 '/api/': {
-                    target: 'http://119.3.126.12:3000/',
+                    target: 'http://117.135.72.30:3000/',
                     changeOrigin: true,
                     rewrite: (path) => path.replace(/^\/api/, ''),
                 },
                 '/videofile/': {
-                    target: 'http://119.3.126.12:8064/',
+                    target: 'http://117.135.72.30:8064/',
                     changeOrigin: true,
                     rewrite: (path) => path.replace(/^\/videofile/, ''),
                 },
                 '/videoflvfile/': {
-                    target: 'http://119.3.126.12:10010/',
+                    target: 'http://117.135.72.30:10010/',
                     changeOrigin: true,
                     rewrite: (path) => path.replace(/^\/videoflvfile/, ''),
                 },

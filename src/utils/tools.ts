@@ -1,7 +1,7 @@
 /*
  * @Author: szhao
  * @Date: 2022-12-02 19:32:00
- * @LastEditTime: 2023-02-02 22:47:02
+ * @LastEditTime: 2023-07-04 21:52:49
  * @LastEditors: sZhao
  * @Description:
  */
@@ -163,8 +163,10 @@ export const second2minutes = function (_s: number) {
 };
 
 export const handleDownload = function (fileName: string, videoUrl: string) {
-    videoUrl = videoUrl.replace('http://119.3.126.12:8064/', 'videofile/');
-    videoUrl = videoUrl.replace('http://119.3.126.12:10010/', 'videoflvfile/');
+    // const _hostname = window.location.hostname || ''
+    videoUrl = videoUrl.replace(`http://117.135.72.30:8064/`, 'videofile/');
+    videoUrl = videoUrl.replace(`http://117.135.72.30:10010/`, 'videoflvfile/');
+    console.log('download videoUrl=', videoUrl);
     const x = new XMLHttpRequest();
     $message.loading('视频下载中，请稍后...', 0);
     x.open('GET', videoUrl, true);

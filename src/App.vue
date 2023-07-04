@@ -1,8 +1,8 @@
 <!--
  * @Author: szhao
  * @Date: 2022-11-30 14:10:30
- * @LastEditTime: 2023-01-28 10:38:44
- * @LastEditors: szhao
+ * @LastEditTime: 2023-07-03 21:32:43
+ * @LastEditors: sZhao
  * @Description:
 -->
 
@@ -54,5 +54,8 @@ body {
 }
 .table-title {
     padding: 10px 0;
+}
+.iconqingxiLOGO {
+    display: none !important;
 }
 </style>

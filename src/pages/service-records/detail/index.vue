@@ -1,8 +1,8 @@
 <!--
  * @Author: szhao
  * @Date: 2023-01-10 10:59:12
- * @LastEditTime: 2023-03-10 19:02:03
- * @LastEditors: szhao
+ * @LastEditTime: 2023-07-03 21:32:16
+ * @LastEditors: sZhao
  * @Description:
 -->
 <template>
@@ -263,5 +263,11 @@ const onSubmit = () => {
             width: 400px;
         }
     }
+}
+
+</style>
+<style lang="less">
+.iconqingxiLOGO {
+    display: none !important;
 }
 </style>
