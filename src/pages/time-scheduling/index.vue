@@ -173,6 +173,7 @@ const $store = useStore(),
                     {
                         name: '下载',
                         type: 'download',
+                        flag: 'aLink',
                         disabled: !record.FileHref2,
                     },
                     {

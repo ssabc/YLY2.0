@@ -1,8 +1,8 @@
 /*
  * @Author: zhaoshan
  * @Date: 2022-11-30 14:10:30
- * @LastEditTime: 2023-01-19 13:54:17
- * @LastEditors: szhao
+ * @LastEditTime: 2023-07-05 07:50:57
+ * @LastEditors: sZhao
  * @Description:
  */
 declare module 'GlobComponentsModule' {
@@ -13,6 +13,7 @@ declare module 'GlobComponentsModule' {
     }
 
     export interface TableHandleOptItem {
+        flag?: string;
         name: string;
         disabled?: boolean;
         hidden?: boolean;

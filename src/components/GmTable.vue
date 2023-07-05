@@ -29,7 +29,7 @@
                         :key="ele.name"
                     >
                         <button
-                            v-if="!ele.hidden"
+                            v-if="!ele.hidden && !ele.flag"
                             class="text-blue-500"
                             :disabled="ele.disabled"
                             :class="{
@@ -40,6 +40,18 @@
                             @click="$emit('on-handle', ele, record, index)"
                             v-text="ele.name"
                         />
+                        <a
+                            v-if="!ele.hidden && ele.flag === 'aLink'"
+                            class="text-blue-500"
+                            :class="{
+                                'cursor-not-allowed': ele.disabled,
+                                'text-zinc-300': ele.disabled,
+                                'ant-btn ant-btn-primary btn': ele.likeBtn,
+                            }"
+                            target="_blank"
+                            :href="record.FileHref2"
+                            >下载</a
+                        >
                         <a-divider
                             v-if="!ele.hidden"
                             class="divider"

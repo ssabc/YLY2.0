@@ -222,11 +222,11 @@ const $store = useStore(),
                             type: 'download',
                             disabled: !record.FileHref,
                         },
-                        {
-                            name: '删除',
-                            hidden: !isAdmin.value,
-                            type: 'delete',
-                        },
+                        // {
+                        //     name: '删除',
+                        //     hidden: !isAdmin.value,
+                        //     type: 'delete',
+                        // },
                     ];
                 },
             },
